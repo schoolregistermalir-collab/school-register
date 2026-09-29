@@ -34,6 +34,10 @@ body{font-family:'Segoe UI',Roboto,system-ui,sans-serif;background:#f0f2f5;color
 .hd{background:linear-gradient(135deg,#1a472a,#2d5a3f);border-radius:12px;padding:14px;color:#fff;text-align:center;margin-bottom:10px}
 .hd h1{font-size:17px}.hd p{font-size:11px;opacity:.85;margin-top:2px}
 .rw{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.rw>div{flex:1;min-width:0}.rw>.w2{flex:2}
+.rclist{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.rcit{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid #e2e6e2;border-radius:8px;background:#fcfdfc;font-size:14px;cursor:pointer}
+.rcit input{width:18px;height:18px;margin:0;accent-color:#1a472a;flex:none}
+.rcit span{flex:1;min-width:0}
 label{font-size:11px;font-weight:600;display:block;margin-bottom:2px;color:#444}
 input,select,textarea{width:100%;padding:9px 8px;border-radius:7px;border:1px solid #ccc;font-size:14px;background:#fafafa;color:#1a1a1a}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#1a472a;background:#fff;box-shadow:0 0 0 2px rgba(26,71,42,.12)}
@@ -315,7 +319,7 @@ border:1px solid #cfd6d0;background:#f7f9f7;color:#1c4a2e}
 <div><label>Emergency Contact Name</label><input id="f_emgname" placeholder="Father, uncle, neighbour"></div>
 </div>
 <div class="rw">
-<div class="w2"><label>B-Form / CNIC (13 digits) *</label><input id="f_cnic" inputmode="numeric" placeholder="42101-1234567-1" maxlength="15" autocomplete="off"></div>
+<div class="w2"><label>Student CNIC Number (13 digits) *</label><input id="f_cnic" inputmode="numeric" placeholder="42101-1234567-1" maxlength="15" autocomplete="off"></div>
 </div>
 <div class="hn" style="margin-bottom:6px">Only 13 digits go in and the dashes come by itself like 42101-1234567-4. More than 13 digits will not type. A short number will show error.</div>
 <div class="rw">
@@ -760,6 +764,12 @@ Developed by <b>NAZIM NOOR</b>
 <div class="bs">
 <button class="bn tb" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="CERTOPEN('prov')">Provisional (prints the long way round)</button>
 </div>
+<div class="sc">Receipts</div>
+<div class="hn" style="margin-bottom:6px">One A4 page holds the same receipt twice. The office keeps the top half and the parent or the student takes the bottom half.</div>
+<div class="bs">
+<button class="bn tb" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="RCPTOPEN('take')">Papers received at admission</button>
+<button class="bn tb" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="RCPTOPEN('give')">Papers handed to the student</button>
+</div>
 <div class="bs"><button class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="EDITFROMPROFILE()">Edit / add documents</button>
 <button class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="CLOSEPROFILE()">Close</button></div>
 </div>
@@ -848,6 +858,23 @@ Developed by <b>NAZIM NOOR</b>
 <iframe id="scanFrame" title="Scan Desk"></iframe>
 <div class="sofail" id="scanFail" style="display:none">Scan Desk could not open. It lives in a second file called scan.html, which must sit beside this app. If you are opening the single HTML file on its own, open scan.html directly instead.</div>
 </div>
+<div class="ov" id="rcptOv"><div class="ovb">
+<div class="ovh"><h2 id="rcHd">Receipt</h2><p id="rcSub">Tick what changed hands, then make the receipt.</p></div>
+<div class="ovc">
+<div class="rw">
+<div><label>Receipt number</label><input id="rc_serial" placeholder="leave empty for the automatic one"></div>
+<div><label>Date</label><input id="rc_date" type="date"></div>
+</div>
+<div class="sc">What changed hands</div>
+<div id="rcList" class="rclist"></div>
+<div class="rw"><div class="w2"><label>Anything else, separated by a comma</label><input id="rc_other" placeholder="Domicile copy, Affidavit"></div></div>
+<div class="rw"><div class="w2"><label>Remarks, printed on both halves</label><input id="rc_note" placeholder="Originals returned after checking"></div></div>
+<div class="bs">
+<button class="bn bw" onclick="RCPTGO()">Make the receipt</button>
+<button class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="RCPTCLOSE()">Cancel</button>
+</div>
+</div>
+</div></div>
 <div class="ov" id="certOv"><div class="ovb">
 <div class="ovh"><h2 id="certHd">Certificate details</h2><p id="certSub">Fill what should print, then make the certificate.</p></div>
 <div class="ovc">
@@ -1493,7 +1520,9 @@ function GOTAB(n){CURTAB=n;
 var tb=document.querySelectorAll("#tabs .stb");
 for(var i=0;i<tb.length;i++){var dt=parseInt(tb[i].getAttribute("data-tab"),10);
 tb[i].className=(dt===n)?"stb act":"stb";}
-for(var j=1;j<=6;j++){var p=document.getElementById("p"+j);if(p)p.className=(j===n)?"pane act":"pane";}
+var pl=document.querySelectorAll(".pane");
+for(var j=0;j<pl.length;j++)pl[j].className="pane";
+var pn=document.getElementById("p"+n);if(pn)pn.className="pane act";
 if(n===2)RENDER();
 if(n===3)RENDERTRASH();
 if(n===4){if(!V("x_school")&&SET.school)SV("x_school",SET.school);FILLCLASSSEL("x_class",true);PAINTSYNC();}
@@ -1825,7 +1854,7 @@ var h='<div style="display:flex;gap:10px;margin-bottom:8px">';
 h+='<div class="pbox" style="cursor:default">'+(s.photo&&PROFFILES[s.photo]?('<img src="'+PROFFILES[s.photo]+'">'):"No photo")+'</div>';
 h+='<div style="flex:1">'+ROW("GR No",s.gr)+ROW("Student Name",s.name)+ROW("Father Name",s.father)+'</div></div>';
 h+=ROW("Class",(s.cls||"")+(s.section?" - "+s.section:""))+ROW("Date of Birth",DMY(s.dob))
-+ROW("Student B-Form / CNIC",(s.noCnic||!DIGITS(s.cnic))?"Student has no own B-Form":s.cnic)
++ROW("Student CNIC Number",(s.noCnic||!DIGITS(s.cnic))?"Student has no own B-Form":s.cnic)
 +ROW((s.pcnicOf||"Parent / Guardian")+" CNIC",s.pcnic)
 +ROW("Mobile Number",s.mobile)+ROW("Date of Admission",DMY(s.adm))+ROW("Address",s.addr);
 h+='<div class="sc">Remarks</div>';
@@ -2214,7 +2243,7 @@ function DOCNAMES(s){return (s.docs||[]).map(function(d){return d.label;}).join(
 function SHEETSTUDENTS(list,o){
 var cols=[{w:6},{w:12},{w:26},{w:26},{w:9},{w:9},{w:10},{w:11},{w:11},{w:14},{w:20},{w:12},{w:20},{w:11},{w:16},{w:22},{w:18}];
 var head=["S.No","GR No","Student Name","Father Name","Class","Section","Gender","Disability","Blood Group","Date of Birth",
-"Student B-Form / CNIC","Own B-Form","Parent / Guardian CNIC","CNIC Of","Mobile Number","Emergency Contact","Date of Admission"];
+"Student CNIC Number","Own B-Form","Parent / Guardian CNIC","CNIC Of","Mobile Number","Emergency Contact","Date of Admission"];
 var mid=[1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1];
 if(o.addr){cols.push({w:32});head.push("Address");mid.push(0);}
 cols.push({w:34});head.push("Remarks");mid.push(0);
@@ -2283,7 +2312,7 @@ return {name:"Class Summary",cols:cols,rows:rows,merges:merges,freeze:headRow,au
 
 function SHEETDELETED(list){
 var cols=[{w:6},{w:12},{w:26},{w:26},{w:9},{w:9},{w:10},{w:20},{w:20},{w:16},{w:16},{w:30}];
-var head=["S.No","GR No","Student Name","Father Name","Class","Section","Gender","Student B-Form / CNIC",
+var head=["S.No","GR No","Student Name","Father Name","Class","Section","Gender","Student CNIC Number",
 "Parent / Guardian CNIC","Mobile Number","Deleted On","Remarks"];
 var mid=[1,1,0,0,1,1,1,1,1,1,1,0];
 var rows=[{cells:head.map(function(t){return CELL(t,1);}),h:30}];
@@ -2310,7 +2339,7 @@ label("Disability",s.disab==="Yes"?"Yes":"No");
 label("Blood Group",s.blood||"");
 label("Emergency Contact",(s.emg||"")+(s.emgname?("  "+s.emgname):""));
 label("Date of Birth",DMY(s.dob));
-label("Student B-Form / CNIC",OWNCNIC(s)?s.cnic:"Student has no own B-Form");
+label("Student CNIC Number",OWNCNIC(s)?s.cnic:"Student has no own B-Form");
 label((s.pcnicOf||"Parent / Guardian")+" CNIC",s.pcnic?(s.pcnic+"  (parent / guardian, not the student)"):"");
 label("Mobile Number",s.mobile||"");
 label("Date of Admission",DMY(s.adm));
@@ -2483,11 +2512,19 @@ var b64=String(dataUrl||"").split(",")[1];if(!b64)return 0;
 var n=doc.res();
 doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode",B64B(b64)));
 return n;}
+function addMask(b64,w,h){
+var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ImageMask true /BitsPerComponent 1 /Decode [0 1]",B64B(b64)));
+return n;}
+/* the state crest is always available, even when no logo picture was added */
+var CRESTO=addMask(CRESTMASK,CRESTMW,CRESTMH);
 function addPage(pg,imgs){
 var cn=doc.res();doc.set(cn,doc.stream("",L1(pg.k)));
 var pn=doc.res();
 var xo="";
-if(imgs.length){xo=" /XObject << ";imgs.forEach(function(m){xo+="/"+m.n+" "+m.o+" 0 R ";});xo+=">>";}
+var lst=imgs.slice();
+if(CRESTO)lst.push({n:"Cm",o:CRESTO});
+if(lst.length){xo=" /XObject << ";lst.forEach(function(m){xo+="/"+m.n+" "+m.o+" 0 R ";});xo+=">>";}
 doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >>"+xo+" /ExtGState << /GSm << /Type /ExtGState /BM /Multiply >> >> >> /Contents "+cn+" 0 R >>");
 kids.push(pn+" 0 R");}
 
@@ -2513,6 +2550,7 @@ var k=Math.min(340/iw,340/ih);
 pg.img(tag,297.5-(iw*k)/2,420-(ih*k)/2,iw*k,ih*k);}
 function BAND(pg,imgs,tag,h,title,line2,big,small){
 pg.fill(TH,0,842-h,595,h);
+pg.fill([0.78,0.59,0.12],0,842-h-2.6,595,2.6);
 var lw=0,lh=0;
 if(LPOS!=="none"&&LOGO&&LOGO.data){
 var o=addImg(LOGO.data,LOGO.w||200,LOGO.h||200);
@@ -2522,8 +2560,12 @@ if(LPOS==="centre"){var k=Math.min(96/iw,40/ih);lw=iw*k;lh=ih*k;
 pg.img(tag,297.5-lw/2,842-14-lh,lw,lh);}
 else{var k2=Math.min(84/iw,(h-16)/ih);lw=iw*k2;lh=ih*k2;
 pg.img(tag,36,842-h+(h-lh)/2,lw,lh);}}}
+else if(CRESTO){
+/* no logo picture was added, so the state crest is used */
+lh=h-18;lw=lh*CRESTMW/CRESTMH;
+pg.imgc("Cm",36,842-h+(h-lh)/2,lw,lh,WH);}
 var cx=297.5;
-if(LPOS==="left"&&lw)cx=(36+lw+12+559)/2;
+if(lw)cx=(36+lw+12+559)/2;
 if(LPOS==="centre"&&lh){
 var yb=842-14-lh;
 pg.ctxt(title,cx,yb-17,big,true,WH);
@@ -2577,7 +2619,7 @@ var rows=[["Class",(s.cls||"-")+(s.section?("   Section "+s.section):"")],
 ["Blood Group",s.blood||"-"],
 ["Emergency Contact",(s.emg||"-")+(s.emgname?("   "+s.emgname):"")],
 ["Date of Birth",DMY(s.dob)||"-"],
-["Student B-Form / CNIC",ownc?s.cnic:"Student has no own B-Form"],
+["Student CNIC Number",ownc?s.cnic:"Student has no own B-Form"],
 [((s.pcnicOf||"Parent / Guardian")+" CNIC"),s.pcnic?(s.pcnic+"   (belongs to the "+String(s.pcnicOf||"parent").toLowerCase()+", not the student)"):"-"],
 ["Mobile Number",s.mobile||"-"],
 ["Date of Admission",DMY(s.adm)||"-"],
@@ -2627,35 +2669,49 @@ var pageNo=2,total=1+Math.ceil(docs.length/2);
 for(var i=0;i<docs.length;i+=2){
 var q2=new PG(),imgs=[],cnt=0;
 WATER(q2,imgs,"Wd");
-q2.fill(TH,0,796,595,46);
-var cx2=297.5;
+q2.fill(TH,0,790,595,52);
+q2.fill([0.78,0.59,0.12],0,787.4,595,2.6);
+var cx2=297.5,lgw=0;
 if(LPOS!=="none"&&LOGO&&LOGO.data){
 var lo=addImg(LOGO.data,LOGO.w||200,LOGO.h||200);
 if(lo){imgs.push({n:"Ld",o:lo});
-var liw=LOGO.w||200,lih=LOGO.h||200,lk=Math.min(60/liw,32/lih);
-q2.img("Ld",36,796+(46-lih*lk)/2,liw*lk,lih*lk);
-cx2=(36+liw*lk+12+559)/2;}}
-q2.ctxt("DOCUMENTS ATTACHED AT ADMISSION",cx2,820,12,true,WH);
-q2.ctxt((s.name||"")+"   |   "+(s.gr||""),cx2,805,9,false,WH);
-q2.line(LN,0.8,25,25,545,762);
-var slots=[[430,318],[70,318]];
-for(var j=0;j<2;j++){
+var liw=LOGO.w||200,lih=LOGO.h||200,lk=Math.min(60/liw,38/lih);
+lgw=liw*lk;
+q2.img("Ld",36,790+(52-lih*lk)/2,lgw,lih*lk);}}
+else if(CRESTO){var chh=40;lgw=chh*CRESTMW/CRESTMH;
+q2.imgc("Cm",36,790+(52-chh)/2,lgw,chh,WH);}
+if(lgw)cx2=(36+lgw+12+559)/2;
+q2.ctxt(String(school).toUpperCase(),cx2,824,11.5,true,WH);
+q2.ctxt("DOCUMENTS ATTACHED WITH THE RECORD",cx2,811,8.6,true,[0.86,0.91,0.87]);
+q2.ctxt((s.name||"")+"   |   GR "+(s.gr||""),cx2,798,8.6,false,[0.86,0.91,0.87]);
+q2.line(LN,0.8,25,25,545,756);
+var two=!!docs[i+1];
+var slots=two?[[430,296],[72,296]]:[[72,654]];
+for(var j=0;j<slots.length;j++){
 var dd=docs[i+j];if(!dd)break;
 var sy=slots[j][0],sh=slots[j][1];
-q2.txt(String(i+j+1)+". "+dd.label,42,sy+sh+10,11,true,TH);
-q2.fill([0.985,0.985,0.985],40,sy,515,sh);
+/* a title strip, so each paper is clearly named on the page */
+q2.fill([0.93,0.95,0.93],40,sy+sh+4,515,21);
+q2.fill(TH,40,sy+sh+4,3,21);
+q2.txt(String(i+j+1)+".   "+String(dd.label||"Document").toUpperCase(),52,sy+sh+11,9.6,true,TH);
+var rtn="Original seen and returned";
+q2.txt(rtn,549-TW(rtn,7.6,false),sy+sh+12,7.6,false,[0.48,0.50,0.48]);
+q2.fill([0.988,0.988,0.985],40,sy,515,sh);
 q2.line(LN,0.8,40,sy,515,sh);
 var data=files[dd.id];
 if(data){
 var iw=dd.w||1000,ih=dd.h||700;
 var on=addImg(data,iw,ih);
 if(on){cnt++;var nmI="Id"+cnt;imgs.push({n:nmI,o:on});
-var k=Math.min((515-14)/iw,(sh-14)/ih);
+var k=Math.min((515-20)/iw,(sh-20)/ih);
 var dw=iw*k,dh=ih*k;
-q2.img(nmI,40+(515-dw)/2,sy+(sh-dh)/2,dw,dh);}
+var ix=40+(515-dw)/2, iy=sy+(sh-dh)/2;
+q2.fill([0.86,0.86,0.84],ix-1.4,iy-1.4,dw+2.8,dh+2.8);
+q2.img(nmI,ix,iy,dw,dh);}
 }else{q2.ctxt("Picture not found",297.5,sy+sh/2,10,false,GY);}}
 q2.hr(LN,0.8,40,52,555,52);
 q2.txt("Printed on "+today,42,38,8.5,false,GY);
+q2.ctxt("Copy of the paper held in the school record.",297.5,38,8,false,GY);
 var pt2="Page "+pageNo+" of "+total;
 q2.txt(pt2,555-TW(pt2,8.5,false),38,8.5,false,GY);
 addPage(q2,imgs);
@@ -3096,29 +3152,35 @@ title="ADMISSION FORM";
 }
 
 /* ---- heading ---- */
-var bh=100;
+var bh=92;
 p.fill(TH,0,H-bh,W,bh);
-var ch=66,cw=ch*CRESTMW/CRESTMH;
-if(oLogo){var lw=Math.min(76,LOGO.w||200),lh=lw*(LOGO.h||200)/(LOGO.w||200);
-if(lh>66){lh=66;lw=lh*(LOGO.w||200)/(LOGO.h||200);}
+var ch=60,cw=ch*CRESTMW/CRESTMH;
+if(oLogo){var lw=Math.min(70,LOGO.w||200),lh=lw*(LOGO.h||200)/(LOGO.w||200);
+if(lh>60){lh=60;lw=lh*(LOGO.w||200)/(LOGO.h||200);}
 p.fill(WH,30-2,H-bh+(bh-lh)/2-2,lw+4,lh+4);
 p.img("Lg",30,H-bh+(bh-lh)/2,lw,lh);}
 else if(oCrest)p.imgc("Cm",30,H-bh+(bh-ch)/2,cw,ch,WH);
 var cx=(30+cw+W-40)/2;
-var ns=16; while(TW(line1,ns,true)>W-160&&ns>9)ns-=0.5;
-p.ctxt(line1,cx,H-40,ns,true,WH);
-if(line2){var s2=11; while(TW(line2,s2,false)>W-160&&s2>7)s2-=0.3;
-p.ctxt(line2,cx,H-56,s2,false,[0.86,0.91,0.87]);}
-p.ctxt(title,cx,H-77,11,true,GOLD);
+var ns=15.5; while(TW(line1,ns,true)>W-170&&ns>9)ns-=0.5;
+p.ctxt(line1,cx,H-36,ns,true,WH);
+if(line2){var s2=10.5; while(TW(line2,s2,false)>W-170&&s2>7)s2-=0.3;
+p.ctxt(line2,cx,H-51,s2,false,[0.86,0.91,0.87]);}
+p.ctxt(title,cx,H-71,11,true,GOLD);
+/* the form number, the way a government form carries one */
+var fcode=svc?"SC-01":"ADM-01";
+p.line([0.62,0.70,0.63],0.8,W-40-52,H-bh+10,52,17);
+p.ctxt(fcode,W-40-26,H-bh+15,8,true,[0.86,0.91,0.87]);
 p.fill(GOLD,0,H-bh-2.6,W,2.6);
 
 /* photo box, top right under the band */
-var y=H-bh-20;
-var pw2=84,ph2=108,px2=W-40-pw2,py2=y-ph2;
+var y=H-bh-18;
+var pw2=84,ph2=104,px2=W-40-pw2,py2=y-ph2;
 p.fill(SOFT,px2,py2,pw2,ph2);
 p.line(LN,0.8,px2,py2,pw2,ph2);
-p.ctxt("Paste",px2+pw2/2,py2+ph2/2+4,8,false,GY);
-p.ctxt("photograph",px2+pw2/2,py2+ph2/2-6,8,false,GY);
+p.line([0.84,0.86,0.84],0.6,px2+5,py2+5,pw2-10,ph2-10);
+p.ctxt("Affix one recent",px2+pw2/2,py2+ph2/2+8,7.2,false,GY);
+p.ctxt("passport size",px2+pw2/2,py2+ph2/2-1,7.2,false,GY);
+p.ctxt("photograph",px2+pw2/2,py2+ph2/2-10,7.2,false,GY);
 
 /* ---- field helpers ---- */
 var LX=40,RX=px2-14;
@@ -3132,25 +3194,48 @@ y-=6;
 p.fill(TH,LX,y-12,W-80,15);
 p.txt(t,LX+7,y-8,8.6,true,WH);
 y-=22;}
-/* one writing line, with the label above it */
+/* every writing space is numbered, so the office can say "see 7" */
+var FNO=0,ZEB=0;
+var NCOL=[0.42,0.50,0.44],LBL=[0.32,0.34,0.32];
+function lbl(label,x){
+var nn=String(++FNO);
+p.txt(nn+".",x,y+2,7.2,true,NCOL);
+var off=TW("00.  ",7.2,true);
+p.txt(label.toUpperCase(),x+off,y+2,7.2,true,LBL);}
+/* a pale stripe behind every other line, so the eye keeps the row */
+function zeb(right){
+if((ZEB++)%2===0)p.fill([0.972,0.975,0.970],LX-6,y-14,right+6-(LX-6),24);}
+/* one writing line, with the numbered label above it */
 function row(label,x,w,hint){
-p.txt(label.toUpperCase(),x,y+2,7.2,true,GY);
+lbl(label,x);
 p.hr(LN,0.7,x,y-11,x+w,y-11);
 if(hint)p.txt(hint,x+w-TW(hint,6.4,false),y-9,6.4,false,[0.68,0.68,0.66]);}
 function rows(list,wide){
 var right=wide?(W-40):RX;
+zeb(right);
 var n=list.length,gap=14,w=(right-LX-gap*(n-1))/n,i;
 for(i=0;i<n;i++)row(list[i][0],LX+i*(w+gap),w,list[i][1]);
-y-=26;}
+y-=23;}
 /* a run of small boxes, for a number written one digit per box */
 function boxes(label,count,x,bw,hint){
-p.txt(label.toUpperCase(),x,y+2,7.2,true,GY);
+zeb(W-40);
+lbl(label,x);
 var i,bx=x;
 for(i=0;i<count;i++){
 p.line(LN,0.7,bx,y-14,bw,14);
 bx+=bw+2.4;}
 if(hint)p.txt(hint,bx+6,y-10,6.4,false,[0.68,0.68,0.66]);
-y-=28;}
+y-=25;}
+/* a named rule that opens a group of fields */
+function sect(t){
+y-=2;
+p.txt(t.toUpperCase(),LX,y,7.6,true,TH);
+var sx=LX+TW(t.toUpperCase(),7.6,true)+8;
+/* the rule must stop short of the photo box, never run through it */
+var send=(y>py2-6)?RX:(W-40);
+if(send>sx+20)p.hr([0.80,0.84,0.80],0.9,sx,y+3,send,y+3);
+ZEB=0;
+y-=14;}
 
 /* a shaded band that marks a block only the office fills */
 function ohead(t){
@@ -3162,54 +3247,80 @@ y-=24;}
 
 if(svc){
 head("A.  FILLED BY THE EMPLOYEE");
+sect("Part A-1   Particulars of the employee");
 rows([["Name of Employee",""]],false);
 rows([["Father or Husband Name",""]],false);
 rows([["Designation",""],["Grade / BPS",""]],false);
 rows([["Personal Number",""],["Date of First Appointment","D D / M M / Y Y Y Y"]],false);
-y-=2;
 boxes("CNIC Number",13,LX,15.5,"one figure in each box");
 rows([["Date of Birth","D D / M M / Y Y Y Y"],["Blood Group",""]],true);
+sect("Part A-2   Contact details");
 boxes("Mobile Number",11,LX,15.5,"one figure in each box");
 boxes("Emergency Number",11,LX,15.5,"a number that answers if something happens");
 rows([["Name of the person on the emergency number",""]],true);
+sect("Part A-3   Posting and address");
 rows([["Place of Posting",""]],true);
 p.hr(LN,0.7,LX,y+3,W-40,y+3);y-=20;
 rows([["Home Address",""]],true);
 p.hr(LN,0.7,LX,y+3,W-40,y+3);y-=20;
 }else{
 head("A.  FILLED BY THE PARENT OR GUARDIAN");
+sect("Part A-1   Particulars of the student");
 rows([["Name of Student",""]],false);
 rows([["Father Name",""]],false);
 rows([["Gender","Male / Female"],["Blood Group",""]],false);
-rows([["Date of Birth","D D / M M / Y Y Y Y"],["Disability","Yes / No"]],true);
-y-=2;
-boxes("Student B-Form Number",13,LX,15.5,"leave empty if the student has none");
+rows([["Date of Birth","D D / M M / Y Y Y Y"],["Disability","Yes / No"]],false);
+boxes("Student CNIC Number",13,LX,15.5,"the B-Form number, leave empty if there is none");
 boxes("Parent or Guardian CNIC",13,LX,15.5,"one figure in each box");
+sect("Part A-2   Contact details");
 boxes("Mobile Number",11,LX,15.5,"one figure in each box");
 boxes("Emergency Number",11,LX,15.5,"a number that answers if something happens");
-rows([["Name of the person on the emergency number",""],["Last school attended, if any",""]],true);
+rows([["Name of the person on the emergency number",""]],true);
+sect("Part A-3   Previous schooling and address");
+rows([["Class applied for",""],["Class last passed",""],["Last school attended",""]],true);
 rows([["Home Address",""]],true);
-p.hr(LN,0.7,LX,y+3,W-40,y+3);y-=20;
-var dl=["B-Form of the student","CNIC of the parent","Photographs","Previous leaving certificate"];
-p.txt("DOCUMENTS ATTACHED",LX,y+2,7.2,true,GY);y-=14;
-var bx0=LX,i2;
-for(i2=0;i2<dl.length;i2++){
-p.line(LN,0.7,bx0,y-8,9,9);
-p.txt(dl[i2],bx0+14,y-6,7.6,false,DK);
-bx0+=TW(dl[i2],7.6,false)+32;
-if(bx0>W-150&&i2<dl.length-1){bx0=LX;y-=16;}}
-y-=20;
+p.hr(LN,0.7,LX,y+3,W-40,y+3);y-=16;
+
+/* ---- what the parent has to bring with the form ---- */
+p.fill([0.975,0.977,0.972],LX-6,y-87,(W-40)-(LX-6),95);
+p.fill(TH,LX-6,y-87,2.4,95);
+p.txt("DOCUMENTS TO BE ATTACHED WITH THIS FORM",LX+6,y-2,7.6,true,TH);
+p.txt("Attach one photocopy of each. Originals are checked by the office and returned at once.",
+  LX+6+TW("DOCUMENTS TO BE ATTACHED WITH THIS FORM   ",7.6,true),y-2,6.6,false,[0.55,0.55,0.53]);
+var dy=y-18, dcw=((W-40)-(LX-6))/2-10, dx1=LX+6, dx2=LX+6+dcw+14;
+function tick(x3,yy,n3,t3){
+p.line(LN,0.75,x3,yy-8,9,9);
+p.txt(n3+".",x3+14,yy-6,7.4,true,[0.42,0.50,0.44]);
+p.txt(t3,x3+26,yy-6,7.4,false,DK);}
+p.txt("A.  REQUIRED FROM EVERY STUDENT",dx1,dy,6.8,true,[0.38,0.42,0.38]);
+p.txt("B.  ALSO REQUIRED ABOVE THE FIRST CLASS",dx2,dy,6.8,true,[0.38,0.42,0.38]);
+dy-=13;
+var g1=["Form B of the student, photocopy",
+        "CNIC of the father or the guardian, photocopy",
+        "Two recent passport size photographs",
+        "Proof of residence, any utility bill"];
+var g2=["Certificate of the last class passed",
+        "School leaving certificate of the previous school",
+        "Result card of the last class passed",
+        "Migration certificate, from another Board"];
+for(var i3=0;i3<4;i3++){
+tick(dx1,dy,i3+1,g1[i3]);
+tick(dx2,dy,i3+5,g2[i3]);
+dy-=11;}
+p.txt("Admission to Class 6 requires the Class 5 certificate, and the same rule applies to each higher class.",
+  dx1,dy-6,6.8,false,[0.42,0.44,0.42]);
+y-=96;
 }
 /* ---- declaration, signed by the person who filled part A ---- */
-p.fill(SOFT,40,y-40,W-80,40);
-p.line(LN,0.6,40,y-40,W-80,40);
+p.fill(SOFT,40,y-34,W-80,34);
+p.line(LN,0.6,40,y-34,W-80,34);
 p.txt("DECLARATION",47,y-12,8,true,TH);
 var dtext=svc
 ?"The particulars I have given above are correct to the best of my knowledge. I will return the card to the office on transfer or retirement."
 :"The particulars I have given above are correct to the best of my knowledge, and I will tell the school of any change.";
-p.txt(dtext,47,y-24,8.2,false,DK);
-p.txt(svc?"A wrong entry may lead to the card being cancelled.":"A wrong entry may lead to the admission being cancelled.",47,y-34,8.2,false,GY);
-y-=54;
+p.txt(dtext,47,y-22,8.2,false,DK);
+p.txt(svc?"A wrong entry may lead to the card being cancelled.":"A wrong entry may lead to the admission being cancelled.",47,y-31,8.2,false,GY);
+y-=44;
 p.hr(DK,0.8,40,y,40+190,y);
 p.ctxt("Signature of "+(svc?"the Employee":"the Parent or Guardian"),40+95,y-12,8.4,true,DK);
 p.txt("Date",W-40-150,y-3,8.4,false,GY);
@@ -3233,9 +3344,9 @@ var sw=(W-80-40)/2;
  [svc?"Head of Office":"Head Master / Principal",40+sw+40]].forEach(function(q){
 p.hr(DK,0.8,q[1],y,q[1]+sw,y);
 p.ctxt(q[0],q[1]+sw/2,y-12,8.4,true,DK);});
-y-=30;
+y-=24;
 p.txt("Office stamp",40,y,8.4,false,GY);
-p.line(LN,0.6,40+TW("Office stamp  ",8.4,false),y-34,96,44);
+p.line(LN,0.6,40+TW("Office stamp  ",8.4,false),y-29,94,40);
 
 /* ---- short notes, beside the stamp box so no space is wasted ---- */
 var nt=svc?
@@ -3251,7 +3362,7 @@ var nx=250,nw=W-40-nx,nlin=[];
 nt.forEach(function(t){
 var ws=WRAPT(t,7.4,false,nw-26);
 ws.forEach(function(w,i){nlin.push({t:w,ind:11,dot:!i});});});
-var nh=17+nlin.length*10+9, ntop=y+11;
+var nh=17+nlin.length*10+9, ntop=y+10;
 if(ntop-nh>50){
 p.fill([0.975,0.975,0.965],nx,ntop-nh,nw,nh);
 p.fill([0.72,0.72,0.70],nx,ntop-nh,2.4,nh);
@@ -3284,6 +3395,230 @@ var nm=(kind==="service")?"Service_Card_Form":"Admission_Form";
 DL(new Blob([buf],{type:"application/pdf"}),nm+".pdf");
 SM("Blank form saved. Print as many as you need.");
 }catch(e){SM("Could not build the form: "+(e&&e.message?e.message:e),1);}}
+
+/* ============ receipt for papers received or handed over ============
+   One A4 page holding the same receipt twice: the office keeps the top
+   half, the parent or the student takes the bottom half. */
+function RCPTPDF(s,r){
+var W=595.28,H=841.89;
+var doc=new PDFDOC();
+var cat=doc.res(),pgs=doc.res(),f1=doc.res(),f2=doc.res();
+doc.set(f1,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+doc.set(f2,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+var imgs=[];
+function addImg(u,w,h){var b=String(u||"").split(",")[1];if(!b)return 0;
+var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode",B64B(b)));
+return n;}
+function addMask(b64,w,h){var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ImageMask true /BitsPerComponent 1 /Decode [0 1]",B64B(b64)));
+return n;}
+var oCrest=addMask(CRESTMASK,CRESTMW,CRESTMH); if(oCrest)imgs.push({n:"Cm",o:oCrest});
+var oLogo=(LOGO&&LOGO.data)?addImg(LOGO.data,LOGO.w||200,LOGO.h||200):0;
+if(oLogo)imgs.push({n:"Lg",o:oLogo});
+var oSign=(SIGN&&SIGN.data)?addImg(SIGN.data,SIGN.w||200,SIGN.h||100):0;
+if(oSign)imgs.push({n:"Sg",o:oSign});
+var oStamp=(STAMP&&STAMP.data)?addImg(STAMP.data,STAMP.w||300,STAMP.h||300):0;
+if(oStamp)imgs.push({n:"St",o:oStamp});
+
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=[0.78,0.59,0.12];
+var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.74,0.74,0.72],SOFT=[0.966,0.972,0.966];
+var school=(SET.school||"School Register").toUpperCase();
+var sub=SET.sub||"";
+var give=(r.kind==="give");
+var title=give?"RECEIPT FOR PAPERS HANDED OVER":"RECEIPT FOR PAPERS RECEIVED";
+var d=new Date();
+var today=r.date?DMY(r.date):(String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear());
+var serial=r.serial||((give?"HR-":"RR-")+d.getFullYear()+"-"+String(s.gr||"").replace(/\D/g,"").slice(-4));
+var items=(r.items||[]).filter(function(t){return t&&String(t).trim();});
+if(!items.length)items=["-"];
+
+var p=new PG();
+/* the two halves are exactly as tall as their contents, and sit centred */
+var shown=Math.min(items.length,6);
+var sayTxt=give
+?"Received the papers listed above from the school office. The school does not keep a second original."
+:"The papers listed above have been received by the office and entered in the register. The originals are returned after checking.";
+var sayL=Math.min(2,WRAPT(sayTxt,8,false,W-80).length);
+var noteL=r.note?Math.min(2,WRAPT("Remarks: "+r.note,7.8,false,W-80).length):0;
+var HH=198+15*shown+11*sayL+(noteL?(2+noteL*10):0)+(items.length>shown?13:0);
+if(HH<250)HH=250; if(HH>392)HH=392;
+var GAPH=30;
+var MG=(H-2*HH-GAPH)/2; if(MG<24)MG=24;
+var BOT=MG, TOP=MG+HH+GAPH;
+
+function half(base,copy){
+p.off(0,base);
+/* outer rule, so each half reads as one document */
+p.line([0.84,0.86,0.84],0.7,26,6,W-52,HH-6);
+
+/* heading band */
+var bh=46;
+p.fill(TH,26,HH-bh,W-52,bh);
+p.fill(GOLD,26,HH-bh-2.4,W-52,2.4);
+var cw=0;
+if(oLogo){var lh=Math.min(34,LOGO.h||200),lw=lh*(LOGO.w||200)/(LOGO.h||200);
+if(lw>52){lw=52;lh=lw*(LOGO.h||200)/(LOGO.w||200);}
+cw=lw;p.img("Lg",36,HH-bh+(bh-lh)/2,lw,lh);}
+else if(oCrest){var ch=34;cw=ch*CRESTMW/CRESTMH;
+p.imgc("Cm",36,HH-bh+(bh-ch)/2,cw,ch,WH);}
+var cx=(36+cw+W-36)/2;
+var ns=11; while(TW(school,ns,true)>W-200&&ns>7.5)ns-=0.3;
+p.ctxt(school,cx,HH-20,ns,true,WH);
+if(sub)p.ctxt(sub,cx,HH-31,7.6,false,[0.86,0.91,0.87]);
+p.ctxt(title,cx,HH-42,8.4,true,GOLD);
+/* which copy this is */
+var tag=(copy==="office")?"OFFICE COPY":(give?"STUDENT COPY":"PARENT COPY");
+var tw=TW(tag,7.4,true)+16;
+p.fill([0.94,0.90,0.78],W-36-tw,HH-bh+9,tw,15);
+p.ctxt(tag,W-36-tw/2,HH-bh+13.5,7.4,true,[0.44,0.33,0.06]);
+
+/* receipt number and date */
+var yy=HH-bh-16;
+p.txt("Receipt No.",36,yy,7.6,false,GY);
+p.txt(serial,36+TW("Receipt No.  ",7.6,false),yy,9,true,DK);
+p.txt("Dated",W-36-TW(today,9,true)-TW("Dated  ",7.6,false),yy,7.6,false,GY);
+p.txt(today,W-36-TW(today,9,true),yy,9,true,DK);
+p.hr([0.80,0.84,0.80],0.8,36,yy-7,W-36,yy-7);
+yy-=24;
+
+/* who the receipt is about */
+p.fill(SOFT,36,yy-36,W-72,42);
+p.line([0.86,0.88,0.86],0.6,36,yy-36,W-72,42);
+function fld(lab,val,x,w){
+p.txt(lab.toUpperCase(),x,yy-11,6.4,true,[0.45,0.47,0.45]);
+var t=String(val||"-"),sz=9;
+while(TW(t,sz,true)>w&&sz>6.5)sz-=0.3;
+p.txt(t,x,yy-24,sz,true,DK);}
+var cwd=(W-72-30)/4;
+fld("Name of Student",s.name,44,cwd);
+fld("Father Name",s.father,44+cwd+9,cwd);
+fld("Class",(s.cls||"-")+(s.section?" "+s.section:""),44+(cwd+9)*2,cwd);
+fld("GR Number",s.gr,44+(cwd+9)*3,cwd);
+yy-=46;
+
+/* the papers, in a ruled table the way a register keeps them */
+var TX=36,TW2=W-72;
+var cSr=30, cCp=48, cRc=58, cPa=TW2-cSr-cCp-cRc;
+var xSr=TX, xPa=TX+cSr, xCp=xPa+cPa, xRc=xCp+cCp;
+p.fill(TH,TX,yy-15,TW2,15);
+p.ctxt("Sr.",xSr+cSr/2,yy-11,7,true,WH);
+p.txt("PARTICULARS OF THE DOCUMENT",xPa+7,yy-11,7,true,WH);
+p.ctxt("COPIES",xCp+cCp/2,yy-11,7,true,WH);
+p.ctxt(give?"TAKEN":"CHECKED",xRc+cRc/2,yy-11,7,true,WH);
+yy-=15;
+var shown2=Math.min(items.length,6);
+for(var i=0;i<shown2;i++){
+var rh=15;
+if(i%2===1)p.fill([0.974,0.977,0.972],TX,yy-rh,TW2,rh);
+p.line([0.82,0.84,0.82],0.55,TX,yy-rh,TW2,rh);
+p.hr([0.82,0.84,0.82],0.55,xPa,yy-rh,xPa,yy);
+p.hr([0.82,0.84,0.82],0.55,xCp,yy-rh,xCp,yy);
+p.hr([0.82,0.84,0.82],0.55,xRc,yy-rh,xRc,yy);
+p.ctxt(String(i+1),xSr+cSr/2,yy-10.5,8,false,[0.38,0.42,0.38]);
+var it=String(items[i]),sz2=8.4;
+while(TW(it,sz2,false)>cPa-16&&sz2>6.4)sz2-=0.2;
+p.txt(it,xPa+7,yy-10.5,sz2,false,DK);
+p.ctxt("1",xCp+cCp/2,yy-10.5,8,false,[0.40,0.40,0.40]);
+p.line([0.72,0.74,0.72],0.7,xRc+cRc/2-4.5,yy-12,9,9);
+yy-=rh;}
+if(items.length>shown2){
+p.txt("and "+(items.length-shown2)+" more, as entered in the register",TX+6,yy-9,7.2,false,GY);yy-=13;}
+yy-=12;
+
+/* the sentence that makes it a receipt */
+var wl=WRAPT(sayTxt,8,false,W-80);
+for(var j=0;j<wl.length&&j<2;j++){p.txt(wl[j],36,yy,8,false,[0.26,0.28,0.26]);yy-=11;}
+if(r.note){
+var nl=WRAPT("Remarks:  "+r.note,7.8,false,W-80);
+yy-=2;
+for(var k=0;k<nl.length&&k<2;k++){p.txt(nl[k],36,yy,7.8,false,GY);yy-=10;}}
+
+/* signatures at the foot of the half */
+var sy=34;
+if(oStamp){var sw=46,sh=sw*(STAMP.h||300)/(STAMP.w||300);
+if(sh>42){sh=42;sw=sh*(STAMP.w||300)/(STAMP.h||300);}
+p.imgm("St",W/2-sw/2,sy-4,sw,sh);}
+if(oSign){var gw=62,gh=gw*(SIGN.h||100)/(SIGN.w||200);
+if(gh>24){gh=24;gw=gh*(SIGN.w||200)/(SIGN.h||100);}
+p.imgm("Sg",W-36-160+(160-gw)/2,sy+4,gw,gh);}
+p.hr(DK,0.8,36,sy,36+160,sy);
+p.ctxt(give?"Signature of the Receiver":"Signature of the Parent or Guardian",36+80,sy-10,7.4,true,DK);
+p.ctxt("Name and CNIC",36+80,sy-19,6.6,false,GY);
+p.hr(DK,0.8,W-36-160,sy,W-36,sy);
+p.ctxt(SET.certSigner||"Head Master / Principal",W-36-80,sy-10,7.4,true,DK);
+p.ctxt("for the School",W-36-80,sy-19,6.6,false,GY);
+p.ctxt("This receipt is valid only with the office stamp.",W/2,13,6.6,false,[0.55,0.55,0.53]);
+p.off(0,0);}
+
+half(TOP,"office");
+half(BOT,"other");
+
+/* the cut line between the two halves */
+var cy=BOT+HH+GAPH/2;
+var dx=30;
+while(dx<W-30){p.hr([0.62,0.62,0.60],0.7,dx,cy,Math.min(dx+7,W-30),cy);dx+=13;}
+var ct="cut here";
+p.fill(WH,W/2-TW(ct,7,false)/2-6,cy-4,TW(ct,7,false)+12,9);
+p.ctxt(ct,W/2,cy-3,7,false,[0.55,0.55,0.53]);
+
+var cn=doc.res();doc.set(cn,doc.stream("",L1(p.k)));
+var pn=doc.res(),xo="";
+if(imgs.length){xo=" /XObject << ";imgs.forEach(function(m){xo+="/"+m.n+" "+m.o+" 0 R ";});xo+=">>";}
+doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 "+N2(W)+" "+N2(H)+"] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >>"+xo+" /ExtGState << /GSm << /Type /ExtGState /BM /Multiply >> >> >> /Contents "+cn+" 0 R >>");
+doc.set(cat,"<< /Type /Catalog /Pages "+pgs+" 0 R >>");
+doc.set(pgs,"<< /Type /Pages /Kids ["+pn+" 0 R] /Count 1 >>");
+return doc.out();}
+
+/* ---- the screen where the office ticks what changed hands ---- */
+var RCPTKIND="take";
+var RCPTTAKE=["B-Form of the student","CNIC of the parent or guardian","Two passport size photographs",
+ "Leaving certificate of the previous school","Result card of the last class passed","Migration certificate"];
+var RCPTGIVE=["School leaving certificate","Character certificate","Bonafide certificate",
+ "Provisional certificate","Original mark sheet from the Board","Original B-Form or CNIC",
+ "Result card","Migration certificate"];
+function RCPTOPEN(kind){
+var s=FINDSTU(PROFGR);
+if(!s){SM("Student not found",1);return;}
+RCPTKIND=kind;
+var give=(kind==="give");
+document.getElementById("rcHd").textContent=give?"Receipt for papers handed over":"Receipt for papers received";
+document.getElementById("rcSub").textContent=(s.name||"")+"   |   GR "+(s.gr||"");
+var box=document.getElementById("rcList");
+var list=give?RCPTGIVE:RCPTTAKE;
+box.innerHTML="";
+list.forEach(function(t,i){
+var id="rc_i"+i;
+var w=document.createElement("label");
+w.className="rcit";
+w.innerHTML='<input type="checkbox" id="'+id+'"><span>'+ESC(t)+'</span>';
+box.appendChild(w);});
+SV("rc_serial","");
+SV("rc_date",new Date().toISOString().slice(0,10));
+SV("rc_other","");
+SV("rc_note","");
+document.getElementById("rcptOv").className="ov on";
+LOCKSCROLL(true);}
+function RCPTCLOSE(){
+var e=document.getElementById("rcptOv");if(e)e.className="ov";
+LOCKSCROLL(!!LOCKED());}
+function RCPTGO(){
+var s=FINDSTU(PROFGR);
+if(!s){SM("Student not found",1);return;}
+var give=(RCPTKIND==="give");
+var list=give?RCPTGIVE:RCPTTAKE,picked=[];
+list.forEach(function(t,i){
+var c=document.getElementById("rc_i"+i);
+if(c&&c.checked)picked.push(t);});
+String(V("rc_other")||"").split(",").forEach(function(t){
+if(t.trim())picked.push(t.trim());});
+if(!picked.length){SM("Tick at least one paper, or write one in the other box",1);return;}
+try{
+var buf=RCPTPDF(s,{kind:RCPTKIND,serial:V("rc_serial"),date:V("rc_date"),items:picked,note:V("rc_note")});
+DL(new Blob([buf],{type:"application/pdf"}),(give?"Receipt_Handed_Over_":"Receipt_Received_")+(s.gr||"")+".pdf");
+RCPTCLOSE();
+SM("Receipt saved. Print one page and cut it in two.");
+}catch(e){SM("Could not build the receipt: "+(e&&e.message?e.message:e),1);}}
 
 function CERTPDF(s,kind){
 /* the provisional certificate prints the long way round, the rest upright */
@@ -3694,7 +4029,7 @@ h+=(s.photo&&PROFFILES[s.photo])?('<img class="ph" src="'+PROFFILES[s.photo]+'">
 h+='</div><div class="hdr">STUDENT DETAILS</div><table>'
 +row("Class",(s.cls||"")+(s.section?"   Section "+s.section:""))
 +row("Date of Birth",DMY(s.dob))
-+row("Student B-Form / CNIC",(!s.noCnic&&DIGITS(s.cnic).length===13)?s.cnic:"Student has no own B-Form")
++row("Student CNIC Number",(!s.noCnic&&DIGITS(s.cnic).length===13)?s.cnic:"Student has no own B-Form")
 +row((s.pcnicOf||"Parent / Guardian")+" CNIC",s.pcnic?(s.pcnic+"   (belongs to the "+String(s.pcnicOf||"parent").toLowerCase()+", not the student)"):"")
 +row("Mobile Number",s.mobile)
 +row("Date of Admission",DMY(s.adm))+row("Address",s.addr)
@@ -5952,7 +6287,8 @@ var tabs=document.getElementById("tabs");
 var pane=document.getElementById("svcPane");
 var i;
 if(SVON){
-for(i=1;i<=5;i++){var pp=document.getElementById("p"+i);if(pp)pp.className="pane";}
+var all=document.querySelectorAll(".pane");
+for(i=0;i<all.length;i++)all[i].className="pane";
 if(tabs)tabs.style.display="none";
 if(pane)pane.className="svcpane on";
 if(b){b.textContent="Back to Register";b.className="mode on";}
