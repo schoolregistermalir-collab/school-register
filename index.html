@@ -388,7 +388,8 @@ body{background:var(--bg);padding-bottom:30px}
  font-family:inherit;font-weight:700;font-size:13px;padding:11px;border-radius:10px;cursor:pointer;
 }
 .dwout:active{background:#fdeaea}
-.dwver{text-align:center;font-size:10px;color:#9aa79f;margin-top:10px}
+.dwver{text-align:center;font-size:10px;color:#9aa79f;margin-top:10px;line-height:1.7}
+.dwver b{color:#2d6a45;letter-spacing:.04em}
 
 /* ---- the step by step registration ---- */
 .wzwrap{
@@ -560,7 +561,7 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 <div class="dwft">
 <button type="button" class="dwout" onclick="MENU(0);LOGOUT()">Log out</button>
-<div class="dwver">School Register &middot; Government of Sindh</div>
+<div class="dwver">School Register &middot; Government of Sindh<br><b id="dwBuild">build</b></div>
 </div>
 </nav>
 
@@ -2022,16 +2023,24 @@ var b=document.getElementById("modeBtn");
 if(b){b.textContent="Service Cards";b.className="mode";}}
 /* a menu item opens only its own block, never two blocks together */
 function SECSHOW(n,sec){
-var pane=document.getElementById("p"+n);if(!pane)return;
+var pane=document.getElementById("p"+n);if(!pane)return sec||null;
 var list=pane.querySelectorAll(".psec");
+if(!list.length)return null;
+/* no block was named, so open the first one rather than all of them */
+if(!sec){
+for(var k=0;k<list.length;k++){
+var dk=String(list[k].getAttribute("data-sec")||"");
+if(dk&&dk.indexOf("always")<0){sec=dk.split(" ")[0];break;}}}
 for(var i=0;i<list.length;i++){
 var d=" "+(list[i].getAttribute("data-sec")||"")+" ";
 var show=(!sec)||(d.indexOf(" always ")>=0)||(d.indexOf(" "+sec+" ")>=0);
-list[i].style.display=show?"block":"none";}}
+list[i].style.display=show?"block":"none";}
+return sec||null;}
 function GOTAB(n,sec){
 SVCOFF();
-CURTAB=n;CURSEC=sec||null;
-SECSHOW(n,sec);
+CURTAB=n;
+sec=SECSHOW(n,sec);
+CURSEC=sec||null;
 MENUMARK(n,sec);PAGETITLE(n,sec);
 var pl=document.querySelectorAll(".pane");
 for(var j=0;j<pl.length;j++)pl[j].className="pane";
@@ -2616,11 +2625,13 @@ function HDNAME(){
 var a=document.getElementById("hdName"),b=document.getElementById("hdSub");
 if(a)a.textContent=SET.school||"School Register";
 if(b&&!CURTAB)b.textContent=(SET.sub||"Student registration")+(SET.session?(" \u00b7 "+SET.session):"");
+var bd=document.getElementById("dwBuild");if(bd)bd.textContent=BUILD;
 var c=document.getElementById("dwName"),d=document.getElementById("dwSub");
 if(c)c.textContent=SET.school||"School Register";
 if(d)d.textContent=(SET.sub||"Student registration")+(SET.session?(" \u00b7 "+SET.session):"");
 LOCKBRAND();}
 /* the sign in card carries the school name, not a product name */
+var BUILD="B-14  29 Sep 2026";
 function LOCKBRAND(sub){
 var t=document.getElementById("lkTitle"),u=document.getElementById("lkSub");
 if(t)t.textContent=SET.school||"School Register";
@@ -7684,7 +7695,7 @@ SVPAINTSET();SVGRADE();SVREL();SVPAINTPHOTO();SVRENDER();
 }else{
 if(pane)pane.className="svcpane";
 if(b){b.textContent="Service Cards";b.className="mode";}
-GOTAB(CURTAB||1);
+GOTAB(CURTAB||1,CURSEC);
 }
 window.scrollTo(0,0);
 }
