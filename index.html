@@ -2631,7 +2631,7 @@ if(c)c.textContent=SET.school||"School Register";
 if(d)d.textContent=(SET.sub||"Student registration")+(SET.session?(" \u00b7 "+SET.session):"");
 LOCKBRAND();}
 /* the sign in card carries the school name, not a product name */
-var BUILD="B-14  29 Sep 2026";
+var BUILD="B-15  02 Oct 2026";
 function LOCKBRAND(sub){
 var t=document.getElementById("lkTitle"),u=document.getElementById("lkSub");
 if(t)t.textContent=SET.school||"School Register";
@@ -4010,18 +4010,8 @@ for(i=-h;i<w;i+=g)p.poly(c,[[x+i,y],[x+i+0.35,y],[x+i+h+0.35,y+h],[x+i+h,y+h]]);
 for(i=0;i<w+h;i+=g)p.poly(c,[[x+i,y],[x+i+0.35,y],[x+i-h+0.35,y+h],[x+i-h,y+h]]);
 p.clipOff();}
 /* a small seal, for the bottom left of the page */
-function CERTSEAL(p,cx,cy,r,c,txt){
-p.circ(c,cx,cy,r);
-p.circ([1,1,1],cx,cy,r*0.90);
-p.circ(c,cx,cy,r*0.80);
-p.circ([1,1,1],cx,cy,r*0.72);
-var i,n=28;
-for(i=0;i<n;i++){
-var a=i*2*Math.PI/n;
-p.circ(c,cx+Math.cos(a)*r*0.85,cy+Math.sin(a)*r*0.85,r*0.045);}
-SERIF(true);
-p.ctxt(txt,cx,cy-r*0.12,r*0.30,true,c);
-SERIF(false);}
+/* the drawn SEAL placeholder is gone on purpose. Nothing stands in for
+   a stamp: either the office uploaded one in Setup, or nothing prints. */
 
 /* justified paragraphs where some words are bold.
    Takes pieces like [{t:"This is to certify that "},{t:"Nazim Noor",b:1},...]
@@ -4886,15 +4876,6 @@ p.ctxt(SET.certSigner||"Head Master / Principal",W-40-85,sy-13,9.4,true,DK);
 if(oStamp){var sw2=72,sh2=sw2*(STAMP.h||300)/(STAMP.w||300);
 if(sh2>66){sh2=66;sw2=sh2*(STAMP.w||300)/(STAMP.h||300);}
 p.imgm("St",W-40-170-16-sw2,sy+8-sh2/2,sw2,sh2);}
-else{
-var scx=W-40-170-42,scy2=sy+8,r2=28;
-p.circ(TH,scx,scy2,r2);
-p.circ([1,1,1],scx,scy2,r2*0.90);
-p.circ(TH,scx,scy2,r2*0.80);
-p.circ([1,1,1],scx,scy2,r2*0.72);
-for(var q2=0;q2<28;q2++){var a2=q2*2*Math.PI/28;
-p.circ(TH,scx+Math.cos(a2)*r2*0.85,scy2+Math.sin(a2)*r2*0.85,r2*0.045);}
-p.ctxt("SEAL",scx,scy2-3,7.6,true,TH);}
 
 p.hr(LN,0.7,40,64,W-40,64);
 p.txt("Printed on "+today,44,52,8,false,GY);
@@ -5174,19 +5155,17 @@ SERIF(false);
 /* the office mark sits beside the signature, the way it is put by hand.
    It shrinks and slides down if the wording ran long, so it never lands
    on the last line of the text. */
+if(oStamp){
 var mr=land?30:34, floor=land?44:56;
 while(mr>17&&(y-10-mr)<(floor+6+mr))mr-=1.5;
 var mtop=y-10-mr, mbot=floor+6+mr;
 if(mtop>=mbot){
 var mcy=Math.min(sy+14,mtop); if(mcy<mbot)mcy=mbot;
-if(oStamp){
 var sh=mr*2.1,sw=sh*(STAMP.w||300)/(STAMP.h||300);
 if(sw>148){sw=148;sh=sw*(STAMP.h||300)/(STAMP.w||300);}
 /* the mark stops short of the name printed under the signature */
 var mcx=lx-16-sw/2; if(mcx-sw/2<50)mcx=50+sw/2;
-p.imgm("St",mcx-sw/2,mcy-sh/2,sw,sh);}
-else{var mcx2=lx-16-mr; if(mcx2-mr<50)mcx2=50+mr;
-CERTSEAL(p,mcx2,mcy,mr,TH,"SEAL");}}
+p.imgm("St",mcx-sw/2,mcy-sh/2,sw,sh);}}
 
 /* the foot of the certificate only prints if the office asked for it */
 var fmode=SET.certNote||"no";
