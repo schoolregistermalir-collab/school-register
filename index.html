@@ -647,7 +647,7 @@ body{background:var(--bg);padding-bottom:30px}
 <input type="file" id="photoFile" accept="image/*" style="display:none" onchange="ADDPHOTO(this)">
 <input type="file" id="photoCam" accept="image/*" capture="user" style="display:none" onchange="ADDPHOTO(this)">
 
-<div class="sc">Admission Documents</div>
+<div class="sc">Admission documents</div>
 <div class="rw">
 <div class="w2"><label>Document type</label><select id="docType">
 <option>B-Form</option><option>Father CNIC</option><option>Mother CNIC</option><option>Guardian CNIC</option>
@@ -682,7 +682,7 @@ body{background:var(--bg);padding-bottom:30px}
 <!-- ================= STUDENTS ================= -->
 <div class="pane" id="p2">
 <div class="stat"><div><b id="stTotal">0</b><span>Total</span></div><div><b id="stBoys">0</b><span>Boys</span></div><div><b id="stGirls">0</b><span>Girls</span></div><div><b id="stClasses">0</b><span>Classes</span></div><div><b id="stShown">0</b><span>Showing</span></div></div>
-<div class="sc">Overall Registered Students</div>
+<div class="sc">Overall registered students</div>
 <div id="statBox"></div>
 <div class="rw">
 <div><label>Class</label><select id="qClass" onchange="RENDER()"></select></div>
@@ -695,7 +695,7 @@ body{background:var(--bg);padding-bottom:30px}
 <!-- ================= SEARCH ================= -->
 <div class="pane" id="p9">
 <div class="srchbar">
-<input id="sq" oninput="SRENDER()" placeholder="Name, father name, GR, CNIC or mobile" autocomplete="off">
+<input id="sq" oninput="SQTYPE()" placeholder="Name, father name, GR, CNIC or mobile" autocomplete="off">
 <button type="button" class="sxb" onclick="SCLEAR()" aria-label="Clear">&#10005;</button>
 </div>
 <div class="rw">
@@ -803,7 +803,7 @@ body{background:var(--bg);padding-bottom:30px}
 <!-- ================= EXCEL ================= -->
 <div class="pane" id="p4">
 <div class="psec" data-sec="excel">
-<div class="sc" id="sec_excel">Excel Sheet</div>
+<div class="sc" id="sec_excel">Excel sheet</div>
 <div class="rw"><div class="w2"><label>School name (prints above the header)</label><input id="x_school" placeholder="Government Boys Primary School"></div></div>
 <div class="rw"><div class="w2"><label>Sheet title</label><input id="x_title" placeholder="Student Registration Record"></div></div>
 <div class="rw">
@@ -1742,6 +1742,190 @@ input:focus,select:focus,textarea:focus{
 #ped .pdhint.warn{color:#8a6410;font-weight:600}
 
 
+
+/* =====================================================================
+   THE GENERAL REGISTER
+   The app this replaces is a bound ledger in a district school office.
+   So: figures that line up, pages that are ruled, one red margin rule,
+   and the GR number treated as the thing the whole office hangs on.
+   ===================================================================== */
+:root{
+  --ink:#16211B;          /* register ink, a green cast on near black */
+  --forest:#0E3A25;       /* the institution */
+  --forest2:#215A3B;
+  --madder:#8E2B17;       /* Ajrak red. The margin rule and nothing else */
+  --brass:#9C7B28;        /* stamp gold, only under the crest */
+  --leaf:#EDEFEA;         /* ledger stock, cool not cream */
+  --paper:#FFFFFF;
+  --rule:#D6DBD2;
+  --quiet:#5E6B62;
+  --faint:#8D9A91;
+  --ease:cubic-bezier(.22,.68,.3,1);
+  --serif:ui-serif,"Noto Serif",Georgia,"Times New Roman",serif;
+}
+body{background:var(--leaf);color:var(--ink);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* every figure in this app lines up, the way a ledger column does */
+.gr,.stat b,.ctab td,.dcell b,.rvr b,.clgr,input[inputmode="numeric"],
+input[inputmode="tel"],input[type="date"],.sfound b{font-variant-numeric:tabular-nums}
+
+/* ---------- headings: sentence case, a hairline, no shouting ---------- */
+.sc{
+  font-size:15px;font-weight:700;letter-spacing:-.01em;text-transform:none;
+  color:var(--ink);margin:22px 0 11px;padding-bottom:9px;
+}
+.sc::after{width:26px;height:2px;background:var(--brass);border-radius:0}
+.sc::before{background:var(--rule)}
+
+/* ---------- the ledger page: lists are ruled, not stacked cards ------- */
+#list,#sResult{
+  background:var(--paper);border:1px solid var(--rule);border-radius:12px;
+  overflow:hidden;
+}
+#list .card,#sResult .card{
+  background:none;border:none;border-radius:0;box-shadow:none;
+  margin:0;padding:13px 14px 13px 0;
+  border-bottom:1px solid var(--rule);
+  position:relative;
+  content-visibility:auto;contain-intrinsic-size:auto 108px;
+}
+#list .card:last-child,#sResult .card:last-child{border-bottom:none}
+/* the red margin rule, the way it is ruled down a register page */
+#list .card::before,#sResult .card::before{
+  content:"";position:absolute;left:62px;top:0;bottom:0;width:1px;
+  background:var(--madder);opacity:.30;
+}
+#list .cwrap,#sResult .cwrap{gap:0;align-items:flex-start}
+/* the GR number is the hero of the whole office */
+#list .av,#sResult .av{
+  flex:0 0 62px;height:auto;border-radius:0;background:none;box-shadow:none;
+  color:var(--forest);font-family:var(--serif);font-weight:600;
+  font-size:17px;letter-spacing:.01em;font-variant-numeric:tabular-nums;
+  align-items:flex-start;justify-content:center;padding-top:1px;
+}
+#list .cbody,#sResult .cbody{padding-left:15px}
+#list .nm,#sResult .nm{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+#list .nm .gr,#sResult .nm .gr{display:none}   /* the number already leads the row */
+#list .sub,#sResult .sub{font-size:12px;color:var(--quiet);line-height:1.65;margin-top:3px}
+#list .acts,#sResult .acts{margin:9px 0 0 77px;gap:7px}
+#list .acts button,#sResult .acts button{
+  border:1px solid var(--rule);background:#fff;color:var(--quiet);
+  padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;
+}
+#list .acts button:active,#sResult .acts button:active{background:var(--leaf)}
+
+/* ---------- forms stay documents: a card is right for a form --------- */
+.card{border-color:var(--rule);box-shadow:0 1px 2px rgba(22,33,27,.04)}
+label{font-size:11.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--quiet)}
+input,select,textarea{
+  border:1px solid var(--rule);background:#fff;color:var(--ink);
+  border-radius:9px;padding:12px;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--forest2);box-shadow:0 0 0 3px rgba(33,90,59,.13);
+}
+.hn{font-size:12px;color:var(--faint);line-height:1.6}
+
+/* ---------- one accent, doing one job ---------- */
+.bw{background:var(--forest)}
+.bl{background:var(--forest2)}
+.bp{background:var(--madder)}
+.bn{box-shadow:none;border-radius:10px;font-weight:650;letter-spacing:0}
+.bn:active{transform:translateY(1px)}
+.acts button[style*="c62828"]{color:var(--madder) !important}
+
+/* ---------- the strip of figures reads as a ledger total line -------- */
+.stat div,.dcell{
+  background:var(--paper);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:none;
+}
+.stat b,.dcell b{font-family:var(--serif);font-weight:600;color:var(--forest);letter-spacing:.01em}
+.stat span,.dcell span{color:var(--faint);letter-spacing:0;text-transform:none;font-size:10.5px}
+
+/* ---------- chrome ---------- */
+.appbar{background:var(--forest);border-bottom:2px solid var(--brass);
+  box-shadow:0 1px 0 rgba(22,33,27,.06)}
+.abttl b{letter-spacing:-.01em}
+.dwhd{background:var(--forest);border-bottom:2px solid var(--brass)}
+.dwgrp{text-transform:none;letter-spacing:0;font-size:11px;font-weight:700;color:var(--faint)}
+.dwi{font-weight:600}
+.dwi.act{background:#E9EFEA;color:var(--forest)}
+.dwi.act .ic{background:var(--forest)}
+.dwout{border-color:#E7CFC9;background:#FBF1EF;color:var(--madder)}
+.wzbar i{background:var(--forest)}
+.stp.on b{background:var(--forest);border-color:var(--brass);box-shadow:none}
+.stp.done b{background:#DCE6DE;color:var(--forest2)}
+.stp.on span{color:var(--forest)}
+.rvhd{background:var(--forest)}
+.ctab tr.tot td{border-top-color:var(--forest)}
+.warn{background:#FBF6E8;border-color:#E8DBB4;color:#6E5410}
+.msg{border-radius:9px}
+.srchbar input{border-color:var(--rule);box-shadow:none;border-radius:11px}
+.srchbar input:focus{border-color:var(--forest2);box-shadow:0 0 0 3px rgba(33,90,59,.13)}
+.sempty{border-color:var(--rule);background:var(--paper);border-radius:12px}
+.sempty .sicon{background:#C8D2CB}
+.sfound{color:var(--quiet)}
+.sfound b{font-family:var(--serif);color:var(--forest)}
+.noc{color:var(--madder)}
+
+/* ---------- the one orchestrated moment: the register opens ---------- */
+#lock{background:
+  radial-gradient(900px 480px at 50% -14%,rgba(62,128,88,.34),transparent 62%),
+  linear-gradient(170deg,#0B2E1D 0%,#113A26 52%,#0A2518 100%)}
+#lock::before{opacity:.07}
+#lock .lkhead{background:var(--forest);border-bottom:2px solid var(--brass)}
+#lock .lkbox{border-radius:16px;box-shadow:0 30px 80px rgba(3,18,10,.55)}
+#lock h2{font-size:16px;letter-spacing:-.01em}
+#lock label{text-transform:none;letter-spacing:0;font-size:11.5px;color:var(--quiet)}
+#lock input{border-radius:10px}
+#lock .lkbtn{background:var(--forest);border-radius:10px;box-shadow:none;font-weight:650}
+#lock .lkalt{background:var(--forest2)}
+#lock .lklink{color:var(--forest2)}
+#lock.opening{animation:lkout .42s var(--ease) forwards}
+#lock.opening .lkbox{animation:lkcard .42s var(--ease) forwards}
+@keyframes lkout{to{opacity:0}}
+@keyframes lkcard{to{transform:translateY(-10px) scale(.97);opacity:0}}
+.ct.entering{animation:ctin .44s var(--ease) both}
+@keyframes ctin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* a page change is a page turn, not a bounce */
+.pane.act{animation:turn .2s var(--ease) both}
+@keyframes turn{from{opacity:0}to{opacity:1}}
+
+#wait .wring{border-top-color:var(--forest)}
+#drawer{box-shadow:4px 0 28px rgba(8,26,16,.22)}
+
+/* one accent only. The red margin rule in the register is the moment;
+   the cards stay quiet. */
+.card::before{display:none}
+.card{padding:13px 14px}
+
+/* the figure tiles are a total line, not a row of decorated cards */
+.stat div::before{display:none}
+.stat div{padding:12px 6px 10px;border-radius:9px}
+
+#list .av,#sResult .av{font-size:15.5px;letter-spacing:0}
+#list .sub .miss,#sResult .sub .miss{color:var(--madder);opacity:.78}
+#list .acts .pri,#sResult .acts .pri{color:var(--forest);border-color:#CDD9D0;background:#F4F8F5}
+#list .acts .del,#sResult .acts .del{color:var(--madder)}
+
+/* the list fills in without the page jumping about */
+.skel{padding:13px 14px 13px 0;border-bottom:1px solid var(--rule);display:flex;gap:15px}
+.skel i{display:block;height:11px;border-radius:3px;
+  background:linear-gradient(90deg,#E8EBE7 25%,#F2F4F0 37%,#E8EBE7 63%);
+  background-size:400% 100%;animation:sh 1.1s linear infinite}
+.skel .a{flex:0 0 46px;margin-left:8px}
+.skel .b{flex:1}
+@keyframes sh{to{background-position:-135% 0}}
+
+/* keyboard users get a visible mark, and anyone who asked for less
+   motion gets less motion */
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
 </style>
 
 <script>
@@ -2340,21 +2524,50 @@ var eg=document.getElementById("stGirls");if(eg)eg.textContent=ng;
 PAINTSTATS();
 var box=document.getElementById("list");
 if(!rows.length){box.innerHTML='<div class="empty">'+(STU.length?"No student matches this search.":"No students yet. Open the Register tab and add the first one.")+'</div>';return;}
+PAINTROWS(box,rows);DASH();}
+
+/* A register with a thousand names must not freeze the phone. The first
+   screenful goes in at once, the rest follows while the finger is still
+   on the way to the screen. */
+var PAINTJOB=0;
+function PAINTROWS(box,rows,after){
+var job=++PAINTJOB, first=Math.min(rows.length,25);
 var h="";
-rows.forEach(function(s){h+=STUCARD(s);});
-box.innerHTML=h;DASH();}
+for(var i=0;i<first;i++)h+=STUCARD(rows[i]);
+if(rows.length>first)h+='<div class="skel"><i class="a"></i><i class="b"></i></div>';
+box.innerHTML=h;
+if(rows.length<=first){if(after)after();return;}
+var at=first;
+function step(){
+if(job!==PAINTJOB)return;              /* a newer paint started, drop this one */
+var end=Math.min(at+60,rows.length),part="";
+for(var j=at;j<end;j++)part+=STUCARD(rows[j]);
+var sk=box.querySelector(".skel");
+if(sk)sk.insertAdjacentHTML("beforebegin",part);
+else box.insertAdjacentHTML("beforeend",part);
+at=end;
+if(at<rows.length){(window.requestAnimationFrame||setTimeout)(step,0);}
+else{var s2=box.querySelector(".skel");if(s2)s2.remove();if(after)after();}}
+/* the screenful goes up first and the browser gets to draw it before the
+   rest is added, so the office never watches a blank page */
+(window.requestAnimationFrame||setTimeout)(step,0);}
 
 /* one student card, drawn the same way wherever it appears */
 function STUCARD(s){
-var line2=[s.cls?("Class "+ESC(s.cls)+(s.section?" - "+ESC(s.section):"")):"<i class=\"noc\">no class yet</i>",
- s.cnic?("CNIC "+ESC(s.cnic)):"",s.mobile?ESC(s.mobile):""].filter(Boolean).join(" &middot; ");
-var files=(s.gender?(ESC(s.gender)+" &middot; "):"")+(s.disab==="Yes"?"Disability &middot; ":"")+(s.photo?"Photo":"No photo")+" &middot; "+((s.docs||[]).length)+" document"+(((s.docs||[]).length)===1?"":"s");
-return '<div class="card"><div class="cwrap"><div class="av">'+INIT(s.name)+'</div><div class="cbody">'
-+'<div class="nm"><span class="gr">'+ESC(s.gr)+'</span>'+ESC(s.name)+'</div>'
-+'<div class="sub">'+(s.father?("Father: "+ESC(s.father)+"<br>"):"")+line2+'<br>'+files+'</div></div></div>'
-+'<div class="acts"><button style="color:#1a472a" onclick="OPENPROFILE(\''+Q(s.gr)+'\')">Profile / PDF</button>'
+/* The row is a line in the register: the GR number rules the left margin,
+   the particulars hang off it. Only what the eye needs to scan. */
+var cls=s.cls?(ESC(s.cls)+(s.section?(" "+ESC(s.section)):"")):'<i class="noc">no class yet</i>';
+var line=[cls,s.mobile?ESC(s.mobile):""].filter(Boolean).join(" &middot; ");
+var want=[];
+if(!s.photo)want.push("photo");
+if(!(s.docs||[]).length)want.push("documents");
+var miss=want.length?('<span class="miss">no '+want.join(", no ")+'</span>'):"";
+return '<div class="card"><div class="cwrap"><div class="av">'+ESC(s.gr)+'</div><div class="cbody">'
++'<div class="nm">'+ESC(s.name)+'</div>'
++'<div class="sub">'+(s.father?(ESC(s.father)+"<br>"):"")+line+(miss?("<br>"+miss):"")+'</div></div></div>'
++'<div class="acts"><button class="pri" onclick="OPENPROFILE(\''+Q(s.gr)+'\')">Open</button>'
 +'<button onclick="EDIT(\''+Q(s.gr)+'\')">Edit</button>'
-+'<button style="color:#c62828" onclick="DELSTU(\''+Q(s.gr)+'\')">Delete</button></div></div>';}
++'<button class="del" onclick="DELSTU(\''+Q(s.gr)+'\')">Delete</button></div></div>';}
 
 /* ============ Search: the page the office opens first ============ */
 function SRENDER(){
@@ -2382,10 +2595,12 @@ return GRNUM(a.gr)-GRNUM(b.gr);});
 if(hint)hint.innerHTML=rows.length
  ?('<div class="sfound"><b>'+rows.length+'</b> student'+(rows.length===1?"":"s")+' found</div>')
  :'<div class="empty">Nothing matches that. Check the spelling, or try only a part of the name.</div>';
-var h="",n=Math.min(rows.length,60);
-for(var i=0;i<n;i++)h+=STUCARD(rows[i]);
-if(rows.length>n)h+='<div class="hn">'+(rows.length-n)+' more. Write a little more to narrow it down.</div>';
-box.innerHTML=h;}
+PAINTROWS(box,rows);}
+/* the search waits for the finger to stop before it works */
+var SQTIMER=null;
+function SQTYPE(){
+if(SQTIMER)clearTimeout(SQTIMER);
+SQTIMER=setTimeout(function(){SQTIMER=null;SRENDER();},120);}
 function SCLEAR(){SV("sq","");SV("sqClass","");SRENDER();
 var e=document.getElementById("sq");if(e)e.focus();}
 
@@ -2432,7 +2647,7 @@ var h='<div class="card"><div class="nm">Total registered students: '+STU.length
 +'<br>With photo: '+ph+' &middot; With documents: '+dc+' &middot; Without own B-Form: '+noc
 +'<br>In Dustbin: '+TRASH.length+'</div></div>';
 if(!keys.length)h+='<div class="empty">No class wise count yet.</div>';
-else{h+='<div class="card"><div class="nm" style="font-size:12px;margin-bottom:6px">Class wise registration</div>';
+else{h+='<div class="card"><div class="nm" style="font-size:14px;margin-bottom:10px">Students in each class</div>';
 keys.forEach(function(c){
 var n=cnt[c],m=male[c]||0,f=female[c]||0,o=other[c]||0;
 var mp=n?Math.round(m*100/n):0,fp=n?Math.round(f*100/n):0,op=100-mp-fp;
@@ -2440,14 +2655,14 @@ h+='<div style="margin-bottom:9px">'
 +'<div style="display:flex;align-items:center;gap:8px">'
 +'<div style="flex:1;font-size:11px;font-weight:600">'+ESC(c)+'</div>'
 +'<div style="font-size:11px;color:#666">Male <b style="color:#1a472a">'+m+'</b>'
-+' &middot; Female <b style="color:#8e24aa">'+f+'</b>'+(o?(' &middot; ? '+o):'')
++' &middot; Female <b style="color:#8E2B17">'+f+'</b>'+(o?(' &middot; ? '+o):'')
 +' &middot; Total <b>'+n+'</b></div></div>'
-+'<div style="display:flex;background:#eee;border-radius:6px;height:10px;overflow:hidden;margin-top:3px">'
-+'<div style="width:'+mp+'%;background:#1a472a"></div>'
-+'<div style="width:'+fp+'%;background:#8e24aa"></div>'
-+'<div style="width:'+op+'%;background:#cfcfcf"></div>'
++'<div style="display:flex;background:#E4E8E3;border-radius:2px;height:7px;overflow:hidden;margin-top:4px">'
++'<div style="width:'+mp+'%;background:#0E3A25"></div>'
++'<div style="width:'+fp+'%;background:#8E2B17"></div>'
++'<div style="width:'+op+'%;background:#C9CFC9"></div>'
 +'</div></div>';});
-h+='<div class="hn" style="margin-top:2px">Dark green is male, purple is female. Grey means an old record saved before the gender box existed, open it and fix it.</div>';
+h+='<div class="hn" style="margin-top:2px">Green is male, red is female. Grey is a record saved before the gender box existed. Open it and fill it in.</div>';
 h+='</div>';}
 box.innerHTML=h;}
 
@@ -2631,7 +2846,7 @@ if(c)c.textContent=SET.school||"School Register";
 if(d)d.textContent=(SET.sub||"Student registration")+(SET.session?(" \u00b7 "+SET.session):"");
 LOCKBRAND();}
 /* the sign in card carries the school name, not a product name */
-var BUILD="B-15  02 Oct 2026";
+var BUILD="B-21  02 Oct 2026";
 function LOCKBRAND(sub){
 var t=document.getElementById("lkTitle"),u=document.getElementById("lkSub");
 if(t)t.textContent=SET.school||"School Register";
@@ -3301,78 +3516,113 @@ if(STAMP&&STAMP.data){var to=addImg(STAMP.data,STAMP.w||300,STAMP.h||300);
 if(to){imgs1.push({n:"St",o:to});STAMPO=1;}}
 WATER(p,imgs1,"Wm");
 BAND(p,imgs1,"Lg",BANDH,school,sub,16,9);
-var T=BANDB-20;
-p.line(LN,0.8,25,25,545,BANDB-32);
+var T=BANDB-22;
+var docs=s.docs||[];
+var ownc=(!s.noCnic&&DIGITS(s.cnic).length===13);
+var RULE=[0.86,0.87,0.85], FIELD=[0.978,0.980,0.974], LBL=[0.46,0.50,0.46];
+p.line(LN,0.7,25,25,545,BANDB-32);
+/* a value that is too wide for its box is set a little smaller instead of
+   being cut off, which matters for long GR numbers and long class names */
+function FITSZ(t,w,sz,bold){var z=sz;while(z>7&&TW(String(t),z,bold)>w)z-=0.4;return z;}
 
-/* photo frame */
-var px=451,pw=104,ph=134,py=T-ph;
-p.fill(SOFT,px,py,pw,ph);
+/* ---------- the top block : photograph, name, and the three facts the
+     office looks for first ---------- */
+var HH=130, HB=T-HH;
+var px=449,pw=106,py=HB,ph=HH;
+p.fill([0.963,0.966,0.958],px,py,pw,ph);
 if(s.photo&&files[s.photo]){
 var io=addImg(files[s.photo],s.photoW||340,s.photoH||437);
-if(io){imgs1.push({n:"Im1",o:io});p.img("Im1",px+2,py+2,pw-4,ph-4);}
-}else{p.ctxt("No Photo",px+pw/2,py+ph/2,9,false,GY);}
+if(io){imgs1.push({n:"Im1",o:io});p.img("Im1",px+3,py+3,pw-6,ph-6);}
+}else{
+p.ctxt("PHOTOGRAPH",px+pw/2,py+ph/2+3,7.4,true,[0.60,0.62,0.59]);
+p.ctxt("not on record",px+pw/2,py+ph/2-9,7.2,false,[0.66,0.68,0.65]);}
 p.line(TH,1,px,py,pw,ph);
 
-/* identity block */
-p.txt("GR NUMBER",42,T-12,8,true,GY);
-p.txt(s.gr||"",42,T-34,20,true,TH);
-p.txt("STUDENT NAME",42,T-58,8,true,GY);
-var nm=WRAPT(s.name||"",15,true,390);
-p.txt(nm[0],42,T-78,15,true,DK);
-if(nm[1])p.txt(nm[1],42,T-94,15,true,DK);
-p.txt("FATHER NAME",42,T-(nm[1]?118:106),8,true,GY);
-var fn=WRAPT(s.father||"-",13,false,390);
-p.txt(fn[0],42,T-(nm[1]?136:124),13,false,DK);
+/* only the student's name goes here. The father is named once, in the
+   Parents and Contact section further down. */
+var nmL=WRAPT(String(s.name||"-").toUpperCase(),17,true,392);
+var nbh=(nmL[1]?36:18), ntop=T-Math.max(6,(HH-40-nbh)/2);
+p.txt(nmL[0],40,ntop-13,17,true,[0.10,0.15,0.11]);
+if(nmL[1])p.txt(nmL[1],40,ntop-31,17,true,[0.10,0.15,0.11]);
 
-/* details table */
-var ty=T-156;
-p.fill(TH,40,ty,515,20);
-p.txt("STUDENT DETAILS",48,ty+6,9,true,WH);
-var ownc=(!s.noCnic&&DIGITS(s.cnic).length===13);
-var rows=[["Class",(s.cls||"-")+(s.section?("   Section "+s.section):"")],
-["Gender",s.gender||"-"],
-["Disability",s.disab==="Yes"?"Yes":"No"],
-["Blood Group",s.blood||"-"],
-["Emergency Contact",(s.emg||"-")+(s.emgname?("   "+s.emgname):"")],
-["Date of Birth",DMY(s.dob)||"-"],
-["Student CNIC Number",ownc?s.cnic:"Student has no own B-Form"],
-[((s.pcnicOf||"Parent / Guardian")+" CNIC"),s.pcnic?(s.pcnic+"   (belongs to the "+String(s.pcnicOf||"parent").toLowerCase()+", not the student)"):"-"],
-["Mobile Number",s.mobile||"-"],
-["Date of Admission",DMY(s.adm)||"-"],
-["Address",s.addr||"-"]];
-var docs=s.docs||[];
-rows.push(["Documents attached",docs.length?docs.map(function(x){return x.label;}).join(", "):"None"]);
-var y=ty,lw=150;
-rows.forEach(function(r){
-var lines=WRAPT(r[1],11,false,515-lw-16);
-var hgt=Math.max(24,10+lines.length*14);
-y-=hgt;
-p.fill(SOFT,40,y,lw,hgt);
-p.line(LN,0.6,40,y,515,hgt);
-p.hr(LN,0.6,40+lw,y,40+lw,y+hgt);
-p.txt(r[0],48,y+hgt-16,9.5,true,GY);
-for(var i=0;i<lines.length;i++)p.txt(lines[i],48+lw,y+hgt-16-(i*14),11,false,DK);});
+var chip=[["GR NUMBER",s.gr||"-"],
+["CLASS",(s.cls?(s.cls+(s.section?("  /  "+s.section):"")):"Not given yet")],
+["DATE OF ADMISSION",DMY(s.adm)||"-"]];
+var chw=(392-16)/3;
+chip.forEach(function(c,i){
+var cx=40+i*(chw+8);
+p.fill([0.948,0.957,0.941],cx,HB,chw,40);
+p.fill(TH,cx,HB,2.6,40);
+p.txt(c[0],cx+10,HB+26,6.5,true,LBL);
+p.txt(c[1],cx+10,HB+10,FITSZ(c[1],chw-20,11.5,true),true,TH);});
 
-/* remarks + signatures */
-var ry=y-26;
-var rbTop=ry+6,rbBot=Math.max(212,rbTop-130);
-p.txt("Remarks",42,ry+8,9.5,true,GY);
-p.line(LN,0.6,40,rbBot,515,rbTop-rbBot);
-if(s.remarks){
+/* ---------- the record itself, in named sections ---------- */
+var gy=HB-16;
+function shead(t){
+p.fill([0.930,0.944,0.924],40,gy-17,515,17);
+p.fill(TH,40,gy-17,2.8,17);
+p.txt(t,52,gy-12,8.2,true,[0.20,0.26,0.21]);
+gy-=23;}
+function cell(x,w,label,val,h){
+var v=(val===null||val===undefined||val==="")?"-":String(val);
+p.fill(FIELD,x,gy-h,w,h);
+p.hr(RULE,0.6,x,gy-h,x+w,gy-h);
+p.txt(String(label).toUpperCase(),x+9,gy-11,6.5,true,LBL);
+var ls=WRAPT(v,10,false,w-18);
+for(var i=0;i<ls.length&&i<4;i++)p.txt(ls[i],x+9,gy-24-i*12,10,false,DK);}
+function boxh(v,w){
+return 30+(WRAPT(String((v===null||v===undefined||v==="")?"-":v),10,false,w-18).length-1)*12;}
+function pair(l1,v1,l2,v2){
+var cw2=(515-11)/2, h=Math.max(boxh(v1,cw2),boxh(v2,cw2));
+cell(40,cw2,l1,v1,h);cell(40+cw2+11,cw2,l2,v2,h);
+gy-=h+5;}
+function wide(l,v){var h=boxh(v,515);cell(40,515,l,v,h);gy-=h+5;}
+
+shead("A.   PERSONAL PARTICULARS");
+pair("Gender",s.gender,"Date of Birth",DMY(s.dob));
+pair("Blood Group",s.blood,"Disability",s.disab==="Yes"?"Yes":"No");
+wide("B-Form or CNIC of the student",
+  ownc?s.cnic:"No B-Form of the student on record. The parent CNIC is used.");
+
+shead("B.   PARENTS AND CONTACT");
+pair("Father or Guardian",s.father,
+     (s.pcnicOf||"Parent")+" CNIC",s.pcnic?(s.pcnic+"   (not the student's own)"):"-");
+pair("Mobile Number",s.mobile,
+     "Emergency Contact",(s.emg||"-")+(s.emgname?("   ("+s.emgname+")"):""));
+wide("Home Address",s.addr);
+
+shead("C.   SCHOOL RECORD");
+pair("Class and Section",(s.cls||"Not given yet")+(s.section?("   Section "+s.section):""),
+     "Class Given On",DMY(s.clsOn)||"-");
+wide("Papers held in the record",
+  docs.length?docs.map(function(x){return x.label;}).join(",   "):"None attached yet");
+
+shead("D.   REMARKS");
 var rl=[];
-String(s.remarks).split(/\r?\n/).forEach(function(ln){WRAPT(ln,10.5,false,495).forEach(function(w){rl.push(w);});});
-var maxL=Math.floor((rbTop-rbBot-14)/14);
-for(var ri=0;ri<rl.length&&ri<maxL;ri++)p.txt(rl[ri],48,rbTop-20-(ri*14),10.5,false,DK);}
-if(STAMPO){var stw=86,sth=stw*(STAMP.h||300)/(STAMP.w||300);
-if(sth>86){sth=86;stw=sth*(STAMP.w||300)/(STAMP.h||300);}
-p.imgm("St",457-stw/2-52,168,stw,sth);}
+if(s.remarks)String(s.remarks).split(/\r?\n/).forEach(function(ln){
+WRAPT(ln,10,false,497).forEach(function(w){rl.push(w);});});
+var rh=Math.max(42,16+rl.length*13);
+p.fill([0.985,0.986,0.980],40,gy-rh,515,rh);
+p.line(RULE,0.6,40,gy-rh,515,rh);
+if(rl.length){for(var ri=0;ri<rl.length&&ri<8;ri++)p.txt(rl[ri],49,gy-19-ri*13,10,false,DK);}
+else p.txt("Nothing recorded.",49,gy-19,10,false,[0.60,0.61,0.58]);
+gy-=rh;
+
+/* ---------- signatures, kept near the foot of the page ---------- */
+var sigY=(gy-58>176)?176:(gy-58);
+/* the stamp stands to the left of the Head Master rule, so it never sits
+   on top of the signature or on the caption underneath it */
+if(STAMPO){var sbot=sigY-8, room=(gy-8)-sbot;
+var sth=Math.min(78,room>24?room:78), stw=sth*(STAMP.w||300)/(STAMP.h||300);
+if(stw>78){stw=78;sth=stw*(STAMP.h||300)/(STAMP.w||300);}
+p.imgm("St",330-stw/2,sbot,stw,sth);}
 if(SIGNO){var sgw=92,sgh=sgw*(SIGN.h||100)/(SIGN.w||200);
-if(sgh>38){sgh=38;sgw=sgh*(SIGN.w||200)/(SIGN.h||100);}
-p.imgm("Sg",457-sgw/2,186,sgw,sgh);}
-p.hr(DK,0.8,60,182,215,182);
-p.hr(DK,0.8,380,182,535,182);
-p.ctxt("Class Teacher",137,168,9,false,GY);
-p.ctxt("Head Master / Principal",457,168,9,false,GY);
+if(sgh>34){sgh=34;sgw=sgh*(SIGN.w||200)/(SIGN.h||100);}
+p.imgm("Sg",457-sgw/2,sigY+3,sgw,sgh);}
+p.hr(DK,0.8,60,sigY,215,sigY);
+p.hr(DK,0.8,380,sigY,535,sigY);
+p.ctxt("Class Teacher",137,sigY-14,9,true,DK);
+p.ctxt("Head Master / Principal",457,sigY-14,9,true,DK);
 p.hr(LN,0.8,40,100,555,100);
 p.txt("Printed on "+today,42,86,8.5,false,GY);
 var ptx="Page 1 of "+(1+Math.ceil(docs.length/2)||1);
@@ -4119,7 +4369,7 @@ function head(t){
 y-=6;
 p.fill(TH,LX,y-12,(RX-LX),15);
 p.txt(t,LX+7,y-8,8.6,true,WH);
-y-=22;}
+y-=19;}
 function head2(t){
 y-=6;
 p.fill(TH,LX,y-12,W-80,15);
@@ -4146,7 +4396,7 @@ var right=wide?(W-40):RX;
 zeb(right);
 var n=list.length,gap=14,w=(right-LX-gap*(n-1))/n,i;
 for(i=0;i<n;i++)row(list[i][0],LX+i*(w+gap),w,list[i][1]);
-y-=23;}
+y-=22;}
 /* a run of small boxes, for a number written one digit per box */
 function boxes(label,count,x,bw,hint){
 zeb(W-40);
@@ -4156,7 +4406,7 @@ for(i=0;i<count;i++){
 p.line(LN,0.7,bx,y-14,bw,14);
 bx+=bw+2.4;}
 if(hint)p.txt(hint,bx+6,y-10,6.4,false,[0.68,0.68,0.66]);
-y-=25;}
+y-=23;}
 /* a named rule that opens a group of fields */
 function sect(t){
 y-=2;
@@ -4166,7 +4416,7 @@ var sx=LX+TW(t.toUpperCase(),7.6,true)+8;
 var send=(y>py2-6)?RX:(W-40);
 if(send>sx+20)p.hr([0.80,0.84,0.80],0.9,sx,y+3,send,y+3);
 ZEB=0;
-y-=14;}
+y-=11;}
 
 /* a shaded band that marks a block only the office fills */
 function ohead(t){
@@ -4212,9 +4462,16 @@ rows([["Class applied for",""],["Class last passed",""],["Last school attended",
 rows([["Home Address",""]],true);
 p.hr(LN,0.7,LX,y+3,W-40,y+3);y-=16;
 
-/* ---- what the parent has to bring with the form ---- */
-p.fill([0.975,0.977,0.972],LX-6,y-87,(W-40)-(LX-6),95);
-p.fill(TH,LX-6,y-87,2.4,95);
+/* ---- what the parent has to bring with the form ----
+   The box grows to hold its notes, so no line can fall outside it. */
+var dbw=(W-40)-(LX-6);
+var dnote=["Part A is required from every student, a new admission as well as a child coming from another school.",
+"Part B is asked for in addition.   Class 6 after passing Class 5 in another school, and Class 9 after passing Class 8 in another school."];
+var dnl=[];
+dnote.forEach(function(t){WRAPT(t,6.8,false,dbw-24).forEach(function(w){dnl.push(w);});});
+var dbh=100+(dnl.length-1)*10;
+p.fill([0.975,0.977,0.972],LX-6,y+8-dbh,dbw,dbh);
+p.fill(TH,LX-6,y+8-dbh,2.4,dbh);
 p.txt("DOCUMENTS TO BE ATTACHED WITH THIS FORM",LX+6,y-2,7.6,true,TH);
 p.txt("Attach one photocopy of each. Originals are checked by the office and returned at once.",
   LX+6+TW("DOCUMENTS TO BE ATTACHED WITH THIS FORM   ",7.6,true),y-2,6.6,false,[0.55,0.55,0.53]);
@@ -4224,23 +4481,24 @@ p.line(LN,0.75,x3,yy-8,9,9);
 p.txt(n3+".",x3+14,yy-6,7.4,true,[0.42,0.50,0.44]);
 p.txt(t3,x3+26,yy-6,7.4,false,DK);}
 p.txt("A.  REQUIRED FROM EVERY STUDENT",dx1,dy,6.8,true,[0.38,0.42,0.38]);
-p.txt("B.  ALSO REQUIRED ABOVE THE FIRST CLASS",dx2,dy,6.8,true,[0.38,0.42,0.38]);
+p.txt("B.  ALSO REQUIRED IF COMING FROM ANOTHER SCHOOL",dx2,dy,6.8,true,[0.38,0.42,0.38]);
 dy-=13;
 var g1=["Form B of the student, photocopy",
         "CNIC of the father or the guardian, photocopy",
         "Two recent passport size photographs",
         "Proof of residence, any utility bill"];
-var g2=["Certificate of the last class passed",
-        "School leaving certificate of the previous school",
-        "Result card of the last class passed",
-        "Migration certificate, from another Board"];
+/* a child who passed Class 5 or Class 8 in another school brings the
+   leaving certificate and the proof of that class, nothing else */
+var g2=["School leaving certificate of the previous school",
+        "Certificate of the last class passed",
+        "Result card of the last class passed"];
 for(var i3=0;i3<4;i3++){
 tick(dx1,dy,i3+1,g1[i3]);
-tick(dx2,dy,i3+5,g2[i3]);
+if(i3<g2.length)tick(dx2,dy,i3+1+g1.length,g2[i3]);
 dy-=11;}
-p.txt("Admission to Class 6 requires the Class 5 certificate, and the same rule applies to each higher class.",
-  dx1,dy-6,6.8,false,[0.42,0.44,0.42]);
-y-=96;
+var ny2=y-84;
+dnl.forEach(function(t){p.txt(t,dx1,ny2,6.8,false,[0.42,0.44,0.42]);ny2-=10;});
+y-=dbh+9;
 }
 /* ---- declaration, signed by the person who filled part A ---- */
 p.fill(SOFT,40,y-34,W-80,34);
@@ -4251,12 +4509,14 @@ var dtext=svc
 :"The particulars I have given above are correct to the best of my knowledge, and I will tell the school of any change.";
 p.txt(dtext,47,y-22,8.2,false,DK);
 p.txt(svc?"A wrong entry may lead to the card being cancelled.":"A wrong entry may lead to the admission being cancelled.",47,y-31,8.2,false,GY);
-y-=44;
+/* the signature and the date sit well below the declaration, so there is
+   room to sign, and they do not touch the office band underneath */
+y-=66;
 p.hr(DK,0.8,40,y,40+190,y);
 p.ctxt("Signature of "+(svc?"the Employee":"the Parent or Guardian"),40+95,y-12,8.4,true,DK);
 p.txt("Date",W-40-150,y-3,8.4,false,GY);
 p.hr(LN,0.7,W-40-150+TW("Date  ",8.4,false),y-5,W-40,y-5);
-y-=34;
+y-=26;
 
 /* ---- the block only the office fills ---- */
 ohead(svc?"B.  FOR OFFICE USE ONLY":"B.  FOR OFFICE USE ONLY");
@@ -4269,17 +4529,16 @@ rows([["GR Number",""],["Class Allotted",""],["Section",""]],true);
 rows([["Date of Admission","D D / M M / Y Y Y Y"],["Admitted in Class",""]],true);
 rows([["Papers checked by",""],["Remarks of the office",""]],true);
 }
-y-=6;
+/* the signatures stand clear of the last written line above them */
+y-=12;
 var sw=(W-80-40)/2;
 [[svc?"Dealing Assistant":"Clerk or Dealing Assistant",40],
  [svc?"Head of Office":"Head Master / Principal",40+sw+40]].forEach(function(q){
 p.hr(DK,0.8,q[1],y,q[1]+sw,y);
 p.ctxt(q[0],q[1]+sw/2,y-12,8.4,true,DK);});
-y-=24;
-p.txt("Office stamp",40,y,8.4,false,GY);
-p.line(LN,0.6,40+TW("Office stamp  ",8.4,false),y-29,94,40);
+y-=26;
 
-/* ---- short notes, beside the stamp box so no space is wasted ---- */
+/* ---- short notes, across the full width ---- */
 var nt=svc?
 ["Attach one copy of the CNIC and one passport size photograph with a white background.",
  "Part A is filled by the employee. Part B is filled by the office only.",
@@ -4289,12 +4548,12 @@ var nt=svc?
  "Two passport size photographs with a white background are required.",
  "Part A is filled by the parent or the guardian. Part B is filled by the office only.",
  "An incomplete form will not be accepted."];
-var nx=250,nw=W-40-nx,nlin=[];
+var nx=40,nw=W-80,nlin=[];
 nt.forEach(function(t){
 var ws=WRAPT(t,7.4,false,nw-26);
 ws.forEach(function(w,i){nlin.push({t:w,ind:11,dot:!i});});});
-var nh=17+nlin.length*10+9, ntop=y+10;
-if(ntop-nh>50){
+var nh=17+nlin.length*10+9, ntop=y;
+if(ntop-nh>48){
 p.fill([0.975,0.975,0.965],nx,ntop-nh,nw,nh);
 p.fill([0.72,0.72,0.70],nx,ntop-nh,2.4,nh);
 p.txt("PLEASE NOTE",nx+10,ntop-13,7.6,true,[0.32,0.32,0.30]);
@@ -7076,7 +7335,13 @@ else {BUSY("l_btn",false,"","Sign in");LMSG(why,1);}});
 }
 
 function UNLOCK(online,resumed){
-var l=document.getElementById("lock");if(l)l.style.display="none";
+var l=document.getElementById("lock");
+if(l&&l.style.display!=="none"){
+l.className="opening";
+setTimeout(function(){l.className="";l.style.display="none";},400);
+var ct=document.querySelector(".ct");
+if(ct){ct.className="ct entering";setTimeout(function(){ct.className="ct";},520);}}
+else if(l)l.style.display="none";
 LOCKSCROLL(false);
 GOTAB(9);
 var pe=document.getElementById("l_pass");if(pe)pe.value="";
