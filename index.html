@@ -517,6 +517,33 @@ body{background:var(--bg);padding-bottom:30px}
 /* the small lock badge on the Setup tab */
 .stb .lk{font-size:8px;opacity:.75}
 </style>
+<style id="stwz-css">
+.stwz-steps.steps{display:flex!important;gap:4px!important;margin:0 0 14px!important;padding:8px 6px!important;background:#fff!important;border:1px solid #e2e8e4!important;border-radius:16px!important;box-shadow:0 2px 10px rgba(18,51,31,.06)!important}
+.stwz-steps .stp{flex:1!important;min-width:0!important;border:none!important;background:transparent!important;padding:6px 2px!important;cursor:pointer!important;font-family:inherit!important;border-radius:12px!important;text-align:center!important}
+.stwz-steps .stp b{display:flex!important;align-items:center!important;justify-content:center!important;width:32px!important;height:32px!important;margin:0 auto 5px!important;border-radius:50%!important;font-size:13px!important;font-weight:700!important;background:#e8eee9!important;color:#7a8a80!important;border:2px solid transparent!important}
+.stwz-steps .stp span{display:block!important;font-size:10px!important;font-weight:600!important;color:#8a968e!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.stwz-steps .stp.on{background:rgba(28,74,46,.09)!important}
+.stwz-steps .stp.on b{background:linear-gradient(160deg,#1c4a2e,#2f6b45)!important;color:#fff!important;border-color:#c8a54a!important;box-shadow:0 4px 12px rgba(18,51,31,.3)!important}
+.stwz-steps .stp.on span{color:#12331f!important;font-weight:700!important}
+.stwz-steps .stp.done b{background:#d5e6db!important;color:#1a472a!important}
+.svback{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:6px 0 14px;padding:14px 16px;border:none;border-radius:14px;background:linear-gradient(160deg,#12331f,#1c4a2e 55%,#2f6b45);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 16px rgba(18,51,31,.28)}
+.svback::before{content:"←";font-size:18px;color:#e8c56a}
+</style>
+
+
+<style>
+#svcPane #sv3 .rw{display:flex;flex-wrap:wrap;width:100%}
+#svcPane #sv3 .rw > div,
+#svcPane #sv3 .rw > .w2{flex:1 1 100%!important;min-width:100%!important;max-width:100%!important}
+#hcWording .rw,#svWording .rw{flex-direction:column}
+#hcWording input,#hcWording select,#hcWording textarea,
+#svWording input,#svWording select,#svWording textarea{width:100%}
+</style>
+
+<style>
+#markOv .ovc input{font-size:16px}
+#markOv .card{background:#fff;border:1px solid #e2e7e4;border-radius:12px}
+</style>
 </head><body>
 <header class="appbar">
 <button type="button" class="mbtn" id="menuBtn" onclick="MENU(1)" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -534,11 +561,20 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 <div class="dwscroll">
 <div class="dwgrp">Records</div>
+<button class="dwi" data-nav="13" onclick="NAV(13)"><i class="ic ic-chart"></i>Dashboard</button>
 <button class="dwi" data-nav="9" onclick="NAV(9)"><i class="ic ic-find"></i>Search a Student</button>
 <button class="dwi" data-nav="1" onclick="NAV(1)"><i class="ic ic-add"></i>New Registration</button>
 <button class="dwi" data-nav="2" onclick="NAV(2)"><i class="ic ic-list"></i>All Students</button>
 <button class="dwi" data-nav="7" onclick="NAV(7)"><i class="ic ic-class"></i>Class Allotment</button>
+<button class="dwi" data-nav="10" data-sec="attmark" onclick="NAV(10,'attmark')"><i class="ic ic-check"></i>Mark Attendance</button>
+<button class="dwi" data-nav="10" data-sec="attreg" onclick="NAV(10,'attreg')"><i class="ic ic-chart"></i>Attendance Register</button>
 <button class="dwi" data-nav="3" onclick="NAV(3)"><i class="ic ic-bin"></i>Dustbin</button>
+
+<div class="dwgrp">Office work</div>
+<button class="dwi" data-nav="11" data-sec="staff" onclick="NAV(11,'staff')"><i class="ic ic-badge"></i>Staff Register</button>
+<button class="dwi" data-nav="11" data-sec="stsearch" onclick="NAV(11,'stsearch')"><i class="ic ic-find"></i>Search Staff</button>
+<button class="dwi" data-nav="11" data-sec="stlist" onclick="NAV(11,'stlist')"><i class="ic ic-list"></i>All Staff</button>
+
 
 <div class="dwgrp">Examination</div>
 <button class="dwi" data-nav="8" data-sec="admit" onclick="NAV(8,'admit')"><i class="ic ic-card"></i>Admit Cards</button>
@@ -626,7 +662,7 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 <div class="hn" style="margin-bottom:6px">Only 11 digits go in and the dash comes by itself like 0300-1234567. More than 11 digits will not type.</div>
 <div class="rw">
-<div><label>Emergency Number (11 digits) *</label><input id="f_emg" inputmode="tel" placeholder="0300-1234567" maxlength="12" autocomplete="off"></div>
+<div><label>Emergency Contact Number (11 digits) *</label><input id="f_emg" inputmode="tel" placeholder="0300-1234567" maxlength="12" autocomplete="off"></div>
 <div><label>Emergency Contact Name</label><input id="f_emgname" placeholder="Father, uncle, neighbour"></div>
 </div>
 <div class="rw"><div class="w2"><label>Address *</label><input id="f_addr" placeholder="House / street / area"></div></div>
@@ -704,6 +740,7 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 <div id="sHint"></div>
 <div id="sResult"></div>
+
 </div>
 
 <!-- ================= DUSTBIN ================= -->
@@ -772,28 +809,53 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 
 <div class="psec" data-sec="admit">
-<div class="sc" id="sec_admit">Admit card for the mid term examination</div>
-<div class="hn" style="margin-bottom:8px">Two cards print on one A4 page. Cut along the line in the middle.</div>
+<div class="sc" id="sec_admit">Admit card</div>
+<div class="hn" style="margin-bottom:8px">Two cards per A4 page. Odd pages = front (photo & details). Even pages = back (paper timetable). Print double-sided, or print backs on the reverse of the fronts.</div>
 <div class="rw">
-<div><label>Class</label><select id="e_acls" onchange="EXCOUNT()"></select></div>
+<div><label>Class</label><select id="e_acls" onchange="EXCOUNT();EXSCHEDFILL()"></select></div>
 <div><label>Section only (optional)</label><input id="e_asec" oninput="EXCOUNT()" placeholder="leave empty for all"></div>
 </div>
 <div id="e_acount" class="hn" style="margin-bottom:8px"></div>
+
+<div class="sc">Paper timetable</div>
+<div class="hn" style="margin-bottom:8px">Add each paper with the date and time. This table prints on the admit card.</div>
+<div class="rw"><div class="w2"><label>Papers (comma separated) — or load from Result Card papers</label>
+<input id="e_asubs" placeholder="English, Urdu, Mathematics, Science" onchange="EXSCHEDFILL()"></div></div>
+<div class="bs">
+<button type="button" class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="EXSCHEDFROMRESULT()">Load papers from result card</button>
+<button type="button" class="bn bl" onclick="EXSCHEDBUILD()">Build timetable rows</button>
+</div>
+<div id="e_sched"></div>
+<div class="bs">
+<button type="button" class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="EXSCHEDSAVE()">Save timetable</button>
+</div>
+
 <div class="bs"><button class="bn bw" onclick="ADMITMAKE()">Print admit cards</button></div>
 </div>
 
 <div class="psec" data-sec="result">
-<div class="sc" id="sec_result">Result card for the annual examination</div>
-<div class="hn" style="margin-bottom:8px">For every class up to Class 8. Class 9 and Class 10 do not appear here, because their result comes from the Board.</div>
+<div class="sc" id="sec_result">Result cards</div>
+<div class="hn" style="margin-bottom:8px">Choose the class, load or save the papers once, then tap each student and enter only the obtained marks.</div>
 <div class="rw">
 <div><label>Class</label><select id="e_rcls" onchange="EXSUBFILL();EXMARKLIST()"></select></div>
-<div><label>Pass marks in each paper</label><input id="e_pass" inputmode="numeric" placeholder="33"></div>
+<div><label>Pass marks (each paper)</label><input id="e_pass" inputmode="numeric" placeholder="33"></div>
 </div>
-<div class="rw"><div class="w2"><label>Papers of this class, separated by a comma</label><input id="e_subs" placeholder="English, Urdu, Mathematics, Science, Islamiat, Social Studies"></div></div>
+
+<div class="sc">Papers of this class</div>
+<div class="bs" style="flex-wrap:wrap;margin-bottom:8px">
+<button type="button" class="bn bl" onclick="EXSUBFROMADMIT()">Load papers from admit card</button>
+</div>
+<div class="rw"><div class="w2"><label>Paper names (comma separated)</label><input id="e_subs" placeholder="English, Urdu, Mathematics, Science"></div></div>
 <div class="rw">
 <div><label>Full marks of each paper</label><input id="e_max" inputmode="numeric" placeholder="100"></div>
-<div><label>&nbsp;</label><button type="button" class="tb" style="width:100%" onclick="EXSUBSAVE()">Save the papers</button></div>
 </div>
+<div class="bs">
+<button type="button" class="bn bw" onclick="EXSUBSAVE()">Save all papers</button>
+</div>
+<div id="e_subhint" class="hn" style="margin:6px 0 10px"></div>
+
+<div class="sc">Enter obtained marks</div>
+<div class="hn" style="margin-bottom:6px">Tap a student. All papers appear — write obtained marks only, then save.</div>
 <div id="e_marklist"></div>
 <div class="bs"><button class="bn bw" onclick="RESULTMAKE()">Print result cards</button>
 <button class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="RESULTMAKE(1)">Only the ones filled</button></div>
@@ -867,6 +929,164 @@ body{background:var(--bg);padding-bottom:30px}
 
 </div>
 
+<!-- ================= ATTENDANCE ================= -->
+<div class="pane" id="p10">
+<div class="psec" data-sec="attmark">
+<div class="sc">Mark attendance</div>
+<div class="rw">
+<div><label>Class</label><select id="at_class" onchange="ATFILL()"></select></div>
+<div><label>Section</label><select id="at_sec" onchange="ATFILL()"></select></div>
+<div><label>Date</label><input type="date" id="at_date" onchange="ATFILL()"></div>
+</div>
+
+<div class="sc">Quick mark by GR</div>
+<div class="rw" style="margin:0">
+<div class="w2"><input id="at_gr_quick" inputmode="numeric" placeholder="Type GR number" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();ATMARKGR('P');}"></div>
+</div>
+<div class="bs" style="margin-top:8px;flex-wrap:wrap">
+<button type="button" class="bn bw" onclick="ATMARKGR('P')">Present</button>
+<button type="button" class="bn tb" style="border-color:#f0c4c0;color:#b42318" onclick="ATMARKGR('A')">Absent</button>
+<button type="button" class="bn tb" style="border-color:#ecd9a8;color:#9a6700" onclick="ATMARKGR('L')">Leave</button>
+<button type="button" class="bn tb" style="border-color:#ddd6fe;color:#6d28d9" onclick="ATMARKGR('S')">Sick</button>
+</div>
+<div id="at_last" class="hn" style="margin:6px 0 10px;min-height:18px"></div>
+
+<div class="sc">Mark whole class</div>
+<div class="bs" style="flex-wrap:wrap">
+<button class="bn bl" type="button" onclick="ATALL('P')">All present</button>
+<button class="bn tb" type="button" onclick="ATALL('A')">All absent</button>
+<button class="bn tb" type="button" onclick="ATALL('L')">All on leave</button>
+<button class="bn tb" type="button" onclick="ATALL('')">Clear all</button>
+</div>
+<div id="at_tally" class="stat"></div>
+<div id="at_list"></div>
+<div class="bs"><button class="bn bw" type="button" onclick="ATSAVE()">Save attendance</button></div>
+<div class="hn" style="margin-top:8px">Type a GR and tap Present, Absent or Leave. Or mark the whole class, then adjust students in the list. Save to keep the day.</div>
+</div>
+
+<div class="psec" data-sec="attreg">
+<div class="sc">Attendance register</div>
+<div class="rw">
+<div><label>Class</label><select id="ar_class"></select></div>
+<div><label>Section</label><select id="ar_sec"></select></div>
+<div><label>Month</label><input type="month" id="ar_month"></div>
+</div>
+<div class="bs">
+<button class="bn bw" onclick="ATREGPDF()">Monthly register PDF</button>
+<button class="bn bl" onclick="ATSUMSHOW()">Show the figures</button>
+</div>
+<div id="ar_out"></div>
+<div class="hn" style="margin-top:8px">The monthly register prints one row for each student and one column for each day of the month, the way the hand written register is kept, with the totals and the percentage at the end.</div>
+</div>
+</div>
+
+<!-- ================= STAFF ================= -->
+<div class="pane" id="p11">
+<div class="psec" data-sec="staff">
+<div class="sc" id="sec_staff">Staff register</div>
+<div class="wzwrap">
+<div class="steps stwz-steps" id="stWzSteps">
+<button type="button" class="stp on" data-s="1" onclick="STWZTAP(1)"><b>1</b><span>Person</span></button>
+<button type="button" class="stp" data-s="2" onclick="STWZTAP(2)"><b>2</b><span>Service</span></button>
+<button type="button" class="stp" data-s="3" onclick="STWZTAP(3)"><b>3</b><span>Contact</span></button>
+<button type="button" class="stp" data-s="4" onclick="STWZTAP(4)"><b>4</b><span>Status</span></button>
+<button type="button" class="stp" data-s="5" onclick="STWZTAP(5)"><b>5</b><span>Photo</span></button>
+</div>
+<div class="wzbar"><i id="stWzFill"></i></div>
+<div class="sc" id="stWzTitle">Step 1 of 5 · Person</div>
+<div class="stwstep" data-step="1">
+<div class="rw"><div class="w2"><label>Name *</label><input id="t_name" placeholder="Full name as in the service book"></div></div>
+<div class="rw"><div class="w2"><label>Father or husband name *</label><input id="t_father"></div></div>
+<div class="rw">
+<div><label>Gender *</label><select id="t_gender"><option value="">Choose</option><option>Male</option><option>Female</option></select></div>
+<div><label>Date of birth *</label><input type="date" id="t_dob"></div>
+</div></div>
+<div class="stwstep" data-step="2" style="display:none">
+<div class="rw"><div class="w2"><label>Designation *</label><select id="t_desig"><option value="">Choose</option>
+<option>Head Master</option><option>Head Mistress</option><option>Senior Head Master</option>
+<option>Subject Specialist</option><option>HST</option><option>JST</option><option>PST</option>
+<option>ECT</option><option>Drawing Master</option><option>Physical Instructor</option>
+<option>Librarian</option><option>Junior Clerk</option><option>Senior Clerk</option>
+<option>Lab Assistant</option><option>Naib Qasid</option><option>Chowkidar</option><option>Sweeper</option>
+</select></div></div>
+<div class="rw"><div><label>BPS *</label><input id="t_bps" inputmode="numeric" placeholder="14" maxlength="2"></div>
+<div><label>Personal number *</label><input id="t_pn"></div></div>
+<div class="rw"><div><label>First appointment *</label><input type="date" id="t_first"></div>
+<div><label>Joined this school *</label><input type="date" id="t_join"></div></div>
+<div class="rw"><div><label>Qualification</label><input id="t_qual"></div>
+<div><label>Subject taught</label><input id="t_subj"></div></div>
+</div>
+<div class="stwstep" data-step="3" style="display:none">
+<div class="rw"><div class="w2"><label>CNIC *</label><input id="t_cnic" inputmode="numeric" placeholder="42501-1234567-8" maxlength="15" oninput="MASKIN(this,FMTCNIC)" onblur="this.value=FMTCNIC(this.value)"></div></div>
+<div class="rw"><div class="w2"><label>Mobile *</label><input id="t_mobile" inputmode="tel" placeholder="0300-1234567" maxlength="12" oninput="MASKIN(this,FMTMOB)" onblur="this.value=FMTMOB(this.value)"></div></div>
+</div>
+<div class="stwstep" data-step="4" style="display:none">
+<div class="rw"><div><label>Status</label><select id="t_status" onchange="STSTATUS()"><option value="Working">Working</option><option value="Leave">On leave</option><option value="">None</option></select></div></div>
+<div id="t_leaveBox" style="display:none">
+<div class="rw"><div><label>Leave from</label><input type="date" id="t_leaveFrom"></div>
+<div><label>Leave until</label><input type="date" id="t_leaveTo"></div></div>
+<div class="rw"><div class="w2"><label>Leave reason</label><input id="t_leaveWhy"></div></div>
+</div>
+<div class="rw"><div class="w2"><label>Remarks</label><textarea id="t_rem" rows="2"></textarea></div></div>
+</div>
+<div class="stwstep" data-step="5" style="display:none">
+<div class="rw">
+<div style="flex:0 0 92px"><div class="pbox" id="t_photoBox" onclick="PICK('t_photoCam')">Tap to<br>add photo</div></div>
+<div>
+<button type="button" class="tb" style="width:100%" onclick="PICK('t_photoCam')">Camera</button>
+<button type="button" class="tb" style="width:100%;margin-top:6px" onclick="PICK('t_photoFile')">Gallery</button>
+<button type="button" class="tb" style="width:100%;margin-top:6px" onclick="ST_RMPHOTO()">Remove</button>
+</div></div>
+<input type="file" id="t_photoFile" accept="image/*" style="display:none" onchange="ST_ADDPHOTO(this)">
+<input type="file" id="t_photoCam" accept="image/*" capture="user" style="display:none" onchange="ST_ADDPHOTO(this)">
+</div>
+<div class="bs wznav" id="stWzNav">
+<button class="bn tb" id="stWzBack" type="button" onclick="STWZGO(STWZSTEP-1)" style="background:#fafafa;color:#555;border:1px solid #ccc">Back</button>
+<button class="bn bw" id="stWzNext" type="button" onclick="STWZNEXT()">Next</button>
+</div>
+<div class="bs" id="stWzSave" style="display:none">
+<button class="bn bw" type="button" onclick="STSAVE()">Save to staff register</button>
+<button class="bn tb" type="button" onclick="STCLEAR()">Clear form</button>
+</div>
+</div>
+<div id="st_tally" class="stat" style="display:none"></div>
+<input type="hidden" id="st_q" value="">
+<div id="st_list" style="display:none"></div>
+</div>
+<div class="psec" data-sec="stsearch" style="display:none">
+<div class="sc">Search staff</div>
+<div class="rw"><div class="w2"><input id="st_sq" placeholder="Name, CNIC, mobile…" oninput="STSEARCH()"></div>
+<div><label>Status</label><select id="st_sStatus" onchange="STSEARCH()"><option value="">Any</option><option>Working</option><option>Leave</option></select></div></div>
+<div class="hn" id="st_sHint"></div>
+<div id="st_sResult"></div>
+</div>
+<div class="psec" data-sec="stlist" style="display:none">
+<div class="sc">All staff</div>
+<div id="st_tally2" class="stat"></div>
+<div class="rw"><div class="w2"><input id="st_q2" placeholder="Filter…" oninput="SV('st_q',this.value);STRENDER()"></div></div>
+<div id="st_list2"></div>
+</div>
+</div>
+<div class="pane" id="p13">
+<div class="dashhero">
+<div><b id="dbHello">Good morning</b><span id="dbDate"></span></div>
+<button type="button" class="dbref" onclick="DASHPAINT()" aria-label="Refresh">&#8635;</button>
+</div>
+<div id="dbGrid" class="dash"></div>
+<div class="sc">Quick work</div>
+<div id="dbActs" class="dactrow"></div>
+<div class="sc">Strength by class</div>
+<div id="dbClass"></div>
+<div class="sc">Needs attention</div>
+<div id="dbTodo"></div>
+</div>
+
+<div class="pane" id="p12">
+<div class="empty" style="margin-top:20px">
+<b>Office registers removed</b>
+<span style="display:block;margin-top:8px">Letter Register and Stock Register are no longer part of this app. Use Staff Register and Attendance for day-to-day work.</span>
+</div>
+</div>
 <div class="pane" id="p5">
 <div class="sc">GR Number</div>
 <div class="rw">
@@ -887,7 +1107,14 @@ body{background:var(--bg);padding-bottom:30px}
 <div class="rw"><div class="w2"><label>School name</label><input id="s_school" placeholder="This name prints on the identity cards" oninput="CARDHINT()"></div></div>
 <div class="rw">
 <div class="w2"><label>Line under school name</label><input id="s_sub" placeholder="District Malir, Karachi"></div>
-<div><label>PDF colour</label><input type="color" id="s_pdfcolor" value="#1a472a"></div>
+</div>
+<div class="sc">Paper design</div>
+<div class="hn" style="margin-bottom:8px">This pair of colours prints on every download: forms, profiles, certificates, admit cards, result cards and the strength report.</div>
+<div id="themeRow" class="thrw"></div>
+<div class="rw" style="margin-top:8px">
+<div><label>Main colour</label><input type="color" id="s_pdfcolor" value="#1a472a" oninput="THEMEMARK()"></div>
+<div><label>Line colour</label><input type="color" id="s_pdfaccent" value="#c7971f" oninput="THEMEMARK()"></div>
+<div class="w2"><label>&nbsp;</label><button type="button" class="tb" style="width:100%" onclick="THEMEPREVIEW()">See a sample page</button></div>
 </div>
 <div class="rw">
 <div style="flex:0 0 92px"><div class="lgbox" id="logoBox" onclick="PICK('logoFile')">Tap to add<br>school logo</div></div>
@@ -985,58 +1212,65 @@ body{background:var(--bg);padding-bottom:30px}
 </div>
 
 <div id="sv1">
-<div class="sc">Photograph</div>
+<div class="steps stwz-steps" id="svWzSteps">
+<button type="button" class="stp on" data-s="1" onclick="SVWZGO(1)"><b>1</b><span>Photo</span></button>
+<button type="button" class="stp" data-s="2" onclick="SVWZGO(2)"><b>2</b><span>Person</span></button>
+<button type="button" class="stp" data-s="3" onclick="SVWZGO(3)"><b>3</b><span>Service</span></button>
+<button type="button" class="stp" data-s="4" onclick="SVWZGO(4)"><b>4</b><span>Contact</span></button>
+<button type="button" class="stp" data-s="5" onclick="SVWZGO(5)"><b>5</b><span>Card</span></button>
+</div>
+<div class="wzbar"><i id="svWzFill"></i></div>
+<div class="sc" id="svWzTitle">Step 1 of 5 · Photo</div>
+<div class="svwstep" data-step="1">
 <div class="rw">
 <div style="flex:0 0 92px"><div class="pbox" id="svPhotoBox" onclick="PICK('svPhotoCam')">Tap to<br>take photo</div></div>
 <div>
 <button type="button" class="bn tb" style="width:100%;background:#fafafa;color:#333;border:1px solid #ccc" onclick="PICK('svPhotoCam')">Take photo with camera</button>
 <button type="button" class="bn tb" style="width:100%;margin-top:6px;background:#fafafa;color:#333;border:1px solid #ccc" onclick="PICK('svPhotoFile')">Choose from gallery</button>
 <button type="button" class="bn tb" style="width:100%;margin-top:6px;background:#fafafa;color:#333;border:1px solid #ccc" onclick="SVRMPHOTO()">Remove photo</button>
-</div>
-</div>
+</div></div>
 <input type="file" id="svPhotoFile" accept="image/*" style="display:none" onchange="SVADDPHOTO(this)">
 <input type="file" id="svPhotoCam" accept="image/*" capture="user" style="display:none" onchange="SVADDPHOTO(this)">
-
-<div class="sc">Officer details</div>
+</div>
+<div class="svwstep" data-step="2" style="display:none">
 <div class="rw"><div class="w2"><label>Full Name *</label><input id="v_name"></div></div>
-<div class="rw">
-<div><label>Relation *</label><select id="v_rel" onchange="SVREL()"><option value="father">Father</option><option value="husband">Husband</option></select></div>
-<div class="w2"><label id="v_rellbl">Father Name *</label><input id="v_relname"></div>
-</div>
+<div class="rw"><div><label>Relation *</label><select id="v_rel" onchange="SVREL()"><option value="father">Father</option><option value="husband">Husband</option></select></div>
+<div class="w2"><label id="v_rellbl">Father Name *</label><input id="v_relname"></div></div>
 <div class="rw"><div class="w2"><label>Designation *</label><input id="v_desig" placeholder="Junior Elementary School Teacher"></div></div>
-<div class="rw">
-<div><label>Personal ID *</label><input id="v_pid"></div>
-<div id="v_gradeWrap"><label>Grade *</label><input id="v_grade" placeholder="BPS-14"></div>
-<div><label>Blood Gr</label><select id="v_blood"><option value="">-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
 </div>
-<div class="rw"><div class="w2"><label>CNIC No (13 digits) *</label><input id="v_cnic" inputmode="numeric" maxlength="15" placeholder="42101-1234567-1"></div></div>
-<div class="rw">
-<div><label>Mobile No (11 digits) *</label><input id="v_mobile" inputmode="tel" maxlength="12" placeholder="0300-1234567"></div>
-<div><label>Emergency No (11 digits)</label><input id="v_emg" inputmode="tel" maxlength="12" placeholder="0300-7654321"></div>
+<div class="svwstep" data-step="3" style="display:none">
+<div class="rw"><div><label>Personal ID *</label><input id="v_pid"></div>
+<div id="v_gradeWrap"><label>Grade *</label><input id="v_grade" placeholder="BPS-14"></div></div>
+<div class="rw"><div><label>Blood Gr</label><select id="v_blood"><option value="">-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+<div><label>Date of Birth *</label><input id="v_dob" type="date"></div></div>
+<div class="rw"><div><label>Appointment Date *</label><input id="v_appt" type="date"></div>
+<div><label>Place of Posting *</label><input id="v_posting"></div></div>
 </div>
-<div class="rw">
-<div><label>Date of Birth *</label><input id="v_dob" type="date"></div>
-<div><label>Appointment Date *</label><input id="v_appt" type="date"></div>
-</div>
-<div class="rw">
-<div><label>Issue Date</label><input id="v_issue" type="date"></div>
-<div><label>Valid Upto</label><input id="v_valid" type="date"></div>
-</div>
-<div class="rw"><div class="w2"><label>Place of Posting *</label><input id="v_posting"></div></div>
+<div class="svwstep" data-step="4" style="display:none">
+<div class="rw"><div class="w2"><label>CNIC No (13 digits) *</label><input id="v_cnic" inputmode="numeric" maxlength="15" placeholder="42101-1234567-1" oninput="MASKIN(this,FMTCNIC)" onblur="this.value=FMTCNIC(this.value)"></div></div>
+<div class="rw"><div><label>Mobile No (11 digits) *</label><input id="v_mobile" inputmode="tel" maxlength="12" placeholder="0300-1234567" oninput="MASKIN(this,FMTMOB)" onblur="this.value=FMTMOB(this.value)"></div>
+<div><label>Emergency No</label><input id="v_emg" inputmode="tel" maxlength="12" placeholder="0300-7654321" oninput="MASKIN(this,FMTMOB)"></div></div>
 <div class="rw"><div class="w2"><label>Address *</label><textarea id="v_addr" rows="2"></textarea></div></div>
-
+</div>
+<div class="svwstep" data-step="5" style="display:none">
+<div class="rw"><div><label>Issue Date</label><input id="v_issue" type="date"></div>
+<div><label>Valid Upto</label><input id="v_valid" type="date"></div></div>
 <div class="sc">Make the card</div>
 <div class="bs">
-<button class="bn bw" onclick="SVMAKE('qr')">Card with QR</button>
-<button class="bn bw" onclick="SVMAKE('bar')">Card with Barcode</button>
+<button class="bn bw" type="button" onclick="SVMAKE('qr')">Card with QR</button>
+<button class="bn bw" type="button" onclick="SVMAKE('bar')">Card with Barcode</button>
 </div>
 <div class="bs">
-<button class="bn tb" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="SVSAVE()">Save to list</button>
-<button class="bn tb" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="SVCLEAR(1)">Clear form</button>
+<button class="bn tb" type="button" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="SVSAVE()">Save to list</button>
+<button class="bn tb" type="button" style="background:#fafafa;color:#333;border:1px solid #ccc" onclick="SVCLEAR(1)">Clear form</button>
 </div>
-<div class="hn">Saving is optional. It keeps the record on this phone so you can print again later. Staff records are not sent to Firebase.</div>
+<div class="hn">Saving is optional. It keeps the record on this phone so you can print again later.</div>
 </div>
-
+<div class="bs wznav" id="svWzNav">
+<button class="bn tb" id="svWzBack" type="button" onclick="SVWZGO(SVWZSTEP-1)" style="background:#fafafa;color:#555;border:1px solid #ccc">Back</button>
+<button class="bn bw" id="svWzNext" type="button" onclick="SVWZNEXT()">Next</button>
+</div>
+</div>
 <div id="sv2" style="display:none">
 <div class="sc">Saved staff</div>
 <div class="rw"><div class="w2"><label>Search</label><input id="v_q" oninput="SVRENDER()" placeholder="Name, personal id, designation"></div></div>
@@ -1064,7 +1298,7 @@ body{background:var(--bg);padding-bottom:30px}
 <div class="sc">PPHI health card wording</div>
 <div class="rw"><div class="w2"><label>Header style</label><select id="v_hstyle" onchange="SVQUICK()"><option value="stacked">Logos on top, text under them</option><option value="side">Logos at the sides, text between</option></select></div></div>
 <div class="rw"><div class="w2"><label>Safety pattern behind the text</label><select id="v_safety" onchange="SVQUICK()"><option value="none">None</option><option value="bloom">Flower lattice</option><option value="weave">Woven net</option><option value="rosette">Guilloche rosette</option><option value="ajrak">Ajrak stars</option><option value="textline">Microtext with ruled lines</option><option value="text">Microtext only</option><option value="wave">Guilloche waves</option><option value="lattice">Cross lattice</option><option value="diagonal">Diagonal lines</option><option value="micro">Fine dots</option></select></div></div>
-<div class="rw"><div class="w2"><label>Ajrak band under the header</label><select id="v_ajrak" onchange="SVQUICK()"><option value="no">Plain gold line</option><option value="yes">Show the Ajrak print</option></select></div>
+<div class="rw"><div class="w2"><label>Ajrak band under the header</label><select id="v_ajrak" onchange="SVQUICK()"><option value="no">Plain gold line</option><option value="yes">Show the Ajrak print</option></select></div></div>
 <div class="rw"><div class="w2"><label>First line</label><input id="v_govt2" placeholder="GOVERNMENT OF BALOCHISTAN"></div></div>
 <div class="rw"><div class="w2"><label>Second line, mixed case</label><input id="v_dept2" placeholder="People&#39;s Primary Healthcare Initiative Balochistan"></div></div>
 <div class="rw"><div class="w2"><label>Strip at the bottom of the front</label><input id="v_title" placeholder="OFFICIAL IDENTITY CARD"></div></div>
@@ -1117,6 +1351,16 @@ Developed by <b>NAZIM NOOR</b>
 </div>
 
 <!-- ================= PROFILE VIEW ================= -->
+<div class="ov" id="ovStaff"><div class="ovb">
+<div class="ovh"><h2 id="ovStName">Staff member</h2><p id="ovStSub"></p></div>
+<div class="ovc" id="ovStBody"></div>
+<div class="ovf">
+<button class="bn bw" type="button" onclick="STOPENPDF()">Staff profile PDF</button>
+<button class="bn bl" type="button" onclick="STOPENEDIT()">Edit</button>
+<button class="bn tb" type="button" onclick="STCLOSE()" style="background:#fafafa;color:#555;border:1px solid #ccc">Close</button>
+</div>
+</div></div>
+
 <div class="ov" id="ovProfile"><div class="ovb">
 <div class="ovh"><h2 id="ovName">Student</h2><p id="ovSub"></p></div>
 <div class="ovc" id="ovBody"></div>
@@ -1269,20 +1513,21 @@ Developed by <b>NAZIM NOOR</b>
 <div class="bs"><button class="bn tb" style="background:#fff8e1;border:1px solid #ffe082;color:#8a6410" onclick="CERTRECVUNDO()">Not received after all</button></div>
 </div>
 </div></div>
-<div class="ov" id="markOv"><div class="ovb">
+<div class="ov" id="markOv"><div class="ovb" style="max-height:92vh;display:flex;flex-direction:column">
 <div class="ovh"><h2 id="mkHd">Marks</h2><p id="mkSub"></p></div>
-<div class="ovc">
+<div class="ovc" style="overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;max-height:70vh">
 <div id="mkBody"></div>
-<div class="sc">Attendance</div>
+<div class="sc" style="margin-top:12px">Attendance (once for this student)</div>
+<div class="hn" style="margin-bottom:6px">Fill days only once. Same values are kept when you open this student again.</div>
 <div class="rw">
 <div><label>Days in the session</label><input id="mk_days" inputmode="numeric" placeholder="210"></div>
 <div><label>Days present</label><input id="mk_att" inputmode="numeric" placeholder="198"></div>
 </div>
 <div class="rw"><div class="w2"><label>Remark of the class teacher</label><input id="mk_note" placeholder="Works hard, needs practice in Mathematics"></div></div>
-<div class="bs">
-<button class="bn bw" onclick="EXMARKSAVE()">Save the marks</button>
-<button class="bn tb" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="EXMARKCLOSE()">Cancel</button>
 </div>
+<div class="bs" style="padding:12px 14px;border-top:1px solid #e5e8e5;background:#fff">
+<button class="bn bw" type="button" onclick="EXMARKSAVE()">Save all paper marks</button>
+<button class="bn tb" type="button" style="background:#fafafa;color:#555;border:1px solid #ccc" onclick="EXMARKCLOSE()">Close</button>
 </div>
 </div></div>
 <div class="ov" id="rcptOv"><div class="ovb">
@@ -1577,6 +1822,84 @@ body{
   border-radius:2px;background:var(--gold)}
 .sc::before{content:"";position:absolute;left:0;bottom:0;right:0;height:1px;background:var(--line)}
 
+/* ---------- a long GR number must stay inside its circle ---------- */
+.av{padding:0 3px;text-align:center;line-height:1.05;overflow:hidden;word-break:break-all;
+  font-size:11.5px;letter-spacing:.1px}
+
+/* ---------- attendance: the mark in force has to be obvious ---------- */
+.atrow .acts button{font-weight:700;min-width:78px}
+.atrow .acts button.mP{background:#1f6b3f;border-color:#1f6b3f;color:#fff}
+.atrow .acts button.mA{background:#9d2b2b;border-color:#9d2b2b;color:#fff}
+.atrow .acts button.mL{background:#a4721c;border-color:#a4721c;color:#fff}
+
+/* ---------- dashboard ---------- */
+.dashhero{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.dashhero>div{flex:1;min-width:0}
+.dashhero b{display:block;font-size:19px;font-weight:800;letter-spacing:-.3px;color:var(--grn)}
+.dashhero span{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px}
+.dbref{flex:0 0 40px;height:40px;border-radius:50%;border:1px solid #e0e6e2;background:#fff;
+  font-size:19px;line-height:1;color:var(--grn);cursor:pointer}
+.dbref:active{transform:scale(.94)}
+.dactrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-bottom:4px}
+.dact{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:12px 11px;
+  background:#fff;border:1px solid #e4e9e6;border-radius:14px;cursor:pointer;text-align:left;
+  transition:border-color .16s var(--ease),transform .14s var(--ease)}
+.dact:active{transform:scale(.97)}
+.dact .ic{width:20px;height:20px;opacity:.75}
+.dact span{font-size:12px;font-weight:700;color:var(--ink2);line-height:1.25}
+.clrow{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #eef1ef}
+.clrow:last-child{border-bottom:0}
+.cln{flex:0 0 58px;font-size:12px;font-weight:700;color:var(--ink2)}
+.clbar{flex:1;height:9px;background:#eef1ee;border-radius:5px;overflow:hidden}
+.clbar i{display:block;height:100%;background:linear-gradient(90deg,var(--grn2),var(--grn));border-radius:5px}
+.clv{flex:0 0 66px;text-align:right;font-size:13px;font-weight:800;color:var(--grn)}
+.clv em{display:block;font-style:normal;font-size:9.5px;font-weight:600;color:var(--ink3)}
+.dtodo{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e4e9e6;
+  border-left:3px solid #b4641f;border-radius:12px;padding:10px 11px;margin-bottom:7px}
+.dtodo span{flex:1;font-size:12px;color:var(--ink2);line-height:1.35}
+.dtodo button{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--grn);background:#f2f6f3;
+  border:1px solid #dde6e0;border-radius:9px;padding:7px 11px;cursor:pointer}
+.dok{background:#f3f7f4;border:1px solid #dfe8e2;border-radius:12px;padding:12px;
+  font-size:12px;color:var(--ink2)}
+
+/* ---------- a staff photograph in the list ---------- */
+.avp{flex:0 0 40px;height:40px;border-radius:50%;overflow:hidden;background:#eef1ee;
+  box-shadow:0 3px 9px rgba(18,51,31,.22)}
+.avp img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- the buttons at the foot of an open record ---------- */
+.ovf{display:flex;gap:7px;flex-wrap:wrap;padding:12px 14px 16px;border-top:1px solid var(--line);background:#fff}
+.ovf .bn{flex:1 1 120px;margin:0;min-width:0}
+
+/* ---------- the figures a Head Master asks for first ---------- */
+.dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-bottom:6px}
+.dcard{background:#fff;border:1px solid #e4e9e6;border-radius:14px;padding:11px 12px 12px;position:relative;overflow:hidden}
+.dcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--grn2)}
+.dcard.warn::before{background:#b4641f}
+.dcard b{display:block;font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--grn);line-height:1.1}
+.dcard span{display:block;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
+  color:var(--ink3);margin-top:4px}
+.dcard i{display:block;font-style:normal;font-size:10.5px;color:var(--ink2);margin-top:5px}
+
+/* ---------- a plain table, for the attendance figures ---------- */
+.tb2{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+.tb2 th{background:#f1f4f1;color:var(--ink2);font-weight:700;font-size:10.5px;
+  letter-spacing:.4px;text-transform:uppercase;padding:7px 6px;text-align:left;border-bottom:1px solid var(--line)}
+.tb2 td{padding:7px 6px;border-bottom:1px solid #eef1ef;color:var(--ink)}
+.tb2 tr:last-child td{border-bottom:0}
+.tb2 td:nth-child(n+3),.tb2 th:nth-child(n+3){text-align:center}
+
+/* ---------- ready made colour pairs for the printed papers ---------- */
+.thrw{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.thc{border:1.5px solid #e2e7e4;border-radius:12px;padding:0;background:#fff;cursor:pointer;
+  overflow:hidden;text-align:left;transition:border-color .18s var(--ease),box-shadow .18s var(--ease),transform .14s var(--ease)}
+.thc:active{transform:scale(.97)}
+.thc .sw{display:block;height:30px;position:relative}
+.thc .sw i{position:absolute;left:0;right:0;bottom:0;height:4px;display:block}
+.thc b{display:block;font-size:10.5px;font-weight:700;letter-spacing:.2px;color:var(--ink2);padding:6px 8px 7px}
+.thc.on{border-color:var(--grn2);box-shadow:0 0 0 3px rgba(31,107,63,.14)}
+.thc.on b{color:var(--grn)}
+
 /* ---------- fields ---------- */
 label{font-size:10.5px;font-weight:700;letter-spacing:.35px;color:var(--ink2);margin-bottom:4px}
 input,select,textarea{
@@ -1654,7 +1977,8 @@ input:focus,select:focus,textarea:focus{
   background:#fffaed;border:1px solid #f2dfa8;color:#8a6410}
 
 /* ---------- overlays ---------- */
-.ov{background:rgba(9,20,14,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.ov{background:rgba(9,20,14,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  padding-top:72px}   /* an open record starts below the app bar, never under it */
 .ovb{border-radius:18px;box-shadow:var(--sh3);animation:pop .24s var(--ease) both}
 @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
 .ovh{background:linear-gradient(140deg,#0d3320,#1d6a3f);padding:14px 16px}
@@ -1944,10 +2268,17 @@ var FB_SCHOOL = (typeof window!=="undefined"&&window.FB_SCHOOL)||"school1";
 
 /* ============ storage ============ */
 var KS="sch_students",KC="sch_settings",KT="sch_trash";
+/* the office registers a clerk keeps by hand, now kept here */
+var KA="sch_att",KF="sch_staff",KD="sch_dak",KX="sch_stock";
 var STU=[],TRASH=[],SET={},EDITGR=null,CURTAB=1;
+var ATT=[],STAFF=[],DAK=[],STOCK=[];
 function LOAD(){try{STU=JSON.parse(localStorage.getItem(KS)||"[]");}catch(e){STU=[];}
 try{TRASH=JSON.parse(localStorage.getItem(KT)||"[]");}catch(e){TRASH=[];}
 try{SET=JSON.parse(localStorage.getItem(KC)||"{}");}catch(e){SET={};}
+try{ATT=JSON.parse(localStorage.getItem(KA)||"[]");}catch(e){ATT=[];}
+try{STAFF=JSON.parse(localStorage.getItem(KF)||"[]");}catch(e){STAFF=[];}
+try{DAK=JSON.parse(localStorage.getItem(KD)||"[]");}catch(e){DAK=[];}
+try{STOCK=JSON.parse(localStorage.getItem(KX)||"[]");}catch(e){STOCK=[];}
 if(!SET.classes||!SET.classes.length)SET.classes=["Nursery","KG","1","2","3","4","5","6","7","8","9","10"];
 if(SET.prefix==null)SET.prefix="";
 if(!SET.start)SET.start=1;
@@ -1955,6 +2286,7 @@ if(!SET.pad)SET.pad=3;
 if(SET.school==null)SET.school="";
 if(SET.sub==null)SET.sub="";
 if(SET.pdfColor==null)SET.pdfColor="#1a472a";
+if(SET.pdfAccent==null)SET.pdfAccent="#c7971f";
 if(SET.logoPos==null)SET.logoPos="left";
 if(SET.wm==null)SET.wm="yes";
 if(SET.autoGr==null)SET.autoGr=true;
@@ -1962,7 +2294,8 @@ if(!SET.grNext){var mx=SET.start-1;STU.concat(TRASH).forEach(function(s){var n=G
 /* a change time on the settings, so the newest setup wins when two
    devices or two web addresses meet at the cloud */
 function SETTOUCH(){SET.mt=Date.now();try{localStorage.setItem(KC,JSON.stringify(SET));}catch(e){}}
-function SAVEALL(){CSTAMP();try{localStorage.setItem(KS,JSON.stringify(STU));localStorage.setItem(KT,JSON.stringify(TRASH));localStorage.setItem(KC,JSON.stringify(SET));AUTOSYNC();return true;}catch(e){SM("Storage is full, take a backup and remove old records",1);return false;}}
+function SAVEREG(){try{localStorage.setItem(KA,JSON.stringify(ATT));localStorage.setItem(KF,JSON.stringify(STAFF));localStorage.setItem(KD,JSON.stringify(DAK));localStorage.setItem(KX,JSON.stringify(STOCK));return true;}catch(e){SM("Storage is full, take a backup first",1);return false;}}
+function SAVEALL(){CSTAMP();try{localStorage.setItem(KS,JSON.stringify(STU));localStorage.setItem(KT,JSON.stringify(TRASH));localStorage.setItem(KC,JSON.stringify(SET));SAVEREG();AUTOSYNC();return true;}catch(e){SM("Storage is full, take a backup and remove old records",1);return false;}}
 function SM(m,e){var el=document.getElementById("ms");el.textContent=m;el.className=e?"msg er":"msg";el.style.display="block";clearTimeout(SM.t);SM.t=setTimeout(function(){el.style.display="none";},4000);window.scrollTo(0,0);}
 function V(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function SV(id,v){var e=document.getElementById(id);if(e)e.value=v==null?"":v;}
@@ -2188,9 +2521,11 @@ var hit=(d&&parseInt(d,10)===n)&&((sec||"")===ds);
 b[i].className=hit?"dwi act":"dwi";}}
 /* the title in the bar always says which page is open */
 var PAGENAME={9:"Search a Student",1:"New Registration",2:"All Students",3:"Dustbin",4:"Excel and Backup",
-5:"Setup",6:"Office",7:"Class Allotment",8:"Examination"};
+5:"Setup",6:"Office",7:"Class Allotment",8:"Examination",10:"Attendance",11:"Staff Register",12:"Office Registers",13:"Dashboard"};
 var SECNAME={excel:"Excel Sheet",backup:"Backup and Restore",forms:"Blank Forms",
-report:"Strength Report",dup:"Check for Duplicates",admit:"Admit Cards",result:"Result Cards"};
+report:"Strength Report",dup:"Check for Duplicates",admit:"Admit Cards",result:"Result Cards",
+attmark:"Mark Attendance",attreg:"Attendance Register",dak:"Letter Register",stock:"Stock Register",
+staff:"Staff Register",stsearch:"Search Staff",stlist:"All Staff"};
 function PAGETITLE(n,sec){
 var t=document.getElementById("hdSub");
 if(t)t.textContent=(sec&&SECNAME[sec])||PAGENAME[n]||"Student registration";}
@@ -2237,6 +2572,10 @@ if(n===5){PAINTSET();STORELINE();CPAINT();}
 if(n===7){PROMOFILL();CLPAINT();}
 if(n===8){EXPAINT();}
 if(n===9){SRENDER();var qq=document.getElementById("sq");if(qq)setTimeout(function(){qq.focus();},120);}
+if(n===13)DASHPAINT();
+if(n===10){ATPAINT();}
+if(n===11){STPAINT();}
+if(n===12){DAKPAINT();STKPAINT();}
 window.scrollTo(0,0);}
 
 /* ============ class dropdowns ============ */
@@ -2339,7 +2678,7 @@ else if(SET.autoGr&&!EDITGR)usedAuto=true;
 if(ISGRUSED(gr,EDITGR)){SM("GR number "+gr+" is already used by an active student",1);return;}
 if(cnic&&!VALIDCNIC(cnic)){SM("B-Form / CNIC must be exactly 13 digits",1);document.getElementById("f_cnic").focus();return;}
 if(mobile&&!VALIDMOBILE(mobile)){SM("Mobile number must be exactly 11 digits",1);document.getElementById("f_mobile").focus();return;}
-if(emg&&!VALIDMOBILE(emg)){SM("Emergency number must be exactly 11 digits",1);document.getElementById("f_emg").focus();return;}
+if(emg&&!VALIDMOBILE(emg)){SM("Emergency contact number must be exactly 11 digits",1);document.getElementById("f_emg").focus();return;}
 
 var rec={gr:gr,name:name,father:father,cls:KEEPCLS,section:KEEPSEC,gender:V("f_gender"),disab:(V("f_disab")==="Yes"?"Yes":"No"),blood:V("f_blood"),emg:emg,emgname:V("f_emgname"),
 cnic:NOCNIC?"":cnic,noCnic:NOCNIC?1:0,pcnic:pcnic,pcnicOf:pcnic?(V("f_pcnicof")||"Father"):"",
@@ -2438,7 +2777,7 @@ if(n===3){
 if(empty("f_mobile"))return WZFAIL("f_mobile","Write the mobile number");
 if(!VALIDMOBILE(FMTMOB(V("f_mobile"))))return WZFAIL("f_mobile","Mobile number must be exactly 11 digits");
 if(empty("f_emg"))return WZFAIL("f_emg","Write an emergency number");
-if(!VALIDMOBILE(FMTMOB(V("f_emg"))))return WZFAIL("f_emg","Emergency number must be exactly 11 digits");
+if(!VALIDMOBILE(FMTMOB(V("f_emg"))))return WZFAIL("f_emg","Emergency contact number must be exactly 11 digits");
 if(empty("f_addr"))return WZFAIL("f_addr","Write the address");
 return true;}
 return true;}
@@ -2465,7 +2804,7 @@ h+=row("Student CNIC",NOCNIC?"Student has no own B-Form":FMTCNIC(V("f_cnic")));
 h+=row((V("f_pcnicof")||"Parent")+" CNIC",FMTCNIC(V("f_pcnic")));
 h+='<div class="rvg">Contact</div>';
 h+=row("Mobile Number",FMTMOB(V("f_mobile")));
-h+=row("Emergency Number",FMTMOB(V("f_emg")));
+h+=row("Emergency Contact Number",FMTMOB(V("f_emg")));
 h+=row("Emergency Contact",V("f_emgname"));
 h+=row("Address",V("f_addr"));
 var rm=document.getElementById("f_remarks");
@@ -2846,16 +3185,61 @@ if(c)c.textContent=SET.school||"School Register";
 if(d)d.textContent=(SET.sub||"Student registration")+(SET.session?(" \u00b7 "+SET.session):"");
 LOCKBRAND();}
 /* the sign in card carries the school name, not a product name */
-var BUILD="B-21  02 Oct 2026";
+var BUILD="B-60  06 Oct 2026";
 function LOCKBRAND(sub){
 var t=document.getElementById("lkTitle"),u=document.getElementById("lkSub");
 if(t)t.textContent=SET.school||"School Register";
 if(u)u.textContent=sub||(SET.sub||"Office sign in");}
 function PAINTSET(){CARDPAINT();DASH();SV("s_prefix",SET.prefix);SV("s_start",SET.start);SV("s_pad",SET.pad);SV("s_school",SET.school);SV("s_certsigner",SET.certSigner||"");SV("s_certconduct",SET.certConduct||"");SV("s_certboard",SET.certBoard||"");SV("s_certnote",SET.certNote||"no");
 SV("s_sub",SET.sub);SV("s_next",SET.grNext);SV("s_pdfcolor",SET.pdfColor||"#1a472a");
+SV("s_pdfaccent",SET.pdfAccent||"#c7971f");THEMEPAINT();
 SV("s_logopos",SET.logoPos||"left");SV("s_wm",SET.wm||"yes");PAINTLOGOS();
 var t=document.getElementById("s_classes");if(t)t.value=SET.classes.join("\n");
 document.getElementById("nextHint").innerHTML="Next auto GR will be <b>"+ESC(NEXTGR())+"</b>";}
+/* ---------- ready made colour pairs for every download ---------- */
+var PDFTHEMES=[
+["Sindh green","#1a472a","#c7971f"],
+["Deep maroon","#6b1f28","#c7971f"],
+["Navy blue","#15305c","#b9c6dd"],
+["Teal","#10514e","#d6a93c"],
+["Royal purple","#432063","#cbb06a"],
+["Office black","#232323","#9a9a9a"],
+["Bronze","#5a3a18","#d9b071"],
+["Indigo","#2b2d6e","#c0c3e8"],
+["Forest","#1f3d22","#a9c08a"],
+["Plum","#52173f","#d2a2bd"]];
+function THEMEPAINT(){
+var box=document.getElementById("themeRow");if(!box)return;
+var h="";
+PDFTHEMES.forEach(function(t,i){
+h+='<button type="button" class="thc" id="th'+i+'" onclick="THEMEPICK('+i+')">'
++'<span class="sw" style="background:'+t[1]+'"><i style="background:'+t[2]+'"></i></span>'
++'<b>'+ESC(t[0])+'</b></button>';});
+box.innerHTML=h;
+THEMEMARK();}
+function THEMEPICK(i){
+var t=PDFTHEMES[i];if(!t)return;
+SV("s_pdfcolor",t[1]);SV("s_pdfaccent",t[2]);
+THEMEMARK();
+SM(t[0]+" chosen. Press Save setup to keep it.");}
+/* the chip that matches the two colour boxes is the one marked */
+function THEMEMARK(){
+var a=String(V("s_pdfcolor")||"").toLowerCase(),b=String(V("s_pdfaccent")||"").toLowerCase();
+PDFTHEMES.forEach(function(t,i){
+var el=document.getElementById("th"+i);if(!el)return;
+el.className="thc"+((t[1].toLowerCase()===a&&t[2].toLowerCase()===b)?" on":"");});}
+/* one page of the real admission form, so the pair can be judged on paper */
+function THEMEPREVIEW(){
+var oc=SET.pdfColor,oa=SET.pdfAccent;
+try{
+SET.pdfColor=V("s_pdfcolor")||"#1a472a";
+SET.pdfAccent=V("s_pdfaccent")||"#c7971f";
+var buf=FORMPDF("admission");
+DL(new Blob([buf],{type:"application/pdf"}),"Colour_Sample.pdf");
+SM("Sample page saved. Open it to see the two colours on paper.");
+}catch(e){SM("Could not build the sample: "+(e&&e.message?e.message:e),1);}
+SET.pdfColor=oc;SET.pdfAccent=oa;}
+
 function SETNEXTMAX(){var mx=SET.start-1;STU.concat(TRASH).forEach(function(s){var n=GRNUM(s.gr);if(n>mx)mx=n;});
 SV("s_next",mx+1);SM("Box filled with "+(mx+1)+", now press Save setup");}
 function CARDSET(){
@@ -2927,6 +3311,7 @@ SET.certBoard=V("s_certboard");
 SET.certNote=V("s_certnote")||"no";
 SET.sub=V("s_sub");
 SET.pdfColor=V("s_pdfcolor")||"#1a472a";
+SET.pdfAccent=V("s_pdfaccent")||"#c7971f";
 SET.logoPos=V("s_logopos")||"left";
 SET.wm=V("s_wm")||"yes";
 var nx=parseInt(V("s_next"));
@@ -2973,9 +3358,12 @@ var added=0;(o.students||[]).forEach(function(s){if(!have[s.gr]){STU.push(s);hav
 var thave={};TRASH.forEach(function(s){thave[s.gr]=1;});
 var tadded=0;(o.trash||[]).forEach(function(s){if(!thave[s.gr]&&!have[s.gr]){TRASH.push(s);tadded++;}});
 if(o.settings&&o.settings.grNext&&o.settings.grNext>(SET.grNext||0))SET.grNext=o.settings.grNext;
-SAVEALL();RENDER();RENDERTRASH();SM("Added "+added+" students and "+tadded+" dustbin records");
+var reg=REGMERGE(o);
+SAVEALL();RENDER();RENDERTRASH();SM("Added "+added+" students, "+tadded+" dustbin records and "+reg+" office register entries");
 }else{
-STU=o.students||[];TRASH=o.trash||[];if(o.settings)SET=o.settings;SAVEALL();LOAD();
+STU=o.students||[];TRASH=o.trash||[];if(o.settings)SET=o.settings;
+ATT=o.attendance||[];STAFF=o.staff||[];DAK=o.letters||[];STOCK=o.stock||[];
+SAVEALL();LOAD();
 FILLCLASSSEL("f_class",false);FILLCLASSSEL("qClass",true);FILLCLASSSEL("x_class",true);
 PAINTSET();PAINTAUTO();RENDER();RENDERTRASH();SM("Restored "+STU.length+" students + "+TRASH.length+" in dustbin");}}
 if(!left)afterFiles();
@@ -3330,12 +3718,872 @@ SHEETALLOT(list,{school:V("x_school")})];
 if(wantPics)sheets.push(SHEETPROFILES(list,files));
 if(CERTCOUNT(list))sheets.push(SHEETCERTS(list));
 if(wantDel&&dl.length)sheets.push(SHEETDELETED(dl));
+if(STAFF.length)sheets.push(SHEETSTAFF());
+if(DAK.length)sheets.push(SHEETDAK());
+if(STOCK.length)sheets.push(SHEETSTOCK());
 var buf=BUILDBOOK(sheets,V("x_color")||"#1a472a");
 var fname="Students_"+(cls?("Class_"+cls.replace(/[^\w]/g,"")+"_"):"")+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+".xlsx";
 DL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),fname);
 SET.lastExport=Date.now();SAVEALL();PAINTSYNC();
 SM("Sheet ready: "+list.length+" students"+(wantPics?" with pictures":"")+(wantDel&&dl.length?(", "+dl.length+" deleted"):""));
 }catch(e){SM("Could not build the sheet: "+(e&&e.message?e.message:e),1);console.log(e);}});}
+
+/* ================= dashboard =================
+   The page that opens after signing in. It answers, without any tapping,
+   the questions the office asks first thing in the morning. */
+function DBHELLO(){
+var h=new Date().getHours();
+return (h<12)?"Good morning":((h<17)?"Good afternoon":"Good evening");}
+function DBLONGDATE(){
+var d=new Date();
+var day=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()];
+var mon=["January","February","March","April","May","June","July","August",
+"September","October","November","December"][d.getMonth()];
+return day+", "+d.getDate()+" "+mon+" "+d.getFullYear();}
+function DASHPAINT(){
+var grid=document.getElementById("dbGrid");if(!grid)return;
+var hi=document.getElementById("dbHello"),dt=document.getElementById("dbDate");
+if(hi)hi.textContent=DBHELLO();
+if(dt)dt.textContent=DBLONGDATE();
+var today=TODAYISO();
+var roll=STU.length;
+var boys=STU.filter(function(s){return s.gender==="Male";}).length;
+var girls=STU.filter(function(s){return s.gender==="Female";}).length;
+var noClass=STU.filter(function(s){return !s.cls;}).length;
+var p=0,a=0,l=0,marked={};
+ATT.forEach(function(r){
+if(r.d!==today)return;
+marked[r.cls+"|"+(r.section||"")]=1;
+Object.keys(r.m||{}).forEach(function(g){
+var m=r.m[g];if(m==="P")p++;else if(m==="A")a++;else if(m==="L")l++;});});
+var held=p+a+l, pc=held?Math.round(p*1000/held)/10:0;
+var nClassesMarked=Object.keys(marked).length;
+var work=STAFF.filter(function(x){return x.status==="Working";}).length;
+var onLeave=STAFF.filter(function(x){return x.status==="Leave";}).length;
+var noPhoto=STU.filter(function(s){return !s.photo;}).length;
+var cells=[
+["On roll",roll,boys+" boys, "+girls+" girls",0],
+["Present today",held?(pc+"%"):"-",held?(p+" of "+held+" marked"):"attendance not marked yet",held?0:1],
+["Absent today",held?a:"-",held?(l+" on leave"):"nothing marked yet",a?1:0],
+["Classes marked",nClassesMarked,"today",nClassesMarked?0:1],
+["Staff working",work,STAFF.length?(onLeave+" on leave"):"staff register is empty",0],
+["No class yet",noClass,noClass?"give them a class":"every one is placed",noClass?1:0]];
+grid.innerHTML=cells.map(function(c){
+return '<div class="dcard'+(c[3]?" warn":"")+'"><b>'+ESC(String(c[1]))+'</b><span>'+ESC(c[0])+'</span><i>'+ESC(c[2])+'</i></div>';}).join("");
+
+/* the four things done most often, one tap away */
+var acts=document.getElementById("dbActs");
+if(acts){
+var A=[["Mark attendance","ic-check","GOTAB(10,'attmark')"],
+["New registration","ic-add","GOTAB(1)"],
+["Search a student","ic-find","GOTAB(9)"],
+["Staff register","ic-badge","GOTAB(11,'staff')"],
+["Class allotment","ic-class","GOTAB(7)"],
+["Blank forms","ic-form","GOTAB(6,'forms')"]];
+acts.innerHTML=A.map(function(x){
+return '<button type="button" class="dact" onclick="'+x[2]+'"><i class="ic '+x[1]+'"></i><span>'+x[0]+'</span></button>';}).join("");}
+
+/* strength by class, as a bar the eye can read in one go */
+var cb=document.getElementById("dbClass");
+if(cb){
+var by={},order=[];
+STU.forEach(function(s){
+var k=s.cls||"";if(!k)return;
+if(!by[k]){by[k]={b:0,g:0,t:0};order.push(k);}
+by[k].t++;if(s.gender==="Female")by[k].g++;else by[k].b++;});
+order.sort(function(x,y){
+var i=SET.classes.indexOf(x),j=SET.classes.indexOf(y);
+if(i<0)i=999;if(j<0)j=999;return i-j;});
+if(!order.length){cb.innerHTML='<div class="hn">No student has been given a class yet.</div>';}
+else{
+var mx=1;order.forEach(function(k){if(by[k].t>mx)mx=by[k].t;});
+cb.innerHTML=order.map(function(k){
+var r=by[k];
+return '<div class="clrow"><span class="cln">'+ESC(k)+'</span>'
++'<span class="clbar"><i style="width:'+Math.round(r.t/mx*100)+'%"></i></span>'
++'<span class="clv">'+r.t+'<em>'+r.b+'b '+r.g+'g</em></span></div>';}).join("");}}
+
+/* the short list of things that still need doing */
+var td=document.getElementById("dbTodo");
+if(td){
+var items=[];
+if(!held)items.push(["Attendance is not marked for today","GOTAB(10,'attmark')","Mark now"]);
+if(noClass)items.push([noClass+" student"+(noClass>1?"s are":" is")+" waiting for a class","GOTAB(7)","Open"]);
+if(noPhoto)items.push([noPhoto+" student"+(noPhoto>1?"s have":" has")+" no photograph","GOTAB(2)","Open"]);
+if(!STAFF.length)items.push(["The staff register is empty","GOTAB(11,'staff')","Add staff"]);
+if(!SET.school)items.push(["The school name is not set","SETASK(function(){GOTAB(5);})","Setup"]);
+if(!items.length){td.innerHTML='<div class="dok">Everything is up to date.</div>';}
+else td.innerHTML=items.map(function(x){
+return '<div class="dtodo"><span>'+ESC(x[0])+'</span><button type="button" onclick="'+x[1]+'">'+ESC(x[2])+'</button></div>';}).join("");}}
+
+/* ---------- the school at a glance, on the page that opens first ---------- */
+function DASHGRID(){
+var today=TODAYISO();
+var p=0,a=0,l=0,s=0,o=0,marked=0,classes=0;
+ATT.forEach(function(r){
+  if(r.d!==today)return;
+  classes++;
+  Object.keys(r.m||{}).forEach(function(g){
+    var m=r.m[g];
+    marked++;
+    if(m==="P")p++;
+    else if(m==="A")a++;
+    else if(m==="L")l++;
+    else if(m==="S")s++;
+    else o++;
+  });
+});
+function set(id,v){var el=document.getElementById(id);if(el)el.textContent=String(v);}
+set("aqP",p);set("aqA",a);set("aqL",l);set("aqS",s);set("aqT",marked);
+var hint=document.getElementById("attQuickHint");
+if(hint){
+  if(!classes)hint.textContent="No class marked for today yet. Open Mark Attendance to begin.";
+  else hint.textContent=classes+" class"+(classes>1?"es":"")+" marked today · "+p+" present · "+a+" absent · "+l+" leave · "+s+" sick.";
+}
+/* legacy dash grid if still present */
+var box=document.getElementById("dashGrid");
+if(box){
+  box.innerHTML="";
+}
+}
+
+
+function ISO(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function TODAYISO(){return ISO(new Date());}
+function NUM(v){var n=parseInt(String(v).replace(/[^0-9]/g,""),10);return isNaN(n)?0:n;}
+function SECLIST(){var o={};STU.forEach(function(s){if(s.section)o[s.section]=1;});
+var a=Object.keys(o).sort();return a;}
+function FILLSECSEL(id){
+var e=document.getElementById(id);if(!e)return;var cur=e.value;
+e.innerHTML='<option value="">All sections</option>';
+SECLIST().forEach(function(x){var o=document.createElement("option");o.value=x;o.text="Section "+x;e.appendChild(o);});
+if(cur)e.value=cur;}
+function STATBOX(pairs){
+return pairs.map(function(p){return '<div><b>'+ESC(String(p[1]))+'</b><span>'+ESC(p[0])+'</span></div>';}).join("");}
+function EMPTY(t){return '<div class="card" style="justify-content:center"><div class="cbody"><div class="sub" style="text-align:center;padding:10px 0">'+ESC(t)+'</div></div></div>';}
+
+/* ---------------- attendance ---------------- */
+var ATMARK={};
+function ATKEY(d,c,sec){return d+"|"+c+"|"+(sec||"");}
+function ATFIND(d,c,sec){var k=ATKEY(d,c,sec);
+for(var i=0;i<ATT.length;i++)if(ATT[i].k===k)return ATT[i];return null;}
+function ATROLL(c,sec){
+return STU.filter(function(s){return s.cls===c&&(!sec||s.section===sec);})
+.sort(function(a,b){return GRNUM(a.gr)-GRNUM(b.gr);});}
+function ATPAINT(){
+FILLCLASSSEL("at_class",false);FILLCLASSSEL("ar_class",false);
+FILLSECSEL("at_sec");FILLSECSEL("ar_sec");
+if(!V("at_date"))SV("at_date",TODAYISO());
+if(!V("ar_month"))SV("ar_month",TODAYISO().substring(0,7));
+ATFILL();}
+function ATFILL(){
+var c=V("at_class"),sec=V("at_sec"),d=V("at_date")||TODAYISO();
+var rec=ATFIND(d,c,sec);
+ATMARK=rec?JSON.parse(JSON.stringify(rec.m||{})):{};
+ATRENDER();}
+function ATRENDER(){
+var box=document.getElementById("at_list");if(!box)return;
+var c=V("at_class"),sec=V("at_sec");
+var roll=ATROLL(c,sec);
+if(!roll.length){box.innerHTML=EMPTY(c?("No student is in class "+c+(sec?(" section "+sec):"")+" yet."):"Choose a class first.");ATTALLY(roll);return;}
+var h="";
+roll.forEach(function(s){
+var m=ATMARK[s.gr]||"";
+h+='<div class="card atrow"><div class="cwrap"><div class="av">'+ESC(s.gr)+'</div>'
++'<div class="cbody"><div class="nm">'+ESC(s.name)+'</div>'
++'<div class="sub">'+ESC(s.father||"")+'</div></div></div>'
++'<div class="acts">'
++'<button class="'+(m==="P"?"mP":"")+'" onclick="ATSET(\''+Q(s.gr)+'\',\'P\')">Present</button>'
++'<button class="'+(m==="A"?"mA":"")+'" onclick="ATSET(\''+Q(s.gr)+'\',\'A\')">Absent</button>'
++'<button class="'+(m==="L"?"mL":"")+'" onclick="ATSET(\''+Q(s.gr)+'\',\'L\')">Leave</button>'
++'</div></div>';});
+box.innerHTML=h;
+ATTALLY(roll);}
+function ATTALLY(roll){
+var t=document.getElementById("at_tally");if(!t)return;
+roll=roll||ATROLL(V("at_class"),V("at_sec"));
+var p=0,a=0,l=0,n=0;
+roll.forEach(function(s){var m=ATMARK[s.gr];if(m==="P")p++;else if(m==="A")a++;else if(m==="L")l++;else n++;});
+t.innerHTML=STATBOX([["On roll",roll.length],["Present",p],["Absent",a],["Leave",l],["Blank",n]]);}
+function ATSET(gr,m){
+if(ATMARK[gr]===m)delete ATMARK[gr];else ATMARK[gr]=m;
+ATRENDER();}
+
+function ATFINDSTU(gr){
+  gr=String(gr||"").trim();
+  if(!gr)return null;
+  for(var i=0;i<STU.length;i++)if(String(STU[i].gr)===gr||String(STU[i].gr)===String(gr).replace(/^0+/,''))return STU[i];
+  for(var j=0;j<STU.length;j++)if(String(STU[j].gr).replace(/\D/g,'')===String(gr).replace(/\D/g,''))return STU[j];
+  return null;
+}
+function ATMARKGR(mark){
+  mark=mark||"P";
+  var raw=V("at_gr_quick");
+  var gr=String(raw||"").replace(/\D/g,"");
+  if(!gr)return SM("Type a GR number",1);
+  var stu=ATFINDSTU(gr);
+  if(!stu)return SM("No student with GR "+gr,1);
+  if(!stu.cls)return SM((stu.name||"Student")+" has no class yet",1);
+  var curC=V("at_class");
+  if(curC!==stu.cls){
+    SV("at_class",stu.cls);
+    if(typeof FILLSECSEL==="function")FILLSECSEL("at_sec");
+  }
+  if(stu.section){
+    var secEl=document.getElementById("at_sec");
+    if(secEl)secEl.value=stu.section;
+  }
+  if(curC!==stu.cls && typeof ATFILL==="function")ATFILL();
+  if(typeof ATMARK==="undefined")window.ATMARK={};
+  ATMARK[String(stu.gr)]=mark;
+  if(typeof ATRENDER==="function")ATRENDER();
+  var mlab={P:"Present",A:"Absent",L:"Leave",S:"Sick"};
+  var msg=(mlab[mark]||mark)+" · GR "+stu.gr+" · "+(stu.name||"");
+  SM(msg);
+  var last=document.getElementById("at_last");
+  if(last)last.textContent=msg;
+  SV("at_gr_quick","");
+  var inp=document.getElementById("at_gr_quick");
+  if(inp)inp.focus();
+}
+
+function ATALL(m){
+var roll=ATROLL(V("at_class"),V("at_sec"));
+ATMARK={};
+if(m)roll.forEach(function(s){ATMARK[s.gr]=m;});
+ATRENDER();}
+function ATSAVE(){
+var c=V("at_class");if(!c)return SM("Choose a class first",1);
+var d=V("at_date")||TODAYISO(),sec=V("at_sec");
+var roll=ATROLL(c,sec);
+if(!roll.length)return SM("No student is in that class",1);
+var left=roll.filter(function(s){return !ATMARK[s.gr];}).length;
+if(left)return SM(left+" student"+(left>1?"s are":" is")+" not marked yet",1);
+var k=ATKEY(d,c,sec),rec=ATFIND(d,c,sec);
+var m={};roll.forEach(function(s){m[s.gr]=ATMARK[s.gr];});
+if(rec){rec.m=m;rec.at=Date.now();}
+else ATT.push({k:k,d:d,cls:c,section:sec,m:m,at:Date.now()});
+if(!SAVEALL())return;
+var p=roll.filter(function(s){return m[s.gr]==="P";}).length;
+SM("Attendance saved for "+DMY(d)+". Present "+p+" of "+roll.length+".");}
+/* the figures for one class in one month */
+function ATMONTH(c,sec,ym){
+var roll=ATROLL(c,sec),days=[],rows=[];
+var y=NUM(ym.split("-")[0]),mo=NUM(ym.split("-")[1]);
+var last=new Date(y,mo,0).getDate(),i;
+for(i=1;i<=last;i++)days.push(i);
+var recs={};
+ATT.forEach(function(r){
+if(r.cls!==c)return;
+if(sec&&r.section!==sec)return;
+if(String(r.d).substring(0,7)!==ym)return;
+recs[NUM(String(r.d).substring(8,10))]=r.m||{};});
+roll.forEach(function(s){
+var marks=[],p=0,a=0,l=0,open=0;
+days.forEach(function(dd){
+var m=recs[dd]?(recs[dd][s.gr]||""):"";
+if(m==="P")p++;else if(m==="A")a++;else if(m==="L")l++;
+if(recs[dd])open++;
+marks.push(m);});
+var held=p+a+l;
+rows.push({s:s,marks:marks,p:p,a:a,l:l,held:held,
+pc:held?Math.round(p*1000/held)/10:0});});
+return {roll:roll,days:days,rows:rows,open:Object.keys(recs).length};}
+function ATSUMSHOW(){
+var c=V("ar_class"),ym=V("ar_month");
+var out=document.getElementById("ar_out");if(!out)return;
+if(!c||!ym){out.innerHTML='<div class="hn">Choose a class and a month.</div>';return;}
+var r=ATMONTH(c,V("ar_sec"),ym);
+if(!r.rows.length){out.innerHTML='<div class="hn">No student is in that class.</div>';return;}
+if(!r.open){out.innerHTML='<div class="hn">Attendance was not marked on any day of that month.</div>';return;}
+var tot=0,cnt=0;
+var h='<div class="stat">'+STATBOX([["Days marked",r.open],["On roll",r.rows.length]])+'</div><table class="tb2"><tr><th>GR</th><th>Name</th><th>P</th><th>A</th><th>L</th><th>%</th></tr>';
+r.rows.forEach(function(x){
+tot+=x.pc;cnt++;
+h+='<tr><td>'+ESC(x.s.gr)+'</td><td>'+ESC(x.s.name)+'</td><td>'+x.p+'</td><td>'+x.a+'</td><td>'+x.l+'</td><td>'+x.pc+'%</td></tr>';});
+h+='</table><div class="hn" style="margin-top:8px">Average attendance for the month: <b>'+(cnt?Math.round(tot/cnt*10)/10:0)+'%</b></div>';
+out.innerHTML=h;}
+
+/* ---------------- staff ---------------- */
+var STEDIT=null;
+
+var STWZSTEP=1,SVWZSTEP=1,STPEND=null;
+function MASKIN(el,fn){if(!el||!fn)return;var n=fn(el.value);el.value=n;try{el.setSelectionRange(n.length,n.length);}catch(e){}}
+function STSTATUS(){var box=document.getElementById("t_leaveBox");if(box)box.style.display=V("t_status")==="Leave"?"block":"none";}
+function STCLEAR(){["t_name","t_father","t_bps","t_pn","t_cnic","t_mobile","t_qual","t_subj","t_rem","t_leaveWhy","t_dob","t_first","t_join","t_leaveFrom","t_leaveTo"].forEach(function(id){SV(id,"");});SV("t_gender","");SV("t_desig","");SV("t_status","Working");STPEND=null;ST_PAINTPHOTO();STSTATUS();STWZGO(1);SM("Form cleared");}
+function ST_PAINTPHOTO(){var b=document.getElementById("t_photoBox");if(!b)return;b.innerHTML=(STPEND&&STPEND.data)?('<img alt="" src="'+STPEND.data+'">'):"Tap to<br>add photo";}
+function ST_ADDPHOTO(inp){var f=inp.files&&inp.files[0];inp.value="";if(!f)return;if(typeof PEDOPEN==="function"){PEDOPEN(f,function(r){if(!r)return;STPEND={data:r.data,w:r.w,h:r.h};ST_PAINTPHOTO();SM("Photo ready");});}else{var fr=new FileReader();fr.onload=function(){STPEND={data:fr.result};ST_PAINTPHOTO();};fr.readAsDataURL(f);}}
+function ST_RMPHOTO(){STPEND=null;ST_PAINTPHOTO();}
+function STWZTAP(n){
+  n=n|0;
+  if(n<1||n>5)return;
+  if(n>STWZSTEP){SM("Please complete the current step first",1);return;}
+  STWZGO(n);
+}
+function STWZGO(step){
+  step=Math.max(1,Math.min(5,step|0));
+  STWZSTEP=step;
+  var steps=document.querySelectorAll("#p11 .stwstep");
+  for(var i=0;i<steps.length;i++){
+    var s=parseInt(steps[i].getAttribute("data-step"),10);
+    steps[i].style.display=s===step?"block":"none";
+  }
+  var titles={1:"Step 1 of 5 · Person",2:"Step 2 of 5 · Service",3:"Step 3 of 5 · Contact",4:"Step 4 of 5 · Status",5:"Step 5 of 5 · Photo"};
+  var t=document.getElementById("stWzTitle");
+  if(t)t.textContent=titles[step]||"";
+  var fill=document.getElementById("stWzFill");
+  if(fill)fill.style.width=((step-1)/4*100)+"%";
+  var stps=document.querySelectorAll("#stWzSteps .stp");
+  for(var j=0;j<stps.length;j++){
+    var n=parseInt(stps[j].getAttribute("data-s"),10);
+    stps[j].className="stp"+(n===step?" on":"")+(n<step?" done":"");
+  }
+  var back=document.getElementById("stWzBack");
+  var next=document.getElementById("stWzNext");
+  var save=document.getElementById("stWzSave");
+  var nav=document.getElementById("stWzNav");
+  if(back)back.style.visibility=step===1?"hidden":"visible";
+  if(next)next.style.display=step===5?"none":"";
+  if(nav)nav.style.display=step===5?"none":"flex";
+  if(save)save.style.display=step===5?"flex":"none";
+  if(typeof STSTATUS==="function")STSTATUS();
+}
+function STWZNEXT(){if(STWZSTEP===1){if(!V("t_name").trim())return SM("Write the name",1);if(!V("t_father").trim())return SM("Write the father or husband name",1);if(!V("t_gender"))return SM("Choose gender",1);if(!V("t_dob"))return SM("Put the date of birth",1);}if(STWZSTEP===2){if(!V("t_desig"))return SM("Choose the designation",1);if(!V("t_bps").trim())return SM("Write the BPS",1);if(!V("t_pn").trim())return SM("Write the personal number",1);if(!V("t_first"))return SM("Put the first appointment date",1);if(!V("t_join"))return SM("Put the date joined this school",1);}if(STWZSTEP===3){var cnic=FMTCNIC(V("t_cnic"));SV("t_cnic",cnic);var mobile=FMTMOB(V("t_mobile"));SV("t_mobile",mobile);if(!cnic)return SM("Write the CNIC",1);if(typeof VALIDCNIC==="function"&&!VALIDCNIC(cnic))return SM("CNIC must be exactly 13 digits",1);if(!mobile)return SM("Write the mobile number",1);if(typeof VALIDMOBILE==="function"&&!VALIDMOBILE(mobile))return SM("Mobile must be exactly 11 digits",1);}STWZGO(STWZSTEP+1);}
+function SVWZGO(step){step=Math.max(1,Math.min(5,step|0));SVWZSTEP=step;var steps=document.querySelectorAll("#sv1 .svwstep");for(var i=0;i<steps.length;i++){var s=parseInt(steps[i].getAttribute("data-step"),10);steps[i].style.display=s===step?"block":"none";}var titles={1:"Step 1 of 5 · Photo",2:"Step 2 of 5 · Person",3:"Step 3 of 5 · Service",4:"Step 4 of 5 · Contact",5:"Step 5 of 5 · Card"};var t=document.getElementById("svWzTitle");if(t)t.textContent=titles[step]||"";var fill=document.getElementById("svWzFill");if(fill)fill.style.width=((step-1)/4*100)+"%";var stps=document.querySelectorAll("#svWzSteps .stp");for(var j=0;j<stps.length;j++){var n=parseInt(stps[j].getAttribute("data-s"),10);stps[j].className="stp"+(n===step?" on":"")+(n<step?" done":"");}var back=document.getElementById("svWzBack"),next=document.getElementById("svWzNext"),nav=document.getElementById("svWzNav");if(back)back.style.visibility=step===1?"hidden":"visible";if(next)next.style.display=step===5?"none":"";if(nav)nav.style.display=step===5?"none":"flex";try{window.scrollTo(0,0);}catch(e){}}
+function SVWZNEXT(){if(SVWZSTEP===2){if(!V("v_name").trim())return SM("Write the full name",1);if(!V("v_relname").trim())return SM(V("v_rel")==="husband"?"Write the husband name":"Write the father name",1);if(!V("v_desig").trim())return SM("Write the designation",1);}if(SVWZSTEP===3){if(!V("v_pid").trim())return SM("Write the personal ID",1);if((typeof SVCSET!=="undefined"&&(SVCSET.design||"service")!=="health")&&!V("v_grade").trim())return SM("Write the grade",1);if(!V("v_dob"))return SM("Put the date of birth",1);if(!V("v_appt"))return SM("Put the appointment date",1);if(!V("v_posting").trim())return SM("Write the place of posting",1);}if(SVWZSTEP===4){var cnic=FMTCNIC(V("v_cnic"));SV("v_cnic",cnic);var mobile=FMTMOB(V("v_mobile"));SV("v_mobile",mobile);if(!cnic)return SM("Write the CNIC",1);if(typeof VALIDCNIC==="function"&&!VALIDCNIC(cnic))return SM("CNIC must be exactly 13 digits",1);if(!mobile)return SM("Write the mobile number",1);if(typeof VALIDMOBILE==="function"&&!VALIDMOBILE(mobile))return SM("Mobile must be exactly 11 digits",1);if(!V("v_addr").trim())return SM("Write the address",1);}SVWZGO(SVWZSTEP+1);}
+
+/* every staff photograph that has been read back from the picture store,
+   so the list, the profile and the PDF do not fetch it again and again */
+var STPHOTOS={};
+function STPHOTOLOAD(after){
+var want=[];
+STAFF.forEach(function(x){if(x.photo&&!STPHOTOS[x.photo])want.push(x.photo);});
+if(!want.length)return after?after():null;
+FGETMANY(want,function(m){
+Object.keys(m).forEach(function(k){if(m[k])STPHOTOS[k]=m[k];});
+if(after)after();});}
+function STPAINT(){try{STWZGO(STWZSTEP||1);}catch(e){}STRENDER();STPHOTOLOAD(function(){STRENDER();STSEARCHDRAW();});}
+/* one clear that really empties everything: the boxes, the photograph,
+   the record being edited and the step the wizard is on */
+function STCLEAR(){
+STEDIT=null;
+["t_name","t_father","t_bps","t_pn","t_cnic","t_mobile","t_qual","t_subj","t_rem",
+ "t_leaveWhy","t_dob","t_first","t_join","t_leaveFrom","t_leaveTo"].forEach(function(id){SV(id,"");});
+SV("t_gender","");SV("t_desig","");SV("t_status","Working");
+STPEND=null;
+if(typeof ST_PAINTPHOTO==="function")ST_PAINTPHOTO();
+if(typeof STSTATUS==="function")STSTATUS();
+if(typeof STWZGO==="function")STWZGO(1);}
+function STSAVE(){
+var nm=V("t_name");
+if(!nm)return SM("Write the name of the staff member",1);
+var o={id:STEDIT||("S"+Date.now()+Math.floor(Math.random()*900+100)),
+name:nm,father:V("t_father"),desig:V("t_desig"),bps:V("t_bps"),gender:V("t_gender"),
+pn:V("t_pn"),cnic:V("t_cnic"),mobile:V("t_mobile"),dob:V("t_dob"),
+first:V("t_first"),join:V("t_join"),qual:V("t_qual"),subj:V("t_subj"),
+status:V("t_status"),rem:V("t_rem"),
+leaveFrom:V("t_leaveFrom"),leaveTo:V("t_leaveTo"),leaveWhy:V("t_leaveWhy"),
+at:Date.now()};
+/* the photograph is kept in the picture store, exactly like a student photo */
+var oldPhoto=null;
+if(STEDIT){for(var i=0;i<STAFF.length;i++)if(STAFF[i].id===STEDIT)oldPhoto=STAFF[i].photo||null;}
+if(STPEND&&STPEND.data){
+if(!STPEND.id)STPEND.id=NEWID();
+o.photo=STPEND.id;o.photoW=STPEND.w||340;o.photoH=STPEND.h||437;
+}else if(STPEND&&STPEND.id){
+o.photo=STPEND.id;o.photoW=STPEND.w||340;o.photoH=STPEND.h||437;}
+else o.photo=null;
+function stDone(){
+if(oldPhoto&&oldPhoto!==o.photo)FDEL(oldPhoto);
+if(STEDIT){for(var j=0;j<STAFF.length;j++)if(STAFF[j].id===STEDIT){o.at=STAFF[j].at;STAFF[j]=o;break;}}
+else STAFF.push(o);
+if(!SAVEALL())return;
+if(o.photo&&STPEND&&STPEND.data)STPHOTOS[o.photo]=STPEND.data;
+SM(STEDIT?"Staff record changed":"Staff member added to the register");
+STCLEAR();STRENDER();}
+if(STPEND&&STPEND.data&&STPEND.id){
+FPUT(STPEND.id,STPEND.data,function(err){
+if(err)SM("The photo could not be saved, storage may be full",1);
+stDone();});
+}else stDone();}
+function STEDITONE(id){
+var o=null;STAFF.forEach(function(x){if(x.id===id)o=x;});
+if(!o)return SM("Staff member not found",1);
+/* the form lives on the Staff Register block. Edit is pressed from All Staff
+   and from Search Staff as well, so open that block first or the boxes are
+   filled on a page the clerk cannot see. */
+if(typeof GOTAB==="function")GOTAB(11,"staff");
+STEDIT=id;
+SV("t_name",o.name);SV("t_father",o.father);SV("t_desig",o.desig);SV("t_bps",o.bps);
+SV("t_gender",o.gender);SV("t_pn",o.pn);SV("t_cnic",o.cnic);SV("t_mobile",o.mobile);
+SV("t_dob",o.dob);SV("t_first",o.first);SV("t_join",o.join);SV("t_qual",o.qual);
+SV("t_subj",o.subj);SV("t_status",o.status);SV("t_rem",o.rem);
+SV("t_leaveFrom",o.leaveFrom||"");SV("t_leaveTo",o.leaveTo||"");SV("t_leaveWhy",o.leaveWhy||"");
+if(typeof STSTATUS==="function")STSTATUS();
+STPEND=null;
+if(o.photo){
+STPEND={id:o.photo,w:o.photoW||340,h:o.photoH||437,data:STPHOTOS[o.photo]||null};
+if(!STPEND.data)FGET(o.photo,function(dt){if(dt){STPHOTOS[o.photo]=dt;if(STPEND)STPEND.data=dt;ST_PAINTPHOTO();}});}
+ST_PAINTPHOTO();
+if(typeof STWZGO==="function")STWZGO(1);
+window.scrollTo(0,0);SM("Change the boxes and press Save to staff register");}
+function STDEL(id){
+var o=null;STAFF.forEach(function(x){if(x.id===id)o=x;});
+if(!o)return;
+ASK("Remove from the staff register","Remove "+o.name+" from the register? This cannot be undone.","Remove",1,function(){
+if(o.photo)FDEL(o.photo);
+STAFF=STAFF.filter(function(x){return x.id!==id;});
+SAVEALL();STRENDER();SM("Removed from the staff register");});}
+function STLIST(){
+var q=String(V("st_q")||"").toLowerCase();
+var l=STAFF.slice().sort(function(a,b){return NUM(b.bps)-NUM(a.bps)||String(a.name).localeCompare(String(b.name));});
+if(!q)return l;
+return l.filter(function(x){
+return [x.name,x.desig,x.pn,x.subj,x.cnic,x.mobile].join(" ").toLowerCase().indexOf(q)>=0;});}
+function STRENDER(){
+var box=document.getElementById("st_list");if(!box)return;
+var t=document.getElementById("st_tally");
+var work=STAFF.filter(function(x){return x.status==="Working";});
+if(t)t.innerHTML=STATBOX([["On the roll",STAFF.length],["Working",work.length],
+["Male",work.filter(function(x){return x.gender==="Male";}).length],
+["Female",work.filter(function(x){return x.gender==="Female";}).length]]);
+var l=STLIST();
+if(!l.length){box.innerHTML=EMPTY(STAFF.length?"No staff member matches that.":"The staff register is empty. Add the first name above.");return;}
+var h="";
+l.forEach(function(x){
+var sub=[x.desig,(x.bps?("BPS "+x.bps):""),x.pn?("P.No "+x.pn):""].filter(Boolean).join(" &middot; ");
+var tag=(x.status&&x.status!=="Working")?('<span class="miss">'+ESC(x.status)+'</span>'):"";
+h+=STAFFCARD(x);});
+box.innerHTML=h;
+STPAINTINTO("st_list2","st_tally2",l);}
+/* one staff row, drawn the same way wherever it is shown */
+function STAFFCARD(x){
+var sub=[x.desig,(x.bps?("BPS "+x.bps):""),x.pn?("P.No "+x.pn):""].filter(Boolean).join(" &middot; ");
+var tag=(x.status&&x.status!=="Working")?('<span class="miss">'+ESC(x.status==="Leave"?"on leave":x.status)+'</span>'):"";
+var pic=(x.photo&&STPHOTOS[x.photo])
+ ?('<div class="avp"><img alt="" src="'+STPHOTOS[x.photo]+'"></div>')
+ :('<div class="av">'+ESC(INITIALS(x.name))+'</div>');
+return '<div class="card"><div class="cwrap">'+pic
++'<div class="cbody"><div class="nm">'+ESC(x.name)+'</div>'
++'<div class="sub">'+sub+(x.mobile?("<br>"+ESC(x.mobile)):"")+(tag?("<br>"+tag):"")+'</div></div></div>'
++'<div class="acts"><button class="pri" onclick="STOPEN(\''+Q(x.id)+'\')">Open</button>'
++'<button onclick="STEDITONE(\''+Q(x.id)+'\')">Edit</button>'
++'<button class="del" onclick="STDEL(\''+Q(x.id)+'\')">Remove</button></div></div>';}
+function INITIALS(n){
+var w=String(n||"").trim().split(/\s+/).filter(Boolean);
+if(!w.length)return "-";
+return (w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase();}
+
+/* ---------- the staff list, wherever it is shown ---------- */
+function STPAINTINTO(boxId,tallyId,list){
+var box=document.getElementById(boxId);
+if(!box)return;
+var t=tallyId?document.getElementById(tallyId):null;
+if(t){
+var work=STAFF.filter(function(x){return x.status==="Working";});
+t.innerHTML=STATBOX([["On the roll",STAFF.length],["Working",work.length],
+["Male",work.filter(function(x){return x.gender==="Male";}).length],
+["Female",work.filter(function(x){return x.gender==="Female";}).length]]);}
+if(!list.length){
+box.innerHTML=EMPTY(STAFF.length?"No staff member matches that."
+ :"The staff register is empty. Add the first name on the Staff Register page.");
+return;}
+box.innerHTML=list.map(STAFFCARD).join("");}
+
+/* ---------- search staff ---------- */
+/* the list is drawn at once with whatever photographs are already in hand,
+   then drawn again if any had to be fetched. Nothing waits on the store. */
+function STSEARCH(){
+STSEARCHDRAW();
+STPHOTOLOAD(STSEARCHDRAW);}
+function STSEARCHDRAW(){
+var q=String(V("st_sq")||"").toLowerCase().trim();
+var st=V("st_sStatus");
+var hint=document.getElementById("st_sHint");
+var l=STAFF.slice().sort(function(a,b){return NUM(b.bps)-NUM(a.bps)||String(a.name).localeCompare(String(b.name));});
+if(st)l=l.filter(function(x){return (x.status||"")===st;});
+if(q)l=l.filter(function(x){
+return [x.name,x.father,x.desig,x.pn,x.subj,x.cnic,x.mobile,x.qual].join(" ").toLowerCase().indexOf(q)>=0;});
+if(hint)hint.textContent=(!q&&!st)
+ ?("Type a name, a CNIC or a mobile number. "+STAFF.length+" on the register.")
+ :(l.length+" found of "+STAFF.length);
+STPAINTINTO("st_sResult",null,l);}
+
+/* ---------- one staff member, opened like a student ---------- */
+var STOPENID=null;
+function STOPEN(id){
+var o=null;STAFF.forEach(function(x){if(x.id===id)o=x;});
+if(!o)return SM("Staff member not found",1);
+STOPENID=id;
+document.getElementById("ovStName").textContent=o.name||"Staff member";
+document.getElementById("ovStSub").textContent=[o.desig,(o.bps?("BPS "+o.bps):"")].filter(Boolean).join("  |  ");
+document.getElementById("ovStaff").className="ov on";
+document.body.style.overflow="hidden";
+function draw(){STPAINTONE(o);}
+if(o.photo&&!STPHOTOS[o.photo])FGET(o.photo,function(d){if(d)STPHOTOS[o.photo]=d;draw();});
+else draw();}
+function STCLOSE(){
+var e=document.getElementById("ovStaff");if(e)e.className="ov";
+document.body.style.overflow="";STOPENID=null;}
+function STROW(l,v){return '<div class="prow"><b>'+l+'</b><span>'+(ESC(v)||"-")+'</span></div>';}
+function STPAINTONE(o){
+var box=document.getElementById("ovStBody");if(!box)return;
+var pic=(o.photo&&STPHOTOS[o.photo])?('<img alt="" src="'+STPHOTOS[o.photo]+'">'):"No photo";
+var h='<div style="display:flex;gap:10px;margin-bottom:10px">'
++'<div class="pbox" style="cursor:default">'+pic+'</div>'
++'<div style="flex:1">'+STROW("Name",o.name)+STROW("Father / Husband",o.father)
++STROW("Designation",o.desig)+'</div></div>';
+h+='<div class="sc">Personal</div>';
+h+=STROW("Gender",o.gender)+STROW("Date of birth",DMY(o.dob))+STROW("Qualification",o.qual);
+h+='<div class="sc">Service</div>';
+h+=STROW("BPS",o.bps)+STROW("Personal number",o.pn)
++STROW("First appointment",DMY(o.first))+STROW("Joined this school",DMY(o.join))
++STROW("Subject taught",o.subj)+STROW("Status",o.status==="Leave"?"On leave":(o.status||"-"));
+if(o.status==="Leave")h+=STROW("Leave",(DMY(o.leaveFrom)||"?")+" to "+(DMY(o.leaveTo)||"?")+(o.leaveWhy?("  ("+o.leaveWhy+")"):""));
+h+='<div class="sc">Contact</div>';
+h+=STROW("CNIC",o.cnic)+STROW("Mobile",o.mobile);
+h+='<div class="sc">Remarks</div>';
+h+='<div style="font-size:12px;color:'+(o.rem?"#111":"#888")+';line-height:1.5">'+(ESC(o.rem)||"Nothing written.")+'</div>';
+box.innerHTML=h;}
+function STOPENEDIT(){if(!STOPENID)return;var id=STOPENID;STCLOSE();STEDITONE(id);}
+function STOPENPDF(){
+if(!STOPENID)return;
+var o=null;STAFF.forEach(function(x){if(x.id===STOPENID)o=x;});
+if(!o)return;
+STPROFILEPDF(o);}
+
+/* ---------- the staff profile sheet, built like the student one ---------- */
+function STPROFILEPDF(o){
+try{
+var W=595.28,H=841.89;
+var doc=new PDFDOC();
+var cat=doc.res(),pgs=doc.res(),f1=doc.res(),f2=doc.res();
+doc.set(f1,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+doc.set(f2,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+var kids=[],imgs=[];
+function addImg(dataUrl,w,h){
+var b64=String(dataUrl||"").split(",")[1];if(!b64)return 0;
+var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode",B64B(b64)));
+return n;}
+function addMask(b64,w,h){var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ImageMask true /BitsPerComponent 1 /Decode [0 1]",B64B(b64)));
+return n;}
+var oCrest=addMask(CRESTMASK,CRESTMW,CRESTMH);
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
+var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.80,0.80,0.78];
+var RULE=[0.86,0.87,0.85],FIELD=[0.978,0.980,0.974],LBL=[0.46,0.50,0.46];
+var d=new Date();
+var today=String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();
+var p=new PG();
+function FITSZ(t,w,sz,bold){var z=sz;while(z>7&&TW(String(t),z,bold)>w)z-=0.4;return z;}
+/* how long this person has served, counted from the first appointment */
+function SERVLEN(iso){
+if(!iso)return "-";
+var a=String(iso).split("-");
+if(a.length!==3)return "-";
+var st=new Date(+a[0],+a[1]-1,+a[2]), now=new Date();
+if(isNaN(st.getTime())||st>now)return "-";
+var m=(now.getFullYear()-st.getFullYear())*12+(now.getMonth()-st.getMonth());
+if(now.getDate()<st.getDate())m--;
+if(m<0)m=0;
+var y=Math.floor(m/12), mm=m%12;
+var out=[];
+if(y)out.push(y+" year"+(y===1?"":"s"));
+if(mm)out.push(mm+" month"+(mm===1?"":"s"));
+return out.length?out.join(" "):"less than a month";}
+
+/* heading band, the same one every paper of this school carries */
+var bh=70;
+p.fill(TH,0,H-bh,W,bh);
+var ch=46,cw=ch*CRESTMW/CRESTMH;
+if(oCrest)p.imgc("Cm",34,H-bh+(bh-ch)/2,cw,ch,WH);
+var cx=(34+cw+W-40)/2;
+var nm=(SET.school||"School Register").toUpperCase();
+var ns=15; while(TW(nm,ns,true)>W-170&&ns>9)ns-=0.5;
+p.ctxt(nm,cx,H-30,ns,true,WH);
+if(SET.sub)p.ctxt(SET.sub,cx,H-44,9,false,[0.85,0.9,0.86]);
+p.ctxt("STAFF PROFILE",cx,H-60,9.5,true,GOLD);
+p.fill(GOLD,0,H-bh-2.4,W,2.4);
+p.line(LN,0.7,25,25,545,H-bh-7-25);
+
+var T=H-bh-24;
+/* the top block: photograph, name, and the three facts looked up first */
+var HH=132, HB=T-HH;
+p.fill([0.971,0.975,0.967],40,HB,515,HH);
+p.fill(TH,40,HB,3,HH);
+p.hr(RULE,0.6,40,HB,555,HB);
+var pw=92,ph=112,px=555-16-pw,py=HB+(HH-ph)/2;
+p.fill([1,1,1],px-3,py-3,pw+6,ph+6);
+if(o.photo&&STPHOTOS[o.photo]){
+var io=addImg(STPHOTOS[o.photo],o.photoW||340,o.photoH||437);
+if(io){imgs.push({n:"Im1",o:io});p.img("Im1",px,py,pw,ph);}
+}else{
+p.fill([0.945,0.950,0.940],px,py,pw,ph);
+p.ctxt("PHOTOGRAPH",px+pw/2,py+ph/2+3,7,true,[0.60,0.62,0.59]);
+p.ctxt("not on record",px+pw/2,py+ph/2-9,6.8,false,[0.66,0.68,0.65]);}
+p.line([0.72,0.75,0.71],0.8,px-3,py-3,pw+6,ph+6);
+
+/* the name, a hairline under it, and the three facts the office looks up
+   first. Each of them is printed once on this sheet and nowhere else. */
+var nmL=WRAPT(String(o.name||"-").toUpperCase(),18,true,370);
+var two=!!nmL[1];
+p.txt(nmL[0],56,T-(two?30:36),18,true,[0.09,0.14,0.10]);
+if(two)p.txt(nmL[1],56,T-50,18,true,[0.09,0.14,0.10]);
+p.fill(GOLD,56,T-(two?62:48),120,1.6);
+
+var chip=[["DESIGNATION",o.desig||"-"],["GRADE",o.bps?("BPS "+o.bps):"-"],
+["PERSONAL NUMBER",o.pn||"-"]];
+var chx=56, chw=(433-56)/3;
+chip.forEach(function(c,i){
+var x=chx+i*chw;
+if(i)p.fill([0.86,0.88,0.85],x-7,HB+12,0.7,32);
+p.txt(c[0],x,HB+34,6.4,true,LBL);
+p.txt(c[1],x,HB+17,FITSZ(c[1],chw-14,11.5,true),true,TH);});
+
+var gy=HB-18;
+function shead(t){
+p.fill([0.925,0.940,0.919],40,gy-18,515,18);
+p.fill(TH,40,gy-18,3,18);
+p.txt(t,53,gy-12.5,8,true,[0.19,0.25,0.20]);
+gy-=25;}
+function cell(x,w,label,val,h){
+var v=(val===null||val===undefined||val==="")?"-":String(val);
+p.fill(FIELD,x,gy-h,w,h);
+p.hr(RULE,0.6,x,gy-h,x+w,gy-h);
+p.txt(String(label).toUpperCase(),x+10,gy-12,6.4,true,LBL);
+var ls=WRAPT(v,10.2,false,w-20);
+for(var i=0;i<ls.length&&i<4;i++)p.txt(ls[i],x+10,gy-25-i*12.5,10.2,false,DK);}
+function boxh(v,w){
+return 32+(WRAPT(String((v===null||v===undefined||v==="")?"-":v),10.2,false,w-20).length-1)*12.5;}
+function pair(l1,v1,l2,v2){
+var cw2=(515-12)/2, h=Math.max(boxh(v1,cw2),boxh(v2,cw2));
+cell(40,cw2,l1,v1,h);cell(40+cw2+12,cw2,l2,v2,h);
+gy-=h+6;}
+function wide(l,v){var h=boxh(v,515);cell(40,515,l,v,h);gy-=h+6;}
+
+shead("A.   PERSONAL PARTICULARS");
+pair("Father or Husband Name",o.father,"Gender",o.gender);
+pair("Date of Birth",DMY(o.dob),"CNIC",o.cnic);
+pair("Qualification",o.qual,"Subject Taught",o.subj);
+
+shead("B.   SERVICE RECORD");
+pair("Date of First Appointment",DMY(o.first),"Joined This School",DMY(o.join));
+pair("Length of Service",SERVLEN(o.first),"Present Status",
+  o.status==="Leave"?"On leave":(o.status||"Working"));
+if(o.status==="Leave")
+wide("Leave Sanctioned",(DMY(o.leaveFrom)||"-")+"  to  "+(DMY(o.leaveTo)||"-")+(o.leaveWhy?("     "+o.leaveWhy):""));
+
+shead("C.   CONTACT");
+wide("Mobile Number",o.mobile);
+
+shead("D.   REMARKS");
+var rl=[];
+if(o.rem)String(o.rem).split(/\r?\n/).forEach(function(ln){
+WRAPT(ln,10.2,false,495).forEach(function(w){rl.push(w);});});
+var rh=Math.max(44,17+rl.length*13);
+p.fill([0.985,0.986,0.980],40,gy-rh,515,rh);
+p.line(RULE,0.6,40,gy-rh,515,rh);
+if(rl.length){for(var ri=0;ri<rl.length&&ri<8;ri++)p.txt(rl[ri],50,gy-20-ri*13,10.2,false,DK);}
+else p.txt("Nothing recorded.",50,gy-20,10.2,false,[0.60,0.61,0.58]);
+gy-=rh;
+
+/* one signature only, the one that signs a service record */
+var sigY=(gy-62>168)?168:(gy-62);
+p.hr(DK,0.9,W-40-190,sigY,W-40,sigY);
+p.ctxt(SET.certSigner||"Head Master / Principal",W-40-95,sigY-13,9,true,DK);
+p.ctxt(SET.school||"",W-40-95,sigY-25,7.4,false,GY);
+p.hr(LN,0.8,40,100,555,100);
+p.txt("Printed on "+today,42,86,8.5,false,GY);
+var ptx="Page 1 of 1";
+p.txt(ptx,555-TW(ptx,8.5,false),86,8.5,false,GY);
+p.ctxt("This profile is generated from the staff register record.",297.5,70,8,false,GY);
+
+var cn=doc.res();doc.set(cn,doc.stream("",L1(p.k)));
+var pn=doc.res(),xo=" /XObject << /Cm "+oCrest+" 0 R ";
+imgs.forEach(function(m){xo+="/"+m.n+" "+m.o+" 0 R ";});xo+=">>";
+doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 "+N2(W)+" "+N2(H)+"] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >>"+xo+" >> /Contents "+cn+" 0 R >>");
+kids.push(pn+" 0 R");
+doc.set(cat,"<< /Type /Catalog /Pages "+pgs+" 0 R >>");
+doc.set(pgs,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+kids.length+" >>");
+var buf=doc.out();
+DL(new Blob([buf],{type:"application/pdf"}),"Staff_Profile_"+String(o.name||"staff").replace(/[^\w]+/g,"_")+".pdf");
+SM("Staff profile saved");
+}catch(e){SM("Could not build the profile: "+(e&&e.message?e.message:e),1);}}
+
+/* ---------------- letters in and out ---------------- */
+function DAKNO(){
+var k=V("d_kind")||"In";
+var mx=0;DAK.forEach(function(x){if(x.kind===k)mx=Math.max(mx,NUM(x.no));});
+SV("d_no",String(mx+1));}
+function DAKPAINT(){
+if(!V("d_date"))SV("d_date",TODAYISO());
+if(!V("d_no"))DAKNO();
+DAKRENDER();}
+function DAKCLEAR(){
+["d_party","d_subj","d_ref","d_act"].forEach(function(id){SV(id,"");});
+SV("d_date",TODAYISO());SV("d_status","Pending");DAKNO();}
+function DAKSAVE(){
+var sub=V("d_subj");
+if(!sub)return SM("Write what the letter is about",1);
+var o={id:"D"+Date.now()+Math.floor(Math.random()*900+100),
+kind:V("d_kind")||"In",no:V("d_no")||"",date:V("d_date")||TODAYISO(),
+party:V("d_party"),subj:sub,ref:V("d_ref"),status:V("d_status")||"Pending",
+act:V("d_act"),at:Date.now()};
+DAK.push(o);
+if(!SAVEALL())return;
+SM("Entered in the register at diary number "+o.no);
+DAKCLEAR();DAKRENDER();}
+function DAKDEL(id){
+var o=null;DAK.forEach(function(x){if(x.id===id)o=x;});
+if(!o)return;
+ASK("Remove this entry","Remove diary number "+o.no+" from the letter register?","Remove",1,function(){
+DAK=DAK.filter(function(x){return x.id!==id;});SAVEALL();DAKRENDER();SM("Entry removed");});}
+function DAKDONE(id){
+DAK.forEach(function(x){if(x.id===id)x.status=(x.status==="Pending")?"Done":"Pending";});
+SAVEALL();DAKRENDER();}
+function DAKLIST(){
+var f=V("d_filter"),q=String(V("d_q")||"").toLowerCase();
+var l=DAK.slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))||b.at-a.at;});
+if(f==="In"||f==="Out")l=l.filter(function(x){return x.kind===f;});
+if(f==="Pending")l=l.filter(function(x){return x.status==="Pending";});
+if(q)l=l.filter(function(x){return [x.no,x.party,x.subj,x.ref,x.act].join(" ").toLowerCase().indexOf(q)>=0;});
+return l;}
+function DAKRENDER(){
+var box=document.getElementById("d_list");if(!box)return;
+var t=document.getElementById("d_tally");
+if(t)t.innerHTML=STATBOX([["All letters",DAK.length],
+["Received",DAK.filter(function(x){return x.kind==="In";}).length],
+["Sent",DAK.filter(function(x){return x.kind==="Out";}).length],
+["Pending",DAK.filter(function(x){return x.status==="Pending";}).length]]);
+var l=DAKLIST();
+if(!l.length){box.innerHTML=EMPTY(DAK.length?"No letter matches that.":"The letter register is empty. Enter the first letter above.");return;}
+var h="";
+l.forEach(function(x){
+var tag=(x.status==="Pending")?'<span class="miss">pending</span>':"";
+h+='<div class="card"><div class="cwrap"><div class="av">'+ESC(x.kind==="In"?"IN":"OUT")+'</div>'
++'<div class="cbody"><div class="nm">'+ESC(x.subj)+'</div>'
++'<div class="sub">Diary '+ESC(x.no)+' &middot; '+ESC(DMY(x.date))
++(x.party?("<br>"+ESC(x.kind==="In"?"From ":"To ")+ESC(x.party)):"")
++(x.act?("<br>"+ESC(x.act)):"")
++(tag?("<br>"+tag):"")+'</div></div></div>'
++'<div class="acts"><button class="pri" onclick="DAKDONE(\''+Q(x.id)+'\')">'+(x.status==="Pending"?"Mark done":"Reopen")+'</button>'
++'<button class="del" onclick="DAKDEL(\''+Q(x.id)+'\')">Remove</button></div></div>';});
+box.innerHTML=h;}
+
+/* ---------------- stock ---------------- */
+function STKPAINT(){if(!V("k_date"))SV("k_date",TODAYISO());STKRENDER();}
+function STKCLEAR(){["k_item","k_qty","k_src","k_rem"].forEach(function(id){SV(id,"");});
+SV("k_date",TODAYISO());SV("k_cond","Serviceable");}
+function STKSAVE(){
+var it=V("k_item");
+if(!it)return SM("Write the name of the item",1);
+var q=NUM(V("k_qty"));
+if(q<1)return SM("Write how many there are",1);
+STOCK.push({id:"K"+Date.now()+Math.floor(Math.random()*900+100),
+item:it,cat:V("k_cat"),qty:q,cond:V("k_cond"),date:V("k_date")||TODAYISO(),
+src:V("k_src"),rem:V("k_rem"),at:Date.now()});
+if(!SAVEALL())return;
+SM(it+" entered in the stock register");
+STKCLEAR();STKRENDER();}
+function STKDEL(id){
+var o=null;STOCK.forEach(function(x){if(x.id===id)o=x;});
+if(!o)return;
+ASK("Remove from the stock register","Remove "+o.item+" from the stock register?","Remove",1,function(){
+STOCK=STOCK.filter(function(x){return x.id!==id;});SAVEALL();STKRENDER();SM("Removed from the stock register");});}
+function STKLIST(){
+var q=String(V("k_q")||"").toLowerCase();
+var l=STOCK.slice().sort(function(a,b){return String(a.cat).localeCompare(String(b.cat))||String(a.item).localeCompare(String(b.item));});
+if(!q)return l;
+return l.filter(function(x){return [x.item,x.cat,x.src,x.rem,x.cond].join(" ").toLowerCase().indexOf(q)>=0;});}
+function STKRENDER(){
+var box=document.getElementById("k_list");if(!box)return;
+var t=document.getElementById("k_tally");
+var tot=0,ok=0,bad=0;
+STOCK.forEach(function(x){tot+=NUM(x.qty);
+if(x.cond==="Serviceable")ok+=NUM(x.qty);
+if(x.cond==="Unserviceable")bad+=NUM(x.qty);});
+if(t)t.innerHTML=STATBOX([["Entries",STOCK.length],["Total items",tot],["Serviceable",ok],["Condemned",bad]]);
+var l=STKLIST();
+if(!l.length){box.innerHTML=EMPTY(STOCK.length?"Nothing matches that.":"The stock register is empty. Enter the first item above.");return;}
+var h="";
+l.forEach(function(x){
+var tag=(x.cond!=="Serviceable")?('<span class="miss">'+ESC(x.cond)+'</span>'):"";
+h+='<div class="card"><div class="cwrap"><div class="av">'+ESC(String(x.qty))+'</div>'
++'<div class="cbody"><div class="nm">'+ESC(x.item)+'</div>'
++'<div class="sub">'+ESC(x.cat)+' &middot; '+ESC(DMY(x.date))
++(x.src?("<br>"+ESC(x.src)):"")+(tag?("<br>"+tag):"")+'</div></div></div>'
++'<div class="acts"><button class="del" onclick="STKDEL(\''+Q(x.id)+'\')">Remove</button></div></div>';});
+box.innerHTML=h;}
+
+/* ---------- the office registers as Excel sheets ---------- */
+function SHEETGRID(o){
+var cols=o.cols,head=o.head,mid=o.mid||[];
+var rows=[],merges=[],last=COL(cols.length),n=0;
+function band(txt,st,h){var cells=[];for(var i=0;i<cols.length;i++)cells.push(CELL("",st));cells[0]=CELL(txt,st);
+rows.push({cells:cells,h:h});n++;merges.push("A"+n+":"+last+n);}
+if(o.school)band(o.school,4,28);
+band(o.title,5,20);
+if(o.note)band(o.note,6,16);
+rows.push({cells:[]});n++;
+rows.push({cells:head.map(function(t){return CELL(t,1);}),h:30});n++;
+var headRow=n;
+o.data.forEach(function(r){rows.push({cells:r.map(function(v,ci){return CELL(v,mid[ci]?3:2);})});n++;});
+return {name:o.name,cols:cols,rows:rows,merges:merges,freeze:headRow,
+autoFilter:"A"+headRow+":"+last+n};}
+function SHEETSTAFF(){
+var l=STAFF.slice().sort(function(a,b){return NUM(b.bps)-NUM(a.bps)||String(a.name).localeCompare(String(b.name));});
+return SHEETGRID({name:"Staff",title:"Staff Register",school:SET.school||"",
+note:"On the roll "+l.length+"   |   Working here "+l.filter(function(x){return x.status==="Working";}).length,
+cols:[{w:6},{w:26},{w:24},{w:18},{w:6},{w:8},{w:14},{w:20},{w:15},{w:14},{w:16},{w:16},{w:18},{w:16},{w:14},{w:26}],
+head:["S.No","Name","Father / Husband Name","Designation","BPS","Gender","Personal Number","CNIC",
+"Mobile","Date of Birth","First Appointment","Joined This School","Qualification","Subject","Status","Remarks"],
+mid:[1,0,0,0,1,1,1,1,1,1,1,1,0,0,1,0],
+data:l.map(function(x,i){return [String(i+1),x.name,x.father||"",x.desig||"",x.bps||"",x.gender||"",
+x.pn||"",x.cnic||"",x.mobile||"",DMY(x.dob)||"",DMY(x.first)||"",DMY(x.join)||"",x.qual||"",x.subj||"",
+x.status||"",x.rem||""];})});}
+function SHEETDAK(){
+var l=DAK.slice().sort(function(a,b){return String(a.date).localeCompare(String(b.date))||a.at-b.at;});
+return SHEETGRID({name:"Letter Register",title:"Letter Register, In and Out",school:SET.school||"",
+note:"Entries "+l.length+"   |   Pending "+l.filter(function(x){return x.status==="Pending";}).length,
+cols:[{w:6},{w:12},{w:10},{w:12},{w:30},{w:46},{w:18},{w:34},{w:12}],
+head:["S.No","In / Out","Diary No","Date","From or To","Subject","Their Letter Number","Action Taken","Status"],
+mid:[1,1,1,1,0,0,1,0,1],
+data:l.map(function(x,i){return [String(i+1),x.kind==="In"?"Received":"Sent",x.no||"",DMY(x.date)||"",
+x.party||"",x.subj||"",x.ref||"",x.act||"",x.status||""];})});}
+function SHEETSTOCK(){
+var l=STOCK.slice().sort(function(a,b){return String(a.cat).localeCompare(String(b.cat))||String(a.item).localeCompare(String(b.item));});
+var tot=0;l.forEach(function(x){tot+=NUM(x.qty);});
+return SHEETGRID({name:"Stock",title:"Stock Register",school:SET.school||"",
+note:"Entries "+l.length+"   |   Items in all "+tot,
+cols:[{w:6},{w:34},{w:22},{w:10},{w:16},{w:14},{w:26},{w:30}],
+head:["S.No","Article","Kind","Quantity","Condition","Received On","Received From","Remarks"],
+mid:[1,0,0,1,1,1,0,0],
+data:l.map(function(x,i){return [String(i+1),x.item||"",x.cat||"",String(x.qty||0),x.cond||"",
+DMY(x.date)||"",x.src||"",x.rem||""];})});}
+/* attendance: one sheet of the day by day grid for the month on screen */
+function SHEETATT(c,sec,ym){
+var r=ATMONTH(c,sec,ym);
+var cols=[{w:6},{w:12},{w:26}],head=["S.No","GR No","Student Name"],mid=[1,1,0];
+r.days.forEach(function(dd){cols.push({w:4});head.push(String(dd));mid.push(1);});
+["Present","Absent","Leave","Percent"].forEach(function(t){cols.push({w:10});head.push(t);mid.push(1);});
+return SHEETGRID({name:"Attendance",title:"Attendance Register",school:SET.school||"",
+note:"Class "+c+(sec?("  Section "+sec):"")+"   |   "+ym+"   |   Days marked "+r.open,
+cols:cols,head:head,mid:mid,
+data:r.rows.map(function(x,i){
+var row=[String(i+1),x.s.gr,x.s.name];
+x.marks.forEach(function(m){row.push(m);});
+row.push(String(x.p));row.push(String(x.a));row.push(String(x.l));row.push(x.held?(x.pc+"%"):"");
+return row;})});}
+function XLDROP(sheets,name){
+try{
+var buf=BUILDBOOK(sheets,SET.pdfColor||"#1a472a");
+DL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),name);
+SM("Sheet ready");
+}catch(e){SM("Could not build the sheet: "+(e&&e.message?e.message:e),1);}}
+function STAFFXL(){if(!STAFF.length)return SM("The staff register is empty",1);XLDROP([SHEETSTAFF()],"Staff_Register.xlsx");}
+function DAKXL(){if(!DAK.length)return SM("The letter register is empty",1);XLDROP([SHEETDAK()],"Letter_Register.xlsx");}
+function STKXL(){if(!STOCK.length)return SM("The stock register is empty",1);XLDROP([SHEETSTOCK()],"Stock_Register.xlsx");}
 
 /* ============ pdf writer ============ */
 function L1(s){var o=new Uint8Array(s.length);for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);o[i]=(c>255)?63:c;}return o;}
@@ -3346,6 +4594,9 @@ function PESC(s){return String(s==null?"":s).replace(/[\u0100-\uffff]/g,"?").rep
 function RGB(hex){var h=String(hex||"#1a472a").replace("#","");
 if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
 return [parseInt(h.substring(0,2),16)/255,parseInt(h.substring(2,4),16)/255,parseInt(h.substring(4,6),16)/255];}
+/* the thin accent line under every heading band. It is a setting now, so a
+   school can print its papers in its own two colours. */
+function ACC(){return RGB(SET.pdfAccent||"#c7971f");}
 function N2(n){return Math.round(n*100)/100;}
 function TW(s,size,bold){
 var R=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
@@ -3481,7 +4732,7 @@ var k=Math.min(340/iw,340/ih);
 pg.img(tag,297.5-(iw*k)/2,420-(ih*k)/2,iw*k,ih*k);}
 function BAND(pg,imgs,tag,h,title,line2,big,small){
 pg.fill(TH,0,842-h,595,h);
-pg.fill([0.78,0.59,0.12],0,842-h-2.6,595,2.6);
+pg.fill(ACC(),0,842-h-2.6,595,2.6);
 var lw=0,lh=0;
 if(LPOS!=="none"&&LOGO&&LOGO.data){
 var o=addImg(LOGO.data,LOGO.w||200,LOGO.h||200);
@@ -3636,7 +4887,7 @@ for(var i=0;i<docs.length;i+=2){
 var q2=new PG(),imgs=[],cnt=0;
 WATER(q2,imgs,"Wd");
 q2.fill(TH,0,790,595,52);
-q2.fill([0.78,0.59,0.12],0,787.4,595,2.6);
+q2.fill(ACC(),0,787.4,595,2.6);
 var cx2=297.5,lgw=0;
 if(LPOS!=="none"&&LOGO&&LOGO.data){
 var lo=addImg(LOGO.data,LOGO.w||200,LOGO.h||200);
@@ -3785,6 +5036,65 @@ if(noBoard&&!EXNOBOARD(c))return;
 var o=document.createElement("option");o.value=c;o.text=c;el.appendChild(o);});
 if(cur)el.value=cur;
 if(!el.value&&el.options.length)el.selectedIndex=0;}
+
+function EXSCHEDGET(cls){
+  var sch=(SET.exam&&SET.exam.schedule)||{};
+  return (sch[cls]||[]).slice();
+}
+function EXSCHEDFROMRESULT(){
+  var cls=V("e_acls");
+  if(!cls)return SM("Choose a class first",1);
+  var list=EXSUBS(cls);
+  if(!list.length)return SM("Save papers under Result Card for this class first",1);
+  SV("e_asubs",list.map(function(x){return x.n;}).join(", "));
+  EXSCHEDBUILD();
+  SM("Papers loaded — set date and time for each");
+}
+function EXSCHEDBUILD(){
+  var box=document.getElementById("e_sched");if(!box)return;
+  var cls=V("e_acls");
+  var names=String(V("e_asubs")||"").split(",").map(function(t){return t.trim();}).filter(Boolean);
+  if(!names.length){box.innerHTML='<div class="hn">Write the paper names above, then press Build timetable rows.</div>';return;}
+  var old=EXSCHEDGET(cls);
+  var by={};old.forEach(function(x){by[x.n]=x;});
+  var h="";
+  names.forEach(function(n,i){
+    var o=by[n]||{};
+    h+='<div class="card" style="padding:10px;margin-bottom:8px">';
+    h+='<div class="nm" style="margin-bottom:6px">Paper '+(i+1)+': '+ESC(n)+'</div>';
+    h+='<div class="rw">';
+    h+='<div><label>Date</label><input type="date" id="es_d_'+i+'" value="'+ESC(o.date||"")+'"></div>';
+    h+='<div><label>Time</label><input id="es_t_'+i+'" placeholder="9:00 AM" value="'+ESC(o.time||"")+'"></div>';
+    h+='</div></div>';
+  });
+  box.innerHTML=h;
+  window._esNames=names;
+}
+function EXSCHEDFILL(){
+  var cls=V("e_acls");
+  var old=EXSCHEDGET(cls);
+  if(old.length && !V("e_asubs")){
+    SV("e_asubs",old.map(function(x){return x.n;}).join(", "));
+  }
+  if(V("e_asubs"))EXSCHEDBUILD();
+}
+function EXSCHEDSAVE(){
+  var cls=V("e_acls");
+  if(!cls)return SM("Choose a class first",1);
+  var names=window._esNames||String(V("e_asubs")||"").split(",").map(function(t){return t.trim();}).filter(Boolean);
+  if(!names.length)return SM("Build the timetable rows first",1);
+  var rows=[];
+  names.forEach(function(n,i){
+    rows.push({n:n,date:V("es_d_"+i)||"",time:V("es_t_"+i)||""});
+  });
+  SET.exam=SET.exam||{};
+  SET.exam.schedule=SET.exam.schedule||{};
+  SET.exam.schedule[cls]=rows;
+  if(typeof SETTOUCH==="function")SETTOUCH();
+  SAVEALL();
+  SM("Timetable saved for class "+cls+" ("+rows.length+" papers)");
+}
+
 function EXPAINT(){
 EX=SET.exam||{};
 SV("e_name",EX.name||"Mid Term Examination");
@@ -3794,11 +5104,12 @@ SV("e_centre",EX.centre||"");
 SV("e_pass",EX.pass||"33");
 EXFILLSEL("e_acls",false);
 EXFILLSEL("e_rcls",true);
-EXSUBFILL();EXCOUNT();EXMARKLIST();}
+EXSUBFILL();EXCOUNT();EXMARKLIST();try{EXSCHEDFILL();}catch(e){}}
 var EX={};
 function EXSAVE(loud){
+var prevSch=(SET.exam&&SET.exam.schedule)?SET.exam.schedule:{};
 SET.exam={name:V("e_name"),sess:V("e_sess"),from:V("e_from"),to:V("e_to"),
-centre:V("e_centre"),pass:V("e_pass")||"33"};
+centre:V("e_centre"),pass:V("e_pass")||"33",schedule:prevSch};
 if(typeof SETTOUCH==="function")SETTOUCH();
 SAVEALL();
 if(loud)SM("Examination details saved");}
@@ -3822,6 +5133,23 @@ function EXSUBFILL(){
 var cls=V("e_rcls"),list=EXSUBS(cls);
 SV("e_subs",list.map(function(x){return x.n;}).join(", "));
 SV("e_max",list.length?String(list[0].max||100):"100");}
+
+function EXSUBFROMADMIT(){
+  var cls=V("e_rcls");
+  if(!cls)return SM("Choose a class first",1);
+  var sched=((SET.exam&&SET.exam.schedule)||{})[cls]||[];
+  if(!sched.length){
+    return SM("No admit-card timetable for "+cls+". Open Admit Card, build the paper timetable, and save it first.",1);
+  }
+  var names=sched.map(function(x){return x.n;}).filter(Boolean);
+  if(!names.length)return SM("Admit timetable has no paper names",1);
+  SV("e_subs",names.join(", "));
+  if(!V("e_max"))SV("e_max","100");
+  var hint=document.getElementById("e_subhint");
+  if(hint)hint.innerHTML="<b>"+names.length+" papers</b> loaded from admit card: "+names.map(ESC).join(", ")+". Set full marks if needed, then press <b>Save all papers</b>.";
+  SM(names.length+" papers loaded from admit card — press Save all papers");
+}
+
 function EXSUBSAVE(){
 var cls=V("e_rcls");
 if(!cls){SM("Choose a class first",1);return;}
@@ -3831,9 +5159,13 @@ if(!names.length){SM("Write the papers, separated by a comma",1);return;}
 if(names.length>12){SM("Twelve papers is the most that fits on the card",1);return;}
 SET.subjects=SET.subjects||{};
 SET.subjects[cls]=names.map(function(n){return {n:n,max:mx};});
+SET.exam=SET.exam||{};
+SET.exam.pass=V("e_pass")||SET.exam.pass||"33";
 if(typeof SETTOUCH==="function")SETTOUCH();
 SAVEALL();EXMARKLIST();
-SM(names.length+" papers saved for "+cls);}
+var hint=document.getElementById("e_subhint");
+if(hint)hint.innerHTML="<b>"+names.length+" papers saved</b> for "+ESC(cls)+" (full marks "+mx+", pass "+ESC(V("e_pass")||"33")+"). Tap a student below to enter obtained marks only.";
+SM(names.length+" papers saved for "+cls+" — now enter obtained marks");}
 
 /* ---- marks, one student at a time ---- */
 function EXMARKLIST(){
@@ -3854,6 +5186,19 @@ h+='<div class="clrow" onclick="EXMARKOPEN(\''+ESC(s.gr)+'\')">'
 box.innerHTML=h;}
 
 var EXFOR=null;
+
+function EXMARKHINT(i,max,pass){
+  var el=document.getElementById("mk_h_"+i);
+  var inp=document.getElementById("mk_"+i);
+  if(!el||!inp)return;
+  var v=String(inp.value||"").trim();
+  if(v===""){el.textContent="—";el.style.color="#888";return;}
+  var n=parseFloat(v);
+  if(isNaN(n)){el.textContent="?";el.style.color="#888";return;}
+  if(n>=pass){el.textContent="Pass";el.style.color="#1a7a3a";}
+  else{el.textContent="Fail";el.style.color="#b42318";}
+}
+
 function EXMARKOPEN(gr){
 var s=FINDSTU(gr);if(!s){SM("Student not found",1);return;}
 var cls=V("e_rcls"),subs=EXSUBS(cls);
@@ -3863,36 +5208,64 @@ document.getElementById("mkHd").textContent="Marks of "+(s.name||"");
 document.getElementById("mkSub").textContent=cls+"   |   GR "+(s.gr||"");
 var old=(s.marks&&s.marks.cls===cls)?s.marks.obt:{};
 var h="";
+var passMk=parseInt(V("e_pass")||((SET.exam&&SET.exam.pass)||"33"),10)||33;
+h+='<div class="hn" style="margin-bottom:10px">Pass marks: <b>'+passMk+'</b>. Enter obtained marks for <b>every paper</b> below, then save once.</div>';
+h+='<div class="sc">Papers ('+subs.length+')</div>';
 subs.forEach(function(x,i){
-h+='<div class="rw"><div class="w2"><label>'+ESC(x.n)+'</label>'
- +'<input id="mk_'+i+'" inputmode="numeric" placeholder="out of '+x.max+'" value="'+((old&&old[x.n]!==undefined)?ESC(String(old[x.n])):"")+'"></div></div>';});
+  var val=(old&&old[x.n]!==undefined&&old[x.n]!==null&&old[x.n]!=="")?String(old[x.n]):"";
+  h+='<div class="card" style="padding:12px;margin-bottom:10px">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+  h+='<b style="font-size:14px">Paper '+(i+1)+' of '+subs.length+'</b>';
+  h+='<span id="mk_h_'+i+'" style="font-weight:700;font-size:13px">—</span>';
+  h+='</div>';
+  h+='<div style="font-size:13px;color:#555;margin-bottom:8px">'+ESC(x.n)+' · Full marks: <b>'+ESC(String(x.max||100))+'</b></div>';
+  h+='<label style="font-size:12px;color:#666">Marks obtained</label>';
+  h+='<input id="mk_'+i+'" inputmode="numeric" placeholder="0 – '+(x.max||100)+'" value="'+ESC(val)+'" style="width:100%;margin-top:4px" oninput="EXMARKHINT('+i+','+Number(x.max||100)+','+passMk+')">';
+  h+='</div>';
+});
 document.getElementById("mkBody").innerHTML=h;
-SV("mk_days",(s.marks&&s.marks.days)||"");
-SV("mk_att",(s.marks&&s.marks.att)||"");
-SV("mk_note",(s.marks&&s.marks.note)||"");
+/* attendance once — keep previous student value or class default */
+var defDays="",defAtt="";
+if(s.marks&&s.marks.cls===cls){defDays=s.marks.days||"";defAtt=s.marks.att||"";}
+else if(SET.exam&&SET.exam.attDef&&SET.exam.attDef[cls]){
+  defDays=SET.exam.attDef[cls].days||"";defAtt="";
+}
+SV("mk_days",defDays);
+SV("mk_att",defAtt);
+SV("mk_note",(s.marks&&s.marks.cls===cls&&s.marks.note)||"");
 document.getElementById("markOv").className="ov on";
-LOCKSCROLL(true);}
+LOCKSCROLL(true);
+subs.forEach(function(x,i){EXMARKHINT(i,Number(x.max||100),passMk);});
+try{var body=document.querySelector("#markOv .ovc");if(body)body.scrollTop=0;}catch(e){}
+}
 function EXMARKCLOSE(){
 var e=document.getElementById("markOv");if(e)e.className="ov";
 LOCKSCROLL(!!LOCKED());}
 function EXMARKSAVE(){
 var s=EXFOR?FINDSTU(EXFOR):null;
 if(!s){SM("Student not found",1);return;}
-var cls=V("e_rcls"),subs=EXSUBS(cls),obt={},bad="";
+var cls=V("e_rcls"),subs=EXSUBS(cls),obt={},bad="",filled=0;
 subs.forEach(function(x,i){
-var raw=V("mk_"+i);
-if(raw===""){obt[x.n]="";return;}
-var n=parseFloat(raw);
-if(isNaN(n)||n<0||n>x.max)bad=x.n;
-obt[x.n]=isNaN(n)?"":n;});
-if(bad){SM("Marks of "+bad+" must be a number between 0 and the full marks",1);return;}
+  var raw=String(V("mk_"+i)||"").trim();
+  if(raw===""){obt[x.n]="";return;}
+  var n=parseFloat(raw);
+  if(isNaN(n)||n<0||n>(Number(x.max)||100)){bad=x.n;return;}
+  obt[x.n]=n;filled++;
+});
+if(bad){SM("Marks of "+bad+" must be between 0 and full marks",1);return;}
+if(!filled){SM("Enter marks for at least one paper",1);return;}
+var days=V("mk_days"),att=V("mk_att");
+/* remember session days for this class so attendance is not retyped every student */
+SET.exam=SET.exam||{};
+SET.exam.attDef=SET.exam.attDef||{};
+if(days)SET.exam.attDef[cls]={days:days};
 s.marks={cls:cls,exam:(SET.exam&&SET.exam.name)||"Annual Examination",
  sess:(SET.exam&&SET.exam.sess)||"",obt:obt,
- days:V("mk_days"),att:V("mk_att"),note:V("mk_note"),at:Date.now()};
+ days:days,att:att,note:V("mk_note"),at:Date.now()};
 s.mt=Date.now();s.at=Date.now();
 if(!SAVEALL())return;
 EXMARKCLOSE();EXMARKLIST();
-SM("Marks saved for "+(s.name||""));}
+SM("Saved "+filled+" paper"+(filled>1?"s":"")+" for "+(s.name||"")+" — open next student for more");}
 
 /* ---- grade, the way a Sindh school writes it ---- */
 function EXGRADE(pc){
@@ -4002,16 +5375,31 @@ if(d.name.length){h+='<div class="hn" style="margin:10px 0 4px">Same name and sa
 d.name.forEach(function(g){h+='<div class="card"><div class="nm">'+ESC(g[0].name||"")+'</div><div class="sub">'+g.map(function(s){return "GR "+ESC(s.gr);}).join(" &middot; ")+'</div></div>';});}
 box.innerHTML=h;}
 
+/* records from a backup are added to what is already here, never
+   replacing an entry that is already in the register */
+function REGMERGE(o){
+var n=0;
+function add(into,list,key){
+if(!list||!list.length)return;
+var have={};into.forEach(function(x){have[x[key]]=1;});
+list.forEach(function(x){if(!x||!x[key]||have[x[key]])return;into.push(x);have[x[key]]=1;n++;});}
+add(ATT,o.attendance,"k");
+add(STAFF,o.staff,"id");
+add(DAK,o.letters,"id");
+add(STOCK,o.stock,"id");
+return n;}
+
 /* ---------- backup file ---------- */
 function BACKUPMAKE(){
 try{
 var pack={app:"School Register",version:1,at:Date.now(),
-school:SET.school||"",students:STU,trash:TRASH,settings:SET,service:(typeof SVCSET==="object"?SVCSET:{})};
+school:SET.school||"",students:STU,trash:TRASH,settings:SET,service:(typeof SVCSET==="object"?SVCSET:{}),
+attendance:ATT,staff:STAFF,letters:DAK,stock:STOCK};
 var txt=JSON.stringify(pack);
 var d=new Date();
 var stamp=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 DL(new Blob([txt],{type:"application/json"}),"School_Register_Backup_"+stamp+".json");
-SM("Backup saved. "+STU.length+" student(s) and every setting are inside it.");
+SM("Backup saved. "+STU.length+" student(s), the office registers and every setting are inside it.");
 }catch(e){SM("Could not make the backup: "+(e&&e.message?e.message:e),1);}}
 function BACKUPPICK(el){
 var f=el.files&&el.files[0];el.value="";
@@ -4033,7 +5421,7 @@ var merged=[];order.forEach(function(k){if(map[k])merged.push(map[k]);});
 STU=merged;
 if(Array.isArray(pack.trash))TRASH=pack.trash.concat(TRASH).slice(0,4000);
 if(pack.settings&&typeof pack.settings==="object"){
-["school","sub","session","valid","cardcol","cardcode","hdstyle","ajrak","safety","certSigner","certConduct","certBoard","certNote","pdfColor","logoPos","wm","classes","prefix","start","pad"].forEach(function(k){
+["school","sub","session","valid","cardcol","cardcode","hdstyle","ajrak","safety","certSigner","certConduct","certBoard","certNote","pdfColor","pdfAccent","logoPos","wm","classes","prefix","start","pad"].forEach(function(k){
 if(pack.settings[k]!==undefined)SET[k]=pack.settings[k];});}
 if(pack.service&&typeof SVCSET==="object"){for(var k2 in pack.service)SVCSET[k2]=pack.service[k2];
 if(typeof SVSTORE==="function")try{SVSTORE();}catch(e){}}
@@ -4083,7 +5471,7 @@ function addMask(b64,w,h){var n=doc.res();
 doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ImageMask true /BitsPerComponent 1 /Decode [0 1]",B64B(b64)));
 return n;}
 var oCrest=addMask(CRESTMASK,CRESTMW,CRESTMH); if(oCrest)imgs.push({n:"Cm",o:oCrest});
-var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=[0.78,0.59,0.12];
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
 var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.82,0.82,0.80],SOFT=[0.965,0.972,0.965];
 var MALE=[0.09,0.27,0.16],FEM=[0.55,0.12,0.42];
 var R=REPORTDATA();
@@ -4318,7 +5706,7 @@ var svc=(kind==="service");
 var oLogo=(!svc&&LOGO&&LOGO.data)?addImg(LOGO.data,LOGO.w||200,LOGO.h||200):0;
 if(oLogo)imgs.push({n:"Lg",o:oLogo});
 
-var TH=RGB(svc?"#14452a":(SET.pdfColor||"#1a472a")),GOLD=[0.78,0.59,0.12];
+var TH=RGB(svc?"#14452a":(SET.pdfColor||"#1a472a")),GOLD=ACC();
 var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.72,0.72,0.70],SOFT=[0.965,0.972,0.965];
 var p=new PG();
 var title,line1,line2;
@@ -4333,7 +5721,7 @@ title="ADMISSION FORM";
 }
 
 /* ---- heading ---- */
-var bh=92;
+var bh=86;
 p.fill(TH,0,H-bh,W,bh);
 var ch=60,cw=ch*CRESTMW/CRESTMH;
 if(oLogo){var lw=Math.min(70,LOGO.w||200),lh=lw*(LOGO.h||200)/(LOGO.w||200);
@@ -4343,18 +5731,18 @@ p.img("Lg",30,H-bh+(bh-lh)/2,lw,lh);}
 else if(oCrest)p.imgc("Cm",30,H-bh+(bh-ch)/2,cw,ch,WH);
 var cx=(30+cw+W-40)/2;
 var ns=15.5; while(TW(line1,ns,true)>W-170&&ns>9)ns-=0.5;
-p.ctxt(line1,cx,H-36,ns,true,WH);
+p.ctxt(line1,cx,H-33,ns,true,WH);
 if(line2){var s2=10.5; while(TW(line2,s2,false)>W-170&&s2>7)s2-=0.3;
-p.ctxt(line2,cx,H-51,s2,false,[0.86,0.91,0.87]);}
-p.ctxt(title,cx,H-71,11,true,GOLD);
+p.ctxt(line2,cx,H-47,s2,false,[0.86,0.91,0.87]);}
+p.ctxt(title,cx,H-66,11,true,GOLD);
 /* the form number, the way a government form carries one */
 var fcode=svc?"SC-01":"ADM-01";
-p.line([0.62,0.70,0.63],0.8,W-40-52,H-bh+10,52,17);
-p.ctxt(fcode,W-40-26,H-bh+15,8,true,[0.86,0.91,0.87]);
+p.line([0.62,0.70,0.63],0.8,W-40-52,H-bh+8,52,16);
+p.ctxt(fcode,W-40-26,H-bh+12,8,true,[0.86,0.91,0.87]);
 p.fill(GOLD,0,H-bh-2.6,W,2.6);
 
 /* photo box, top right under the band */
-var y=H-bh-18;
+var y=H-bh-10;
 var pw2=84,ph2=104,px2=W-40-pw2,py2=y-ph2;
 p.fill(SOFT,px2,py2,pw2,ph2);
 p.line(LN,0.8,px2,py2,pw2,ph2);
@@ -4369,7 +5757,7 @@ function head(t){
 y-=6;
 p.fill(TH,LX,y-12,(RX-LX),15);
 p.txt(t,LX+7,y-8,8.6,true,WH);
-y-=19;}
+y-=22;}
 function head2(t){
 y-=6;
 p.fill(TH,LX,y-12,W-80,15);
@@ -4406,7 +5794,7 @@ for(i=0;i<count;i++){
 p.line(LN,0.7,bx,y-14,bw,14);
 bx+=bw+2.4;}
 if(hint)p.txt(hint,bx+6,y-10,6.4,false,[0.68,0.68,0.66]);
-y-=23;}
+y-=26;}
 /* a named rule that opens a group of fields */
 function sect(t){
 y-=2;
@@ -4416,7 +5804,7 @@ var sx=LX+TW(t.toUpperCase(),7.6,true)+8;
 var send=(y>py2-6)?RX:(W-40);
 if(send>sx+20)p.hr([0.80,0.84,0.80],0.9,sx,y+3,send,y+3);
 ZEB=0;
-y-=11;}
+y-=10;}
 
 /* a shaded band that marks a block only the office fills */
 function ohead(t){
@@ -4437,7 +5825,7 @@ boxes("CNIC Number",13,LX,15.5,"one figure in each box");
 rows([["Date of Birth","D D / M M / Y Y Y Y"],["Blood Group",""]],true);
 sect("Part A-2   Contact details");
 boxes("Mobile Number",11,LX,15.5,"one figure in each box");
-boxes("Emergency Number",11,LX,15.5,"a number that answers if something happens");
+boxes("Emergency Contact Number",11,LX,15.5,"a number that answers if something happens");
 rows([["Name of the person on the emergency number",""]],true);
 sect("Part A-3   Posting and address");
 rows([["Place of Posting",""]],true);
@@ -4455,7 +5843,7 @@ boxes("Student CNIC Number",13,LX,15.5,"the B-Form number, leave empty if there 
 boxes("Parent or Guardian CNIC",13,LX,15.5,"one figure in each box");
 sect("Part A-2   Contact details");
 boxes("Mobile Number",11,LX,15.5,"one figure in each box");
-boxes("Emergency Number",11,LX,15.5,"a number that answers if something happens");
+boxes("Emergency Contact Number",11,LX,15.5,"a number that answers if something happens");
 rows([["Name of the person on the emergency number",""]],true);
 sect("Part A-3   Previous schooling and address");
 rows([["Class applied for",""],["Class last passed",""],["Last school attended",""]],true);
@@ -4498,7 +5886,7 @@ if(i3<g2.length)tick(dx2,dy,i3+1+g1.length,g2[i3]);
 dy-=11;}
 var ny2=y-84;
 dnl.forEach(function(t){p.txt(t,dx1,ny2,6.8,false,[0.42,0.44,0.42]);ny2-=10;});
-y-=dbh+9;
+y-=dbh+4;
 }
 /* ---- declaration, signed by the person who filled part A ---- */
 p.fill(SOFT,40,y-34,W-80,34);
@@ -4511,7 +5899,7 @@ p.txt(dtext,47,y-22,8.2,false,DK);
 p.txt(svc?"A wrong entry may lead to the card being cancelled.":"A wrong entry may lead to the admission being cancelled.",47,y-31,8.2,false,GY);
 /* the signature and the date sit well below the declaration, so there is
    room to sign, and they do not touch the office band underneath */
-y-=66;
+y-=62;
 p.hr(DK,0.8,40,y,40+190,y);
 p.ctxt("Signature of "+(svc?"the Employee":"the Parent or Guardian"),40+95,y-12,8.4,true,DK);
 p.txt("Date",W-40-150,y-3,8.4,false,GY);
@@ -4530,7 +5918,7 @@ rows([["Date of Admission","D D / M M / Y Y Y Y"],["Admitted in Class",""]],true
 rows([["Papers checked by",""],["Remarks of the office",""]],true);
 }
 /* the signatures stand clear of the last written line above them */
-y-=12;
+y-=26;
 var sw=(W-80-40)/2;
 [[svc?"Dealing Assistant":"Clerk or Dealing Assistant",40],
  [svc?"Head of Office":"Head Master / Principal",40+sw+40]].forEach(function(q){
@@ -4578,6 +5966,205 @@ doc.set(cat,"<< /Type /Catalog /Pages "+pgs+" 0 R >>");
 doc.set(pgs,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+kids.length+" >>");
 return doc.out();}
 
+/* ================= register printing =================
+   One table printer that every office register uses, so the staff list,
+   the letter register and the stock register all come out of the same
+   mould and look like the rest of the school's papers. */
+function REGPDF(o){
+var land=!!o.landscape;
+var W=land?841.89:595.28, H=land?595.28:841.89;
+var doc=new PDFDOC();
+var cat=doc.res(),pgs=doc.res(),f1=doc.res(),f2=doc.res();
+doc.set(f1,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+doc.set(f2,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+var kids=[];
+function addMask(b64,w,h){var n=doc.res();
+doc.set(n,doc.stream("/Type /XObject /Subtype /Image /Width "+w+" /Height "+h+" /ImageMask true /BitsPerComponent 1 /Decode [0 1]",B64B(b64)));
+return n;}
+var oCrest=addMask(CRESTMASK,CRESTMW,CRESTMH);
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
+var WH=[1,1,1],DK=[0.12,0.12,0.12],GY=[0.42,0.42,0.42],LN=[0.80,0.80,0.78],SOFT=[0.965,0.972,0.963];
+var d=new Date();
+var today=String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();
+var M=36, CW=W-M*2;
+var cols=o.cols||[], tot=0, i;
+for(i=0;i<cols.length;i++)tot+=cols[i].w;
+for(i=0;i<cols.length;i++)cols[i].px=cols[i].w/tot*CW;
+var pages=[], p=null, y=0, pageNo=0;
+function head(){
+pageNo++;
+p=new PG();pages.push(p);
+var bh=62;
+p.fill(TH,0,H-bh,W,bh);
+var ch=40,cw=ch*CRESTMW/CRESTMH;
+if(oCrest)p.imgc("Cm",M-6,H-bh+(bh-ch)/2,cw,ch,WH);
+var cx=(M-6+cw+W-M)/2;
+var nm=(SET.school||"School Register").toUpperCase();
+var ns=13.5; while(TW(nm,ns,true)>CW-140&&ns>8)ns-=0.5;
+p.ctxt(nm,cx,H-28,ns,true,WH);
+if(SET.sub)p.ctxt(SET.sub,cx,H-40,8.4,false,[0.85,0.9,0.86]);
+p.ctxt(String(o.title||"REGISTER").toUpperCase(),cx,H-53,9,true,GOLD);
+p.fill(GOLD,0,H-bh-2.4,W,2.4);
+y=H-bh-26;
+if(o.note){p.txt(o.note,M,y,9,false,GY);}
+var dt="Printed "+today;
+p.txt(dt,W-M-TW(dt,9,false),y,9,false,GY);
+y-=16;
+hdrow();}
+function hdrow(){
+p.fill(TH,M,y-17,CW,17);
+var x=M;
+cols.forEach(function(c){
+var t=String(c.t||"");
+var sz=7.6; while(TW(t,sz,true)>c.px-8&&sz>5)sz-=0.3;
+if(c.a==="c")p.ctxt(t,x+c.px/2,y-12,sz,true,WH);
+else p.txt(t,x+4,y-12,sz,true,WH);
+x+=c.px;});
+y-=17;}
+function foot(pg,n,total){
+pg.hr(LN,0.7,M,34,W-M,34);
+pg.txt(String(o.title||"Register")+"  |  "+(SET.school||""),M,24,7.6,false,GY);
+var t="Page "+n+" of "+total;
+pg.txt(t,W-M-TW(t,7.6,false),24,7.6,false,GY);
+if(o.sign){
+/* room to sign is left on the last page only */
+}}
+head();
+var rowH=o.rowH||15, zebra=0;
+(o.rows||[]).forEach(function(r){
+var lines=1;
+cols.forEach(function(c,ci){
+if(c.wrap){var ls=WRAPT(String(r[ci]==null?"":r[ci]),7.8,false,c.px-8).length;if(ls>lines)lines=ls;}});
+var hgt=Math.max(rowH,6+lines*10);
+if(y-hgt<58){head();zebra=0;}
+if((zebra++)%2===0)p.fill(SOFT,M,y-hgt,CW,hgt);
+var x=M;
+cols.forEach(function(c,ci){
+var v=String(r[ci]==null?"":r[ci]);
+if(c.wrap){
+var ls=WRAPT(v,7.8,false,c.px-8);
+for(var k=0;k<ls.length;k++)p.txt(ls[k],x+4,y-11-k*10,7.8,false,DK);
+}else{
+var sz=8; while(TW(v,sz,false)>c.px-7&&sz>5.4)sz-=0.3;
+if(c.a==="c")p.ctxt(v,x+c.px/2,y-11,sz,false,DK);
+else p.txt(v,x+4,y-11,sz,false,DK);}
+x+=c.px;});
+p.hr([0.88,0.88,0.86],0.5,M,y-hgt,W-M,y-hgt);
+y-=hgt;});
+if(o.total){
+if(y-20<58)head();
+p.fill([0.90,0.92,0.90],M,y-18,CW,18);
+var x2=M;
+cols.forEach(function(c,ci){
+var v=String(o.total[ci]==null?"":o.total[ci]);
+if(!v){x2+=c.px;return;}
+if(c.a==="c")p.ctxt(v,x2+c.px/2,y-12,8,true,TH);
+else p.txt(v,x2+4,y-12,8,true,TH);
+x2+=c.px;});
+y-=18;}
+/* the two signatures every office register carries. They need the rule
+   at y and the caption 12 below it, clear of the printed foot line. */
+if(y-34<56)head();
+y-=34;
+var sw=Math.min(190,(CW-60)/2);
+p.hr(DK,0.8,M,y,M+sw,y);
+p.ctxt(o.leftSign||"Dealing Assistant",M+sw/2,y-12,8.4,true,DK);
+p.hr(DK,0.8,W-M-sw,y,W-M,y);
+p.ctxt(o.rightSign||"Head Master / Principal",W-M-sw/2,y-12,8.4,true,DK);
+pages.forEach(function(pg,ix){foot(pg,ix+1,pages.length);});
+pages.forEach(function(pg){
+var cn=doc.res();doc.set(cn,doc.stream("",L1(pg.k)));
+var pn=doc.res();
+doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 "+N2(W)+" "+N2(H)+"] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >> /XObject << /Cm "+oCrest+" 0 R >> >> /Contents "+cn+" 0 R >>");
+kids.push(pn+" 0 R");});
+doc.set(cat,"<< /Type /Catalog /Pages "+pgs+" 0 R >>");
+doc.set(pgs,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+kids.length+" >>");
+return doc.out();}
+
+function STAFFPDF(){
+try{
+if(!STAFF.length)return SM("The staff register is empty",1);
+var l=STAFF.slice().sort(function(a,b){return NUM(b.bps)-NUM(a.bps)||String(a.name).localeCompare(String(b.name));});
+var rows=l.map(function(x,i){return [String(i+1),x.name,x.father||"",x.desig||"",x.bps||"",
+x.gender||"",x.pn||"",x.cnic||"",x.mobile||"",DMY(x.first)||"",DMY(x.join)||"",x.qual||"",x.status||""];});
+var work=l.filter(function(x){return x.status==="Working";}).length;
+var buf=REGPDF({title:"Staff Register",landscape:true,
+note:"On the roll "+l.length+"   |   Working here "+work,
+cols:[{t:"S.No",w:3,a:"c"},{t:"Name",w:13},{t:"Father / Husband",w:12},{t:"Designation",w:9},
+{t:"BPS",w:3,a:"c"},{t:"M/F",w:3,a:"c"},{t:"Personal No",w:6,a:"c"},{t:"CNIC",w:8,a:"c"},
+{t:"Mobile",w:7,a:"c"},{t:"First Appointment",w:7,a:"c"},{t:"Joined Here",w:7,a:"c"},
+{t:"Qualification",w:7},{t:"Status",w:6,a:"c"}],
+rows:rows,total:["","Total "+l.length,"","","","","","","","","","",""]});
+DL(new Blob([buf],{type:"application/pdf"}),"Staff_Register.pdf");
+SM("Staff register saved");
+}catch(e){SM("Could not build it: "+(e&&e.message?e.message:e),1);}}
+
+function DAKPDF(){
+try{
+var l=DAKLIST();
+if(!l.length)return SM("Nothing to print in the letter register",1);
+var rows=l.map(function(x,i){return [String(i+1),x.kind==="In"?"Received":"Sent",x.no||"",DMY(x.date)||"",
+x.party||"",x.subj||"",x.ref||"",x.act||"",x.status||""];});
+var buf=REGPDF({title:"Letter Register, In and Out",landscape:true,
+note:"Entries "+l.length+"   |   Pending "+l.filter(function(x){return x.status==="Pending";}).length,
+cols:[{t:"S.No",w:3,a:"c"},{t:"In / Out",w:5,a:"c"},{t:"Diary No",w:4,a:"c"},{t:"Date",w:5,a:"c"},
+{t:"From or To",w:14,wrap:1},{t:"Subject",w:20,wrap:1},{t:"Their Number",w:7,wrap:1},
+{t:"Action Taken",w:14,wrap:1},{t:"Status",w:5,a:"c"}],
+rows:rows,leftSign:"Junior Clerk"});
+DL(new Blob([buf],{type:"application/pdf"}),"Letter_Register.pdf");
+SM("Letter register saved");
+}catch(e){SM("Could not build it: "+(e&&e.message?e.message:e),1);}}
+
+function STKPDF(){
+try{
+var l=STKLIST();
+if(!l.length)return SM("The stock register is empty",1);
+var tot=0;l.forEach(function(x){tot+=NUM(x.qty);});
+var rows=l.map(function(x,i){return [String(i+1),x.item||"",x.cat||"",String(x.qty||0),
+x.cond||"",DMY(x.date)||"",x.src||"",x.rem||""];});
+var buf=REGPDF({title:"Stock Register",landscape:true,
+note:"Entries "+l.length+"   |   Items in all "+tot,
+cols:[{t:"S.No",w:3,a:"c"},{t:"Article",w:18,wrap:1},{t:"Kind",w:9},{t:"Quantity",w:5,a:"c"},
+{t:"Condition",w:7,a:"c"},{t:"Received On",w:6,a:"c"},{t:"Received From",w:12,wrap:1},{t:"Remarks",w:12,wrap:1}],
+rows:rows,total:["","Total","",String(tot),"","","",""],
+leftSign:"Store Keeper"});
+DL(new Blob([buf],{type:"application/pdf"}),"Stock_Register.pdf");
+SM("Stock register saved");
+}catch(e){SM("Could not build it: "+(e&&e.message?e.message:e),1);}}
+
+/* the monthly attendance register, one column for each day of the month */
+function ATREGPDF(){
+try{
+var c=V("ar_class"),ym=V("ar_month"),sec=V("ar_sec");
+if(!c)return SM("Choose a class",1);
+if(!ym)return SM("Choose a month",1);
+var r=ATMONTH(c,sec,ym);
+if(!r.rows.length)return SM("No student is in that class",1);
+var mn=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var title="Attendance Register";
+var note="Class "+c+(sec?("  Section "+sec):"")+"   |   "+mn[NUM(ym.split("-")[1])-1]+" "+ym.split("-")[0]
+ +"   |   On roll "+r.rows.length+"   |   Days marked "+r.open;
+var cols=[{t:"S.No",w:3.2,a:"c"},{t:"GR No",w:7,a:"c"},{t:"Name of Student",w:20}];
+r.days.forEach(function(dd){cols.push({t:String(dd),w:2.1,a:"c"});});
+cols.push({t:"P",w:3,a:"c"});cols.push({t:"A",w:3,a:"c"});cols.push({t:"L",w:3,a:"c"});cols.push({t:"%",w:4,a:"c"});
+var rows=[],sp=0,sa=0,sl=0;
+r.rows.forEach(function(x,i){
+var row=[String(i+1),x.s.gr,x.s.name];
+x.marks.forEach(function(m){row.push(m);});
+row.push(String(x.p));row.push(String(x.a));row.push(String(x.l));row.push(x.held?(x.pc+""):"-");
+sp+=x.p;sa+=x.a;sl+=x.l;
+rows.push(row);});
+var tl=["","","Total"];
+r.days.forEach(function(){tl.push("");});
+tl.push(String(sp));tl.push(String(sa));tl.push(String(sl));
+var held=sp+sa+sl;
+tl.push(held?(Math.round(sp*1000/held)/10+""):"-");
+var buf=REGPDF({title:title,landscape:true,note:note,cols:cols,rows:rows,total:tl,rowH:14,
+leftSign:"Class Teacher"});
+DL(new Blob([buf],{type:"application/pdf"}),"Attendance_"+c.replace(/[^\w]/g,"")+"_"+ym+".pdf");
+SM("Attendance register saved");
+}catch(e){SM("Could not build it: "+(e&&e.message?e.message:e),1);}}
+
 function FORMMAKE(kind){
 try{
 var buf=FORMPDF(kind);
@@ -4611,7 +6198,7 @@ if(oSign)imgs.push({n:"Sg",o:oSign});
 var oStamp=(STAMP&&STAMP.data)?addImg(STAMP.data,STAMP.w||300,STAMP.h||300):0;
 if(oStamp)imgs.push({n:"St",o:oStamp});
 
-var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=[0.78,0.59,0.12];
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
 var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.74,0.74,0.72],SOFT=[0.966,0.972,0.966];
 var school=(SET.school||"School Register").toUpperCase();
 var sub=SET.sub||"";
@@ -4837,7 +6424,7 @@ if(all.length){xo=" /XObject << ";all.forEach(function(m){xo+="/"+m.n+" "+m.o+" 
 doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 "+N2(W)+" "+N2(H)+"] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >>"+xo+" >> /Contents "+cn+" 0 R >>");
 kids.push(pn+" 0 R");}
 
-var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=[0.78,0.59,0.12];
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
 var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.74,0.74,0.72],SOFT=[0.966,0.972,0.966];
 var school=(SET.school||"School Register").toUpperCase(), sub=SET.sub||"";
 var E=SET.exam||{};
@@ -4900,6 +6487,8 @@ var fw=(W-72-14)/2;
 fld("Examination Dates",dates||"As notified",36,fw);
 fld("Centre",centre,36+fw+14,fw);yy-=30;
 
+/* timetable prints on the BACK of the card */
+
 p.fill([0.975,0.977,0.972],36,yy-40,W-72,44);
 p.fill(TH,36,yy-40,2.4,44);
 p.txt("INSTRUCTIONS",46,yy-1,7,true,TH);
@@ -4919,16 +6508,102 @@ p.hr(DK,0.8,W-36-160,sy,W-36,sy);
 p.ctxt(SET.certSigner||"Head Master / Principal",W-36-80,sy-10,7.4,true,DK);
 p.off(0,0);}
 
+function cardBack(base,s){
+p.off(0,base);
+p.line([0.84,0.86,0.84],0.7,26,6,W-52,HH-6);
+
+/* title only */
+p.ctxt("PAPER TIMETABLE",W/2,HH-24,11,true,TH);
+p.hr(GOLD,1.2,W/2-55,HH-30,W/2+55,HH-30);
+
+var yy=HH-50;
+var sched=((SET.exam&&SET.exam.schedule)||{})[s.cls]||((SET.exam&&SET.exam.schedule)||{})[V("e_acls")]||[];
+if(!sched.length){
+  p.ctxt("No timetable saved for this class.",W/2,yy-20,9,false,GY);
+  p.off(0,0);return;
+}
+
+/* Fixed column edges — no overlap */
+var x0=36;
+var x1=62;    /* # column ends */
+var x2=280;   /* paper column ends */
+var x3=390;   /* date column ends */
+var x4=W-36;  /* time column ends */
+var tableW=x4-x0;
+var rh=20;
+var maxRows=Math.min(sched.length,10);
+var tableH=rh*(maxRows+1);
+
+/* outer box */
+p.fill([1,1,1],x0,top-tableH,tableW,tableH);
+p.line([0.55,0.60,0.55],0.9,x0,top-tableH,tableW,tableH);
+
+/* header */
+p.fill([0.88,0.92,0.88],x0,top-rh,tableW,rh);
+p.hr([0.55,0.60,0.55],0.7,x0,top-rh,x4,top-rh);
+
+/* vertical dividers */
+p.hr([0.70,0.74,0.70],0.6,x1,top-tableH,x1,top);
+p.hr([0.70,0.74,0.70],0.6,x2,top-tableH,x2,top);
+p.hr([0.70,0.74,0.70],0.6,x3,top-tableH,x3,top);
+
+/* header text */
+p.ctxt("#", (x0+x1)/2, top-7, 8, true, TH);
+p.txt("Paper", x1+8, top-7, 8, true, TH);
+p.ctxt("Date", (x2+x3)/2, top-7, 8, true, TH);
+p.ctxt("Time", (x3+x4)/2, top-7, 8, true, TH);
+
+/* rows */
+for(var si=0;si<maxRows;si++){
+  var row=sched[si];
+  var yTop=top-rh*(si+1);
+  var yBot=yTop-rh;
+  if(si%2===1)p.fill([0.96,0.97,0.96],x0,yBot,tableW,rh);
+  p.hr([0.82,0.84,0.82],0.45,x0,yBot,x4,yBot);
+
+  var mid=yBot+7;
+  p.ctxt(String(si+1), (x0+x1)/2, mid, 8.5, false, DK);
+
+  var pn=String(row.n||"-");
+  var psz=8.5;
+  while(TW(pn,psz,false)>(x2-x1-16) && psz>6.5)psz-=0.3;
+  while(TW(pn,psz,false)>(x2-x1-16))pn=pn.slice(0,-1);
+  p.txt(pn, x1+8, mid, psz, false, DK);
+
+  var dd=row.date?DMY(row.date):"-";
+  p.ctxt(dd, (x2+x3)/2, mid, 8, false, DK);
+
+  var tm=String(row.time||"-");
+  var tsz=8;
+  while(TW(tm,tsz,false)>(x4-x3-10) && tsz>6.5)tsz-=0.3;
+  p.ctxt(tm, (x3+x4)/2, mid, tsz, false, DK);
+}
+p.off(0,0);
+}
+function cutLine(){
+  var cy=BOTY+HH+GAPH/2, dx=30;
+  while(dx<W-30){p.hr([0.62,0.62,0.60],0.7,dx,cy,Math.min(dx+7,W-30),cy);dx+=13;}
+  var ct="cut here";
+  p.fill(WH,W/2-TW(ct,7,false)/2-6,cy-4,TW(ct,7,false)+12,9);
+  p.ctxt(ct,W/2,cy-3,7,false,[0.55,0.55,0.53]);
+}
+
+/* Front pages (odd): student details */
 for(var i=0;i<list.length;i+=2){
-p=new PG();imgs=[];
-card(TOPY,list[i],i);
-if(list[i+1])card(BOTY,list[i+1],i+1);
-var cy=BOTY+HH+GAPH/2, dx=30;
-while(dx<W-30){p.hr([0.62,0.62,0.60],0.7,dx,cy,Math.min(dx+7,W-30),cy);dx+=13;}
-var ct="cut here";
-p.fill(WH,W/2-TW(ct,7,false)/2-6,cy-4,TW(ct,7,false)+12,9);
-p.ctxt(ct,W/2,cy-3,7,false,[0.55,0.55,0.53]);
-addPage(p,imgs);}
+  p=new PG();imgs=[];
+  card(TOPY,list[i],i);
+  if(list[i+1])card(BOTY,list[i+1],i+1);
+  cutLine();
+  addPage(p,imgs);
+}
+/* Back pages (even): examination timetable — same card order for double-sided print */
+for(var j=0;j<list.length;j+=2){
+  p=new PG();imgs=[];
+  cardBack(TOPY,list[j]);
+  if(list[j+1])cardBack(BOTY,list[j+1]);
+  cutLine();
+  addPage(p,imgs);
+}
 
 doc.set(cat,"<< /Type /Catalog /Pages "+pgs+" 0 R >>");
 doc.set(pgs,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+kids.length+" >>");
@@ -4981,7 +6656,7 @@ if(shared.length){xo=" /XObject << ";shared.forEach(function(m){xo+="/"+m.n+" "+
 doc.set(pn,"<< /Type /Page /Parent "+pgs+" 0 R /MediaBox [0 0 "+N2(W)+" "+N2(H)+"] /Resources << /Font << /F1 "+f1+" 0 R /F2 "+f2+" 0 R >>"+xo+" /ExtGState << /GSm << /Type /ExtGState /BM /Multiply >> >> >> /Contents "+cn+" 0 R >>");
 kids.push(pn+" 0 R");}
 
-var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=[0.78,0.59,0.12];
+var TH=RGB(SET.pdfColor||"#1a472a"),GOLD=ACC();
 var WH=[1,1,1],DK=[0.11,0.11,0.11],GY=[0.42,0.42,0.42],LN=[0.74,0.74,0.72],SOFT=[0.966,0.972,0.966];
 var school=(SET.school||"School Register").toUpperCase(), sub=SET.sub||"";
 var E=SET.exam||{};
@@ -5035,7 +6710,7 @@ p.ctxt("Sr.",xSr+cSr/2,y-13,7.6,true,WH);
 p.txt("SUBJECT",xSub+8,y-13,7.6,true,WH);
 p.ctxt("FULL MARKS",xMax+cMax/2,y-13,7.2,true,WH);
 p.ctxt("MARKS OBTAINED",xObt+cObt/2,y-13,7.2,true,WH);
-p.ctxt("GRADE",xGr+cGr/2,y-13,7.2,true,WH);
+p.ctxt("RESULT",xGr+cGr/2,y-13,7.2,true,WH);
 y-=18;
 var T=EXTOTALS(s,subs,pass);
 subs.forEach(function(x,i){
@@ -5051,7 +6726,9 @@ p.ctxt(String(x.max),xMax+cMax/2,y-13,9.4,false,[0.36,0.36,0.36]);
 var v=(s.marks&&s.marks.obt)?s.marks.obt[x.n]:"";
 var has=(v!==""&&v!==undefined&&v!==null);
 p.ctxt(has?String(v):"-",xObt+cObt/2,y-13,10,true,has&&Number(v)<pass?[0.62,0.20,0.16]:DK);
-p.ctxt(has?EXGRADE((Number(v)||0)/(Number(x.max)||1)*100):"-",xGr+cGr/2,y-13,9.4,true,[0.24,0.36,0.26]);
+var pf=has?((Number(v)||0)>=pass?"Pass":"Fail"):"-";
+var pfCol=has?((Number(v)||0)>=pass?[0.10,0.48,0.24]:[0.62,0.20,0.16]):[0.45,0.45,0.45];
+p.ctxt(pf,xGr+cGr/2,y-13,9.4,true,pfCol);
 y-=rh;});
 /* the total line */
 p.fill([0.92,0.95,0.92],TX,y-20,TW2,20);
@@ -5189,7 +6866,7 @@ var oSign=(SIGN&&SIGN.data)?addImg(SIGN.data,SIGN.w||200,SIGN.h||100):0; if(oSig
 var oStamp=(STAMP&&STAMP.data)?addImg(STAMP.data,STAMP.w||300,STAMP.h||300):0; if(oStamp)imgs.push({n:"St",o:oStamp});
 
 var TH=RGB(SET.pdfColor||"#1a472a");
-var GOLD=[0.78,0.59,0.12],WH=[1,1,1],DK=[0.10,0.10,0.10],GY=[0.42,0.42,0.42],LN=[0.80,0.80,0.78];
+var GOLD=ACC(),WH=[1,1,1],DK=[0.10,0.10,0.10],GY=[0.42,0.42,0.42],LN=[0.80,0.80,0.78];
 var school=(SET.school||"School Register").toUpperCase();
 var sub=SET.sub||"";
 var d=new Date();
@@ -5819,7 +7496,7 @@ return {students:st,trash:tr};
    Whichever side was saved last wins. A phone that has never saved a
    setup only ever pulls, so an empty new phone can never wipe the good one. */
 function SETPATH(){return FURL()+"/school/"+FB_SCHOOL+"/setup";}
-var SETKEYS=["school","sub","session","valid","cardcol","cardcode","hdstyle","ajrak","certSigner","certConduct","pdfColor",
+var SETKEYS=["school","sub","session","valid","cardcol","cardcode","hdstyle","ajrak","certSigner","certConduct","pdfColor","pdfAccent",
 "logoPos","wm","classes","prefix","start","pad","logo","mark","markAuto","markOwn","sign","stamp"];
 function SETPACK(){
 var o={};SETKEYS.forEach(function(k){if(SET[k]!==undefined&&SET[k]!==null)o[k]=SET[k];});
@@ -7260,6 +8937,7 @@ SAVEALL();LMSG("Saved. Now sign in above.",0);
 }
 
 var SESSDAYS=30;
+var RESUME=null;
 
 function LSESSION(){var a=LGET();
 return (a.uid&&a.until&&a.until>Date.now())?a:null;}
@@ -7273,7 +8951,10 @@ if(!FBUILT()){
 var lnk=document.getElementById("l_setuplink");if(lnk)lnk.style.display="block";
 if(!CREADY()){document.getElementById("l_setup").style.display="block";
 LMSG("First open on this phone. Fill the settings below.",0);}}
-if(sess&&CREADY()){CUID=sess.uid;UNLOCK(true,true);}
+/* the password is asked for every time the app is opened. A saved
+   session no longer lets anyone straight in. */
+if(sess)RESUME=sess;
+setTimeout(function(){var pe=document.getElementById("l_pass");if(pe&&a.mail)pe.focus();},250);
 }
 
 var EYEOPEN='<svg viewBox="0 0 24 24"><path d="M1.7 12S5.3 5.5 12 5.5 22.3 12 22.3 12 18.7 18.5 12 18.5 1.7 12 1.7 12Z"/><circle cx="12" cy="12" r="3.2"/></svg>';
@@ -7343,7 +9024,7 @@ var ct=document.querySelector(".ct");
 if(ct){ct.className="ct entering";setTimeout(function(){ct.className="ct";},520);}}
 else if(l)l.style.display="none";
 LOCKSCROLL(false);
-GOTAB(9);
+GOTAB(13);
 var pe=document.getElementById("l_pass");if(pe)pe.value="";
 LMSG("");CPAINT();ACCTBAR();
 if(online&&CREADY()){setTimeout(function(){CSYNC(1);},resumed?2500:800);
@@ -7948,6 +9629,7 @@ SVTABN=n;
 [1,2,3].forEach(function(i){
 var el=document.getElementById("sv"+i);if(el)el.style.display=(i===n?"block":"none");
 var bt=document.getElementById("svt"+i);if(bt)bt.className=(i===n?"act":"");});
+if(n===1){try{SVWZGO(SVWZSTEP||1);}catch(e){}}
 if(n===2)SVRENDER();
 if(n===3)SVPAINTSET();
 window.scrollTo(0,0);
@@ -8097,7 +9779,7 @@ function SVCLEAR(msg){
 ["v_name","v_relname","v_desig","v_pid","v_grade","v_cnic","v_mobile","v_dob","v_appt","v_issue","v_valid","v_posting","v_addr"].forEach(function(id){SV(id,"");});
 SV("v_rel","father");SV("v_blood","");SVREL();
 SVPEND=null;SVEDIT=null;SVPAINTPHOTO();
-if(msg)SM("Form cleared");
+if(msg)SM("Form cleared");try{SVWZGO(1);}catch(e){}
 }
 
 /* cards */
